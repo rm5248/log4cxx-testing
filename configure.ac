@@ -41,6 +41,7 @@ AH_VERBATIM([HAVE_NO_EXPLICIT_EXPORTS],
 
 AM_INIT_AUTOMAKE([foreign subdir-objects -Wall])
 
+
 # Checks for programs
 # ----------------------------------------------------------------------------
 
@@ -122,6 +123,29 @@ AC_SUBST(manual_dest)
 AC_SUBST(base_dir)
 
 
+# enable/disable boost/c++11
+# ----------------------------------------------------------------------------
+AC_ARG_ENABLE(cpp11,
+        AC_HELP_STRING(--enable-cpp11,
+	        [enable c++11 (no)]), 
+        [CXXFLAGS="$CXXFLAGS -std=c++11"
+         AC_SUBST(CXXFLAGS)] )
+if test "$enable_cpp11" = "yes"
+then
+    AC_SUBST(CPP_11, 1)
+else
+    AC_SUBST(CPP_11, 0)
+fi
+
+AC_ARG_ENABLE(boost,
+        AC_HELP_STRING(--enable-boost,
+	        [enable boost (no)]))
+if test "$enable_boost" = "yes"
+then
+    AC_SUBST(BOOST, 1)
+else
+    AC_SUBST(BOOST, 0)
+fi
 
 
 # Checks header files
