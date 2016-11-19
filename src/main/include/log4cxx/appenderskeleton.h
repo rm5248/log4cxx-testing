@@ -28,7 +28,6 @@
 #include <log4cxx/layout.h>
 #include <log4cxx/spi/errorhandler.h>
 #include <log4cxx/spi/filter.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/helpers/mutex.h>
 #include <log4cxx/helpers/pool.h>
 #include <log4cxx/level.h>
@@ -95,9 +94,6 @@ namespace log4cxx
 
                 AppenderSkeleton();
                 AppenderSkeleton(const LayoutPtr& layout);
-
-                void addRef() const;
-                void releaseRef() const;
 
                 /**
                 Finalize this appender by calling the derived class'

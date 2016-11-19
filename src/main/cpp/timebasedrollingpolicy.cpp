@@ -152,14 +152,6 @@ TimeBasedRollingPolicy::~TimeBasedRollingPolicy() {
 }
 #endif
 
-void TimeBasedRollingPolicy::addRef() const {
-    TriggeringPolicy::addRef();
-}
-
-void TimeBasedRollingPolicy::releaseRef() const {
-    TriggeringPolicy::releaseRef();
-}
-
 void TimeBasedRollingPolicy::activateOptions(log4cxx::helpers::Pool& pool) {
     // find out period from the filename pattern
     if (getFileNamePattern().length() > 0) {

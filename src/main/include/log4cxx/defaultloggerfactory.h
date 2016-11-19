@@ -19,7 +19,6 @@
 #define _LOG4CXX_DEFAULT_LOGGER_FACTORY_H
 
 #include <log4cxx/spi/loggerfactory.h>
-#include <log4cxx/helpers/objectimpl.h>
 
 namespace log4cxx
 {

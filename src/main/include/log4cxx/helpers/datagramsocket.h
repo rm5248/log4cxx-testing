@@ -18,8 +18,6 @@
 #ifndef _LOG4CXX_HELPERS_DATAGRAM_SOCKET_H
 #define _LOG4CXX_HELPERS_DATAGRAM_SOCKET_H
 
-#include <log4cxx/helpers/objectimpl.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/helpers/inetaddress.h>
 #include <log4cxx/helpers/pool.h>
 #include <log4cxx/helpers/datagrampacket.h>

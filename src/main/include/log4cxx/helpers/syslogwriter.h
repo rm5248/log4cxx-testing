@@ -18,8 +18,6 @@
 #ifndef _LOG4CXX_SYSLOG_WRITER_H
 #define _LOG4CXX_SYSLOG_WRITER_H
 
-
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/helpers/inetaddress.h>
 #include <log4cxx/helpers/datagramsocket.h>
 
@@ -41,8 +39,8 @@
                 private:
                         LogString syslogHost;
                         int syslogHostPort;
-                        InetAddressPtr address;
-                        DatagramSocketPtr ds;
+                        log4cxx::ptr<InetAddress> address;
+                        log4cxx::ptr<DatagramSocket> ds;
                 };
         }  // namespace helpers
 } // namespace log4cxx

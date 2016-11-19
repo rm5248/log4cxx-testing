@@ -73,9 +73,6 @@ namespace log4cxx
                  */
                 virtual ~AsyncAppender();
 
-                void addRef() const;
-                void releaseRef() const;
-
                 /**
                  * Add appender.
                  *

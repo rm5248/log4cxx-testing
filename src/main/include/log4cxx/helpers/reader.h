@@ -18,8 +18,6 @@
 #ifndef _LOG4CXX_HELPERS_READER_H
 #define _LOG4CXX_HELPERS_READER_H
 
-#include <log4cxx/helpers/objectimpl.h>
-
 namespace log4cxx
 {
 

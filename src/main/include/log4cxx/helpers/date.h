@@ -18,9 +18,7 @@
 #ifndef _LOG4CXX_HELPERS_DATE_H
 #define _LOG4CXX_HELPERS_DATE_H
 
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/log4cxx.h>
-
 
 namespace log4cxx {
    namespace helpers {

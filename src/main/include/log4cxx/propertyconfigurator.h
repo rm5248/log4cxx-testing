@@ -23,9 +23,6 @@
 #pragma warning ( disable: 4231 4251 4275 4786 )
 #endif
 
-
-#include <log4cxx/helpers/objectptr.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/logstring.h>
 #include <log4cxx/spi/configurator.h>
 #include <map>
@@ -113,8 +110,6 @@ example, if <code>java.home</code> system property is set to
 
       PropertyConfigurator();
       virtual ~PropertyConfigurator();
-      void addRef() const;
-      void releaseRef() const;
 
 /**
 Read configuration from a file. <b>The existing configuration is

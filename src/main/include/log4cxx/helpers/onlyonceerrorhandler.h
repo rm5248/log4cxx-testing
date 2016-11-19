@@ -19,7 +19,6 @@
 #define _LOG4CXX_HELPERS_ONLY_ONCE_ERROR_HANDLER_H
 
 #include <log4cxx/spi/errorhandler.h>
-#include <log4cxx/helpers/objectimpl.h>
 
 namespace log4cxx
 {
@@ -52,8 +51,6 @@ namespace log4cxx
                         END_LOG4CXX_CAST_MAP()
 
                         OnlyOnceErrorHandler();
-                        void addRef() const;
-                        void releaseRef() const;
 
                         /**
                          Does not do anything.

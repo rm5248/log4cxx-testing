@@ -25,7 +25,6 @@
 
 
 #include <log4cxx/spi/optionhandler.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/helpers/object.h>
 #include <vector>
 
@@ -36,17 +35,17 @@ namespace log4cxx
     namespace spi
         {
         class LoggingEvent;
-        typedef helpers::ObjectPtrT<LoggingEvent> LoggingEventPtr;
+        typedef log4cxx::ptr::shared_ptr<LoggingEvent> LoggingEventPtr;
 
         class Filter;
-        typedef helpers::ObjectPtrT<Filter> FilterPtr;
+        typedef log4cxx::ptr::shared_ptr<Filter> FilterPtr;
 
         class ErrorHandler;
-                typedef log4cxx::helpers::ObjectPtrT<ErrorHandler> ErrorHandlerPtr;
+                typedef log4cxx::ptr::shared_ptr<ErrorHandler> ErrorHandlerPtr;
     }
 
     class Layout;
-    typedef log4cxx::helpers::ObjectPtrT<Layout> LayoutPtr;
+    typedef log4cxx::ptr::shared_ptr<Layout> LayoutPtr;
 
 
         /**

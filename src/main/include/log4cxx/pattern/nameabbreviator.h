@@ -19,8 +19,6 @@
 #define _LOG4CXX_PATTERN_NAME_ABBREVIATOR
 
 #include <log4cxx/logstring.h>
-#include <log4cxx/helpers/objectptr.h>
-#include <log4cxx/helpers/objectimpl.h>
 
 namespace log4cxx {
   namespace pattern {

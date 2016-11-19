@@ -23,9 +23,7 @@
 #pragma warning ( disable: 4231 4251 4275 4786 )
 #endif
 
-
 #include <log4cxx/helpers/object.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <vector>
 
 namespace log4cxx
@@ -45,12 +43,12 @@ namespace log4cxx
                         virtual ~HierarchyEventListener() {}
 
                         virtual void addAppenderEvent(
-                     const log4cxx::helpers::ObjectPtrT<Logger>& logger, 
-                     const log4cxx::helpers::ObjectPtrT<Appender>& appender) = 0;
+                     const log4cxx::ptr::shared_ptr<Logger>& logger, 
+                     const log4cxx::ptr::shared_ptr<Appender>& appender) = 0;
 
                         virtual void removeAppenderEvent(
-                     const log4cxx::helpers::ObjectPtrT<Logger>& logger, 
-                     const log4cxx::helpers::ObjectPtrT<Appender>& appender) = 0;
+                     const log4cxx::ptr::shared_ptr<Logger>& logger, 
+                     const log4cxx::ptr::shared_ptr<Appender>& appender) = 0;
                 };
                 LOG4CXX_PTR_DEF(HierarchyEventListener);
                 LOG4CXX_LIST_DEF(HierarchyEventListenerList, HierarchyEventListenerPtr);

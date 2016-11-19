@@ -33,15 +33,6 @@ AppenderAttachableImpl::AppenderAttachableImpl(Pool& pool)
      mutex(pool) {
 }
 
-void AppenderAttachableImpl::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void AppenderAttachableImpl::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
-
 void AppenderAttachableImpl::addAppender(const AppenderPtr& newAppender)
 {
     // Null values for newAppender parameter are strictly forbidden.

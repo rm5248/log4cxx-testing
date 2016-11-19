@@ -28,7 +28,6 @@
 #include <vector>
 #include <map>
 #include <log4cxx/provisionnode.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/spi/hierarchyeventlistener.h>
 #include <log4cxx/helpers/pool.h>
 
@@ -90,9 +89,6 @@ namespace log4cxx
             Hierarchy();
 
             ~Hierarchy();
-
-            void addRef() const;
-            void releaseRef() const;
 
             void addHierarchyEventListener(const spi::HierarchyEventListenerPtr& listener);
 

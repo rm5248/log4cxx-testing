@@ -58,7 +58,7 @@ namespace log4cxx
     */
     class LOG4CXX_EXPORT Logger :
                 public virtual log4cxx::spi::AppenderAttachable,
-                public virtual helpers::ObjectImpl
+                public virtual helpers::Object
     {
     public:
         DECLARE_ABSTRACT_LOG4CXX_OBJECT(Logger)
@@ -129,9 +129,6 @@ namespace log4cxx
     public:
         ~Logger();
 
-
-        void addRef() const;
-        void releaseRef() const;
 
         /**
         Add <code>newAppender</code> to the list of appenders of this

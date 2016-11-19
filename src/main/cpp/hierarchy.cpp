@@ -75,14 +75,6 @@ Hierarchy::~Hierarchy()
 #endif
 }
 
-void Hierarchy::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void Hierarchy::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
 void Hierarchy::addHierarchyEventListener(const spi::HierarchyEventListenerPtr& listener)
 {
         synchronized sync(mutex);

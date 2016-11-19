@@ -42,14 +42,6 @@ RollingPolicyBase::RollingPolicyBase() {
 RollingPolicyBase::~RollingPolicyBase() {
 }
 
-void RollingPolicyBase::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void RollingPolicyBase::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
 void RollingPolicyBase::activateOptions(log4cxx::helpers::Pool& /* pool */) {
   if (fileNamePatternStr.length() > 0) {
     parseFileNamePattern();

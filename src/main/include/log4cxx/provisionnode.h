@@ -19,14 +19,11 @@
 #define _LOG4CXX_PROVISION_NODE_H
 
 #include <vector>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/logger.h>
 
 namespace log4cxx
 {
     class Logger;
-    typedef helpers::ObjectPtrT<Logger> LoggerPtr;
-
     
     typedef std::vector<LoggerPtr> ProvisionNode;
 

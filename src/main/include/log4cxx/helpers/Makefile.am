@@ -51,9 +51,7 @@ helpersinc_HEADERS= \
     messagebuffer.h \
     mutex.h \
     object.h \
-    objectimpl.h \
     objectoutputstream.h \
-    objectptr.h \
     onlyonceerrorhandler.h \
     optionconverter.h \
     outputstream.h \

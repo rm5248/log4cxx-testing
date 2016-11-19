@@ -25,7 +25,6 @@
 
 
 #include <log4cxx/spi/appenderattachable.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/helpers/mutex.h>
 #include <log4cxx/helpers/pool.h>
 
@@ -34,7 +33,7 @@ namespace log4cxx
     namespace spi
     {
         class LoggingEvent;
-        typedef helpers::ObjectPtrT<LoggingEvent> LoggingEventPtr;
+        typedef log4cxx::ptr::shared_ptr<LoggingEvent> LoggingEventPtr;
     }
 
     namespace helpers
@@ -42,7 +41,7 @@ namespace log4cxx
 
         class LOG4CXX_EXPORT AppenderAttachableImpl :
             public virtual spi::AppenderAttachable,
-            public virtual helpers::ObjectImpl
+            public virtual helpers::Object
         {
         protected:
             /** Array of appenders. */

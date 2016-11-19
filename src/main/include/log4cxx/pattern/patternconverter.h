@@ -18,8 +18,6 @@
 #ifndef _LOG4CXX_PATTERN_PATTERN_CONVERTER_H
 #define _LOG4CXX_PATTERN_PATTERN_CONVERTER_H
 
-
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/logstring.h>
 #include <vector>
 

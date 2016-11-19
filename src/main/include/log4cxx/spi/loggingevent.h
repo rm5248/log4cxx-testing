@@ -23,9 +23,6 @@
 #pragma warning ( disable: 4231 4251 4275 4786 )
 #endif
 
-
-
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/logstring.h>
 #include <time.h>
 #include <log4cxx/logger.h>
@@ -54,7 +51,7 @@ namespace log4cxx
                 <p>This class is of concern to those wishing to extend log4cxx.
                 */
                 class LOG4CXX_EXPORT LoggingEvent :
-                        public virtual helpers::ObjectImpl
+                        public virtual helpers::Object
                 {
                 public:
                         DECLARE_LOG4CXX_OBJECT(LoggingEvent)
@@ -252,8 +249,7 @@ namespace log4cxx
                        
                 };
 
-                LOG4CXX_PTR_DEF(LoggingEvent);
-                LOG4CXX_LIST_DEF(LoggingEventList, LoggingEventPtr);
+                LOG4CXX_LIST_DEF(LoggingEventList, log4cxx::ptr<LoggingEvent>);
         }
 }
 

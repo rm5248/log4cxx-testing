@@ -18,8 +18,6 @@
 #ifndef _LOG4CXX_HELPER_FORMATTING_INFO_H
 #define _LOG4CXX_HELPER_FORMATTING_INFO_H
 
-
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/logstring.h>
 
 namespace log4cxx {

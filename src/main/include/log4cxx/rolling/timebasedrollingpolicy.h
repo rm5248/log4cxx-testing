@@ -208,8 +208,6 @@ namespace log4cxx {
 
         public:
             TimeBasedRollingPolicy();
-            void addRef() const;
-            void releaseRef() const;
             void activateOptions(log4cxx::helpers::Pool& );
 
 #ifdef LOG4CXX_MULTI_PROCESS

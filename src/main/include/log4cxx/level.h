@@ -21,9 +21,6 @@
 
 #include <log4cxx/logstring.h>
 #include <limits.h>
-#include <log4cxx/helpers/objectimpl.h>
-#include <log4cxx/helpers/objectptr.h>
-
 
 namespace log4cxx
 {
@@ -36,7 +33,7 @@ namespace log4cxx
 	 * https://issues.apache.org/jira/browse/LOGCXX-394
 	 */
 	class Level;
-	typedef log4cxx::helpers::ObjectPtrT<Level> LevelPtr;
+	typedef log4cxx::ptr::shared_ptr<Level> LevelPtr;
 
         /**
         Defines the minimum set of levels recognized by the system, that is
@@ -46,7 +43,7 @@ namespace log4cxx
         <p>The <code>Level</code> class may be subclassed to define a larger
         level set.
         */
-        class LOG4CXX_EXPORT Level : public helpers::ObjectImpl
+        class LOG4CXX_EXPORT Level : public helpers::Object
         {
         public:
                 class LOG4CXX_EXPORT LevelClass : public helpers::Class
@@ -276,6 +273,8 @@ namespace log4cxx
 	 *
 	 * https://issues.apache.org/jira/browse/LOGCXX-394
 	 */
+//ROBERT
+#if 0 
 	namespace helpers {
 
 	/** @class log4cxx::helpers::ObjectPtr */
@@ -293,6 +292,7 @@ namespace log4cxx
 	#endif
 
 	}
+#endif 
 
 }
 

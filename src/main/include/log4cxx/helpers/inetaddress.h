@@ -23,10 +23,6 @@
 #pragma warning ( disable: 4231 4251 4275 4786 )
 #endif
 
-
-
-#include <log4cxx/helpers/objectimpl.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/logstring.h>
 #include <vector>
 #include <log4cxx/helpers/exception.h>

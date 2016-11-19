@@ -53,14 +53,6 @@ Logger::~Logger()
 {
 }
 
-void Logger::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void Logger::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
 void Logger::addAppender(const AppenderPtr& newAppender)
 {
    log4cxx::spi::LoggerRepository* rep = 0;

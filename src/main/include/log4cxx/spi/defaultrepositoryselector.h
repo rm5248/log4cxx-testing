@@ -19,7 +19,6 @@
 #define _LOG4CXX_SPI_DEFAULT_REPOSITORY_SELECTOR_H
 
 #include <log4cxx/spi/repositoryselector.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/spi/loggerrepository.h>
 
 namespace log4cxx
@@ -37,8 +36,6 @@ namespace log4cxx
                         END_LOG4CXX_CAST_MAP()
 
                         DefaultRepositorySelector(const LoggerRepositoryPtr& repository1);
-                        void addRef() const;
-                        void releaseRef() const;
                         virtual LoggerRepositoryPtr& getLoggerRepository();
 
                 private:

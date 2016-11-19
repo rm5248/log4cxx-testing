@@ -20,7 +20,6 @@
 
 #include <log4cxx/logstring.h>
 #include <log4cxx/helpers/class.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/helpers/classregistration.h>
 
 
@@ -45,9 +44,9 @@ public:\
         Clazz##object() : helpers::Class() {}\
         virtual ~Clazz##object() {}\
         virtual log4cxx::LogString getName() const { return LOG4CXX_STR(#object); } \
-        virtual helpers::ObjectPtr newInstance() const\
+        virtual log4cxx::ptr::shared_ptr<object> newInstance() const\
         {\
-                return new object();\
+                return log4cxx::ptr::shared_ptr<object>(new object());\
         }\
 };\
 virtual const helpers::Class& getClass() const;\
@@ -104,12 +103,10 @@ namespace log4cxx
                 public:
                         DECLARE_ABSTRACT_LOG4CXX_OBJECT(Object)
                         virtual ~Object() {}
-                        virtual void addRef() const = 0;
-                        virtual void releaseRef() const = 0;
                         virtual bool instanceof(const Class& clazz) const = 0;
                         virtual const void * cast(const Class& clazz) const = 0;
                 };
-            LOG4CXX_PTR_DEF(Object);
+             LOG4CXX_PTR_DEF(Object);
         }
 }
 

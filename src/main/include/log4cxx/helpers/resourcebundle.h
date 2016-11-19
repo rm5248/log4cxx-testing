@@ -18,9 +18,6 @@
 #ifndef _LOG4CXX_HELPERS_RESOURCE_BUNDLE_H
 #define _LOG4CXX_HELPERS_RESOURCE_BUNDLE_H
 
-#include <log4cxx/helpers/objectimpl.h>
-#include <log4cxx/helpers/objectptr.h>
-
 namespace log4cxx
 {
         namespace helpers
@@ -33,7 +30,7 @@ namespace log4cxx
                 /**
                 Resource bundles contain locale-specific objects
                 */
-                class LOG4CXX_EXPORT ResourceBundle : public ObjectImpl
+                class LOG4CXX_EXPORT ResourceBundle : public Object
                 {
                 public:
                         DECLARE_ABSTRACT_LOG4CXX_OBJECT(ResourceBundle)

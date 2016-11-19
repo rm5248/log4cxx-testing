@@ -18,9 +18,6 @@
 #ifndef _LOG4CXX_HELPERS_INTEGER_H
 #define _LOG4CXX_HELPERS_INTEGER_H
 
-#include <log4cxx/helpers/objectimpl.h>
-
-
 namespace log4cxx {
    namespace helpers {
       class LOG4CXX_EXPORT Integer : public ObjectImpl {

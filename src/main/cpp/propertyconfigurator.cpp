@@ -88,14 +88,6 @@ PropertyConfigurator::~PropertyConfigurator() {
     delete registry;
 }
 
-void PropertyConfigurator::addRef() const {
-   ObjectImpl::addRef();
-}
-
-void PropertyConfigurator::releaseRef() const {
-   ObjectImpl::releaseRef();
-}
-
 void PropertyConfigurator::doConfigure(const File& configFileName,
         spi::LoggerRepositoryPtr& hierarchy)
 {

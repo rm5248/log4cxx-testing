@@ -117,14 +117,6 @@ DOMConfigurator::DOMConfigurator()
    : props(), repository() {
 }
 
-void DOMConfigurator::addRef() const {
-   ObjectImpl::addRef();
-}
-
-void DOMConfigurator::releaseRef() const {
-   ObjectImpl::releaseRef();
-}
-
 /**
 Used internally to parse appenders by IDREF name.
 */

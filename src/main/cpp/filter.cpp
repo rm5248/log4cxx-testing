@@ -25,14 +25,6 @@ using namespace log4cxx::helpers;
 Filter::Filter() : next() {
 }
 
-void Filter::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void Filter::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
 FilterPtr Filter::getNext() const {
    return next;
 }

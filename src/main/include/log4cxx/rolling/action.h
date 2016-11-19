@@ -19,9 +19,9 @@
 #define _LOG4CXX_ROLLING_ACTION_H
 
 #include <log4cxx/portability.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/helpers/mutex.h>
 #include <log4cxx/helpers/pool.h>
+#include <log4cxx/helpers/object.h>
 
 namespace log4cxx {
     namespace rolling {
@@ -30,7 +30,7 @@ namespace log4cxx {
         /**
          *  A file system action performed as part of a rollover event.
          */
-        class Action : public virtual log4cxx::helpers::ObjectImpl {
+        class Action : public virtual log4cxx::helpers::Object {
           DECLARE_ABSTRACT_LOG4CXX_OBJECT(Action)
           BEGIN_LOG4CXX_CAST_MAP()
                   LOG4CXX_CAST_ENTRY(Action)
@@ -78,8 +78,6 @@ namespace log4cxx {
 
 
         };
-
-        LOG4CXX_PTR_DEF(Action);
 
     }
 }

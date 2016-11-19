@@ -19,15 +19,12 @@
 #define _LOG4CXX_CONFIG_PROPERTYSETTER_H
 
 #include <log4cxx/logstring.h>
-#include <log4cxx/helpers/objectptr.h>
 
 namespace log4cxx
 {
         namespace helpers
         {
                 class Object;
-                typedef ObjectPtrT<Object> ObjectPtr;
-
                 class Properties;
                 class Pool;
         }
@@ -53,7 +50,7 @@ namespace log4cxx
                 class LOG4CXX_EXPORT PropertySetter
                 {
                 protected:
-                        helpers::ObjectPtr obj;
+                        log4cxx::ptr<helpers::Object> obj;
 
                 public:
                         /**
@@ -62,7 +59,7 @@ namespace log4cxx
 
                         @param obj  the object for which to set properties
                         */
-                        PropertySetter(const helpers::ObjectPtr& obj);
+                        PropertySetter(const log4cxx::ptr<helpers::Object> obj);
 
                         /**
                         Set the properties of an object passed as a parameter in one
@@ -74,7 +71,7 @@ namespace log4cxx
                         @param prefix Only keys having the specified prefix will be set.
                         @param p pool to use for any allocations required during call.
                         */
-                        static void setProperties(const helpers::ObjectPtr& obj,
+                        static void setProperties(const log4cxx::ptr<helpers::Object> obj,
                                 helpers::Properties& properties,
                                 const LogString& prefix,
                                 log4cxx::helpers::Pool& p);

@@ -19,7 +19,6 @@
 #define _LOG4CXX_VARIA_FALLBACK_ERROR_HANDLER_H
 
 #include <log4cxx/spi/errorhandler.h>
-#include <log4cxx/helpers/objectimpl.h>
 #include <log4cxx/appender.h>
 #include <log4cxx/logger.h>
 #include <vector>
@@ -54,8 +53,6 @@ namespace log4cxx
                         END_LOG4CXX_CAST_MAP()
 
                         FallbackErrorHandler();
-                        void addRef() const;
-                        void releaseRef() const;
 
 
                         /**

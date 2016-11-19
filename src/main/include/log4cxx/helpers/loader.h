@@ -18,11 +18,9 @@
 #ifndef _LOG4CXX_HELPERS_LOADER_H
 #define _LOG4CXX_HELPERS_LOADER_H
 
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/logstring.h>
 #include <log4cxx/helpers/exception.h>
 #include <log4cxx/helpers/inputstream.h>
-
 
 namespace log4cxx
 {

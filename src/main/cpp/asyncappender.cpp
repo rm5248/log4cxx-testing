@@ -65,14 +65,6 @@ AsyncAppender::~AsyncAppender()
         delete discardMap;
 }
 
-void AsyncAppender::addRef() const {
-    ObjectImpl::addRef();
-}
-
-void AsyncAppender::releaseRef() const {
-    ObjectImpl::releaseRef();
-}
-
 void AsyncAppender::addAppender(const AppenderPtr& newAppender)
 {
         synchronized sync(appenders->getMutex());

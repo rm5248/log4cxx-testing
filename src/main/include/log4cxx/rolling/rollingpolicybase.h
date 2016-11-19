@@ -75,8 +75,6 @@ namespace log4cxx {
           public:
           RollingPolicyBase();
           virtual ~RollingPolicyBase();
-          void addRef() const;
-          void releaseRef() const;
           virtual void activateOptions(log4cxx::helpers::Pool& p) = 0;
           virtual log4cxx::pattern::PatternMap getFormatSpecifiers() const = 0;
 

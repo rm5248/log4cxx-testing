@@ -19,18 +19,15 @@
 #define _LOG4CXX_HELPER_OPTION_CONVERTER_H
 
 #include <log4cxx/logstring.h>
-#include <log4cxx/helpers/objectptr.h>
 
 namespace log4cxx
 {
         class Level;
         class File;
-        typedef helpers::ObjectPtrT<Level> LevelPtr;
 
         namespace spi
         {
                 class LoggerRepository;
-                typedef helpers::ObjectPtrT<LoggerRepository> LoggerRepositoryPtr;
         }
 
         namespace helpers
@@ -38,7 +35,6 @@ namespace log4cxx
                 class Properties;
 
                 class Object;
-                typedef ObjectPtrT<Object> ObjectPtr;
 
                 class Class;
 
@@ -64,7 +60,7 @@ namespace log4cxx
                         static int toInt(const LogString& value, int dEfault);
                         static long toFileSize(const LogString& value, long dEfault);
                         static LevelPtr toLevel(const LogString& value,
-                                const LevelPtr& defaultValue);
+                                const LevelPtr defaultValue);
 
                         /**
                 Find the value corresponding to <code>key</code> in

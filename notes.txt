@@ -1,0 +1,1 @@
+have run into the following problem: http://stackoverflow.com/questions/196733/how-can-i-use-covariant-return-types-with-smart-pointers

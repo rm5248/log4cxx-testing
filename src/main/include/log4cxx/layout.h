@@ -23,12 +23,8 @@
 #pragma warning ( disable: 4231 4251 4275 4786 )
 #endif
 
-
-#include <log4cxx/helpers/objectimpl.h>
-#include <log4cxx/helpers/objectptr.h>
 #include <log4cxx/spi/optionhandler.h>
 #include <log4cxx/spi/loggingevent.h>
-
 
 namespace log4cxx
 {
@@ -47,9 +43,6 @@ namespace log4cxx
                 END_LOG4CXX_CAST_MAP()
     
                 virtual ~Layout();
-                void addRef() const;
-                void releaseRef() const;
-
 
                 /**
                 Implement this method to create your own layout format.
