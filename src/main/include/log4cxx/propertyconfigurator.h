@@ -32,10 +32,10 @@
 namespace log4cxx
 {
    class Logger;
-   typedef helpers::ObjectPtrT<Logger> LoggerPtr;
+   typedef log4cxx::ptr::shared_ptr<Logger> LoggerPtr;
 
    class Appender;
-   typedef helpers::ObjectPtrT<Appender> AppenderPtr;
+   typedef log4cxx::ptr::shared_ptr<Appender> AppenderPtr;
 
    namespace helpers
    {
@@ -88,7 +88,7 @@ example, if <code>java.home</code> system property is set to
 */
    class LOG4CXX_EXPORT PropertyConfigurator :
       virtual public spi::Configurator,
-      virtual public helpers::ObjectImpl
+      virtual public helpers::Object
    {
    protected:
 
@@ -100,7 +100,7 @@ example, if <code>java.home</code> system property is set to
       /**
       Used to create new instances of logger
       */
-        helpers::ObjectPtrT<spi::LoggerFactory> loggerFactory;
+        log4cxx::ptr::shared_ptr<spi::LoggerFactory> loggerFactory;
 
    public:
       DECLARE_LOG4CXX_OBJECT(PropertyConfigurator)

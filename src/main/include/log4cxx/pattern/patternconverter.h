@@ -18,6 +18,7 @@
 #ifndef _LOG4CXX_PATTERN_PATTERN_CONVERTER_H
 #define _LOG4CXX_PATTERN_PATTERN_CONVERTER_H
 
+#include <log4cxx/helpers/object.h>
 #include <log4cxx/logstring.h>
 #include <vector>
 
@@ -43,7 +44,7 @@ namespace log4cxx {
    converting an object in a converter specific manner.
 
  */
-class LOG4CXX_EXPORT PatternConverter : public virtual log4cxx::helpers::ObjectImpl {
+class LOG4CXX_EXPORT PatternConverter : public virtual log4cxx::helpers::Object {
 
   /**
    * Converter name.

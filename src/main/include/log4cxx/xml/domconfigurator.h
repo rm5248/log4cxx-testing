@@ -68,7 +68,7 @@ namespace log4cxx
               */
                 class LOG4CXX_EXPORT DOMConfigurator :
                         virtual public spi::Configurator,
-                        virtual public helpers::ObjectImpl
+                        virtual public helpers::Object
                 {
                 protected:
                         typedef std::map<LogString, AppenderPtr> AppenderMap;

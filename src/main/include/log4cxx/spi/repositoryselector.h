@@ -25,6 +25,7 @@ namespace log4cxx
         namespace spi
         {
                 class LoggerRepository;
+                typedef log4cxx::ptr::shared_ptr<LoggerRepository> LoggerRepositoryPtr;
 
        /**
        The <code>LogManager</code> uses one (and only one)
@@ -45,6 +46,7 @@ namespace log4cxx
                         virtual ~RepositorySelector() {}
                         virtual LoggerRepositoryPtr& getLoggerRepository() = 0;
                 };
+            LOG4CXX_PTR_DEF(RepositorySelector);
         }  //namespace spi
 } //namespace log4cxx
 

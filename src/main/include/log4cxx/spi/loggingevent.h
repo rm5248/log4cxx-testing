@@ -249,7 +249,8 @@ namespace log4cxx
                        
                 };
 
-                LOG4CXX_LIST_DEF(LoggingEventList, log4cxx::ptr<LoggingEvent>);
+                LOG4CXX_PTR_DEF(LoggingEvent);
+                LOG4CXX_LIST_DEF(LoggingEventList, LoggingEventPtr);
         }
 }
 

@@ -46,7 +46,7 @@ namespace log4cxx {
          */
         class LOG4CXX_EXPORT RollingPolicyBase :
            public virtual RollingPolicy,
-           public virtual helpers::ObjectImpl {
+           public virtual helpers::Object {
         protected:
           DECLARE_ABSTRACT_LOG4CXX_OBJECT(RollingPolicyBase)
           BEGIN_LOG4CXX_CAST_MAP()

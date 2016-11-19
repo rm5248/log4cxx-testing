@@ -78,6 +78,7 @@ namespace log4cxx {
 
 
         };
+       LOG4CXX_PTR_DEF(Action);
 
     }
 }

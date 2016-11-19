@@ -36,7 +36,7 @@ namespace log4cxx
                 */
                 class LOG4CXX_EXPORT OnlyOnceErrorHandler :
                         public virtual spi::ErrorHandler,
-                        public virtual ObjectImpl
+                        public virtual Object
                 {
                 private:
                         LogString WARN_PREFIX;

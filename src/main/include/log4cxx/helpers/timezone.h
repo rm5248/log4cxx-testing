@@ -18,6 +18,7 @@
 #ifndef _LOG4CXX_HELPERS_TIMEZONE_H
 #define _LOG4CXX_HELPERS_TIMEZONE_H
 
+#include <log4cxx/helpers/object.h>
 #include <log4cxx/logstring.h>
 
 struct apr_time_exp_t;
@@ -29,7 +30,7 @@ namespace log4cxx
       class TimeZone;
       LOG4CXX_PTR_DEF(TimeZone);
 
-      class LOG4CXX_EXPORT TimeZone : public helpers::ObjectImpl
+      class LOG4CXX_EXPORT TimeZone : public helpers::Object
       {
       public:
          DECLARE_ABSTRACT_LOG4CXX_OBJECT(TimeZone)

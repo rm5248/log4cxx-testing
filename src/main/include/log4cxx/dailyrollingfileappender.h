@@ -36,7 +36,7 @@ namespace log4cxx {
 
   namespace spi {
     class ErrorHandler;
-    typedef log4cxx::helpers::ObjectPtrT<ErrorHandler> ErrorHandlerPtr;
+    typedef log4cxx::ptr::shared_ptr<ErrorHandler> ErrorHandlerPtr;
   }
 
 

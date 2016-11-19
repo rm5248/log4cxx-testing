@@ -30,12 +30,12 @@
 namespace log4cxx
 {
     class Logger;
-    typedef helpers::ObjectPtrT<Logger> LoggerPtr;
+    typedef log4cxx::ptr::shared_ptr<Logger> LoggerPtr;
     typedef std::vector<LoggerPtr> LoggerList;
 
     namespace spi {
         class LoggerFactory;
-        typedef helpers::ObjectPtrT<LoggerFactory> LoggerFactoryPtr;
+        typedef log4cxx::ptr::shared_ptr<LoggerFactory> LoggerFactoryPtr;
     }
 
     /**

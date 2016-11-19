@@ -44,9 +44,9 @@ public:\
         Clazz##object() : helpers::Class() {}\
         virtual ~Clazz##object() {}\
         virtual log4cxx::LogString getName() const { return LOG4CXX_STR(#object); } \
-        virtual log4cxx::ptr::shared_ptr<object> newInstance() const\
+        virtual object* newInstance() const\
         {\
-                return log4cxx::ptr::shared_ptr<object>(new object());\
+                return new object();\
         }\
 };\
 virtual const helpers::Class& getClass() const;\

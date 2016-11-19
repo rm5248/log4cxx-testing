@@ -28,7 +28,7 @@ namespace log4cxx
           /**
           *   Abstract class for writing to character streams.
           */
-          class LOG4CXX_EXPORT Writer : public ObjectImpl
+          class LOG4CXX_EXPORT Writer : public Object
           {
           public:
                   DECLARE_ABSTRACT_LOG4CXX_OBJECT(Writer)

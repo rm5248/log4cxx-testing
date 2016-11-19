@@ -184,8 +184,8 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
     LogLog::debug(LOG4CXX_STR("Class name: [") + className+LOG4CXX_STR("]"));
     try
         {
-                ObjectPtr instance = Loader::loadClass(className).newInstance();
-                AppenderPtr appender = instance;
+                Object* instance = Loader::loadClass(className).newInstance();
+                AppenderPtr appender( dynamic_cast<Appender*>(instance) );
                 PropertySetter propSetter(appender);
 
                 appender->setName(subst(getAttribute(utf8Decoder, appenderElement, NAME_ATTR)));
@@ -224,7 +224,7 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                 else if (tagName == ROLLING_POLICY_TAG)
                                 {
                                         RollingPolicyPtr rollPolicy(parseRollingPolicy(p, utf8Decoder, currentElement));
-                                        RollingFileAppenderPtr rfa(appender);
+                                        RollingFileAppender* rfa = dynamic_cast<RollingFileAppender*>(appender.get());
                                         if (rfa != NULL) {
                                            rfa->setRollingPolicy(rollPolicy);
                                         }
@@ -232,9 +232,10 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                 else if (tagName == TRIGGERING_POLICY_TAG)
                                 {
                                         ObjectPtr policy(parseTriggeringPolicy(p, utf8Decoder, currentElement));
-                                        RollingFileAppenderPtr rfa(appender);
+                                        RollingFileAppender* rfa = dynamic_cast<RollingFileAppender*>(appender.get());
                                         if (rfa != NULL) {
-                                           rfa->setTriggeringPolicy(policy);
+						TriggeringPolicy* trigPolicy = dynamic_cast<TriggeringPolicy*>(policy.get());
+                                           rfa->setTriggeringPolicy(trigPolicy);
                                         } else {
                                             log4cxx::net::SMTPAppenderPtr smtpa(appender);
                                             if (smtpa != NULL) {
@@ -248,7 +249,7 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                         LogString refName = subst(getAttribute(utf8Decoder, currentElement, REF_ATTR));
                                         if(appender->instanceof(AppenderAttachable::getStaticClass()))
                                         {
-                                                AppenderAttachablePtr aa(appender);
+                                                AppenderAttachable* aa = dynamic_cast<AppenderAttachable*>(appender.get());
                                                 LogLog::debug(LOG4CXX_STR("Attaching appender named [")+
                                                         refName+LOG4CXX_STR("] to appender named [")+
                                                         appender->getName()+LOG4CXX_STR("]."));

@@ -37,7 +37,7 @@ namespace log4cxx
                 {
                 public:
                         virtual ~Class();
-                        virtual log4cxx::ptr::shared_ptr<Object> newInstance() const;
+                        virtual Object* newInstance() const;
                         LogString toString() const;
                         virtual LogString getName() const = 0;
                         static const Class& forName(const LogString& className);

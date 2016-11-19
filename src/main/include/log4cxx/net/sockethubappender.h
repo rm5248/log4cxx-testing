@@ -34,7 +34,7 @@ namespace log4cxx
 {
         namespace helpers {
                 class ObjectOutputStream;
-                typedef ObjectPtrT<ObjectOutputStream> ObjectOutputStreamPtr;
+                typedef log4cxx::ptr::shared_ptr<ObjectOutputStream> ObjectOutputStreamPtr;
         }
         namespace net
         {

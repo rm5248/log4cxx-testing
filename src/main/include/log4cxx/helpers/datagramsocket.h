@@ -30,7 +30,7 @@ namespace log4cxx
         {
                 /** This class represents a socket for sending and receiving
                 datagram packets.*/
-                class LOG4CXX_EXPORT DatagramSocket : public helpers::ObjectImpl
+                class LOG4CXX_EXPORT DatagramSocket : public helpers::Object
                 {
                 public:
                         DECLARE_ABSTRACT_LOG4CXX_OBJECT(DatagramSocket)

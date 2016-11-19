@@ -39,8 +39,8 @@
                 private:
                         LogString syslogHost;
                         int syslogHostPort;
-                        log4cxx::ptr<InetAddress> address;
-                        log4cxx::ptr<DatagramSocket> ds;
+                        InetAddressPtr address;
+                        DatagramSocketPtr ds;
                 };
         }  // namespace helpers
 } // namespace log4cxx

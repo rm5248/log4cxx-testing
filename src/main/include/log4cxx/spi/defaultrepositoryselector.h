@@ -27,7 +27,7 @@ namespace log4cxx
         {
                 class LOG4CXX_EXPORT DefaultRepositorySelector :
                         public virtual RepositorySelector,
-                        public virtual helpers::ObjectImpl
+                        public virtual helpers::Object
                 {
                 public:
                         DECLARE_ABSTRACT_LOG4CXX_OBJECT(DefaultRepositorySelector)

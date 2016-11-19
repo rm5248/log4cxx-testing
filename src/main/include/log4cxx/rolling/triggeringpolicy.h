@@ -40,7 +40,7 @@ namespace log4cxx {
 
         class LOG4CXX_EXPORT TriggeringPolicy :
               public virtual spi::OptionHandler,
-              public virtual helpers::ObjectImpl {
+              public virtual helpers::Object {
               DECLARE_ABSTRACT_LOG4CXX_OBJECT(TriggeringPolicy)
               BEGIN_LOG4CXX_CAST_MAP()
                       LOG4CXX_CAST_ENTRY(TriggeringPolicy)

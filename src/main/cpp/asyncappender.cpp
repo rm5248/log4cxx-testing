@@ -296,11 +296,11 @@ LoggingEventPtr AsyncAppender::DiscardSummary::createEvent(Pool& p) {
     StringHelper::toString(count, p, msg);
     msg.append(LOG4CXX_STR(" messages due to a full event buffer including: "));
     msg.append(maxEvent->getMessage()); 
-    return new LoggingEvent(   
+    return LoggingEventPtr(new LoggingEvent(   
               maxEvent->getLoggerName(),
               maxEvent->getLevel(),
               msg,
-              LocationInfo::getLocationUnavailable());
+              LocationInfo::getLocationUnavailable()));
 }
 
 

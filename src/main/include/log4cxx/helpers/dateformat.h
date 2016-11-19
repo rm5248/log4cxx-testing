@@ -18,8 +18,8 @@
 #ifndef _LOG4CXX_HELPERS_DATE_FORMAT_H
 #define _LOG4CXX_HELPERS_DATE_FORMAT_H
 
+#include <log4cxx/helpers/object.h>
 #include <log4cxx/helpers/timezone.h>
-
 
 namespace log4cxx
 {
@@ -30,7 +30,7 @@ namespace log4cxx
                 *  DateFormat is an abstract class for date/time formatting
                 * patterned after java.text.DateFormat.
                 */
-                class LOG4CXX_EXPORT DateFormat : public ObjectImpl {
+                class LOG4CXX_EXPORT DateFormat : public Object {
                    public:
                    DECLARE_ABSTRACT_LOG4CXX_OBJECT(DateFormat)
                    BEGIN_LOG4CXX_CAST_MAP()

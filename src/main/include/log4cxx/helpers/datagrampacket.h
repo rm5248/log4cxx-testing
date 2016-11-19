@@ -32,7 +32,7 @@ namespace log4cxx
                 packets sent from one machine to another might be routed differently,
                 and might arrive in any order.
                 */
-                class LOG4CXX_EXPORT DatagramPacket : public helpers::ObjectImpl
+                class LOG4CXX_EXPORT DatagramPacket : public helpers::Object
                 {
                 protected:
                         /** the data for this packet. */

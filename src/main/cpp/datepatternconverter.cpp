@@ -49,34 +49,34 @@ DateFormatPtr DatePatternConverter::getDateFormat(const OptionsList& options) {
   DateFormatPtr df;
   int maximumCacheValidity = 1000000;
   if (options.size() == 0) {
-      df = new ISO8601DateFormat();
+      df.reset( new ISO8601DateFormat() );
   } else {
      LogString dateFormatStr(options[0]);
 
      if(dateFormatStr.empty() ||
           StringHelper::equalsIgnoreCase(dateFormatStr,
           LOG4CXX_STR("ISO8601"), LOG4CXX_STR("iso8601"))) {
-          df = new ISO8601DateFormat();
+          df.reset( new ISO8601DateFormat() );
      } else if(StringHelper::equalsIgnoreCase(dateFormatStr,
           LOG4CXX_STR("ABSOLUTE"), LOG4CXX_STR("absolute"))) {
-          df = new AbsoluteTimeDateFormat();
+          df.reset( new AbsoluteTimeDateFormat() );
      } else if(StringHelper::equalsIgnoreCase(dateFormatStr,
           LOG4CXX_STR("DATE"), LOG4CXX_STR("date"))) {
-          df = new DateTimeDateFormat();
+          df.reset( new DateTimeDateFormat() );
      } else {
        if (dateFormatStr.find(0x25 /*'%'*/) == std::string::npos) {
           try {
-             df = new SimpleDateFormat(dateFormatStr);
+             df.reset( new SimpleDateFormat(dateFormatStr) );
              maximumCacheValidity =
                 CachedDateFormat::getMaximumCacheValidity(dateFormatStr);
           } catch(IllegalArgumentException& e) {
-             df = new ISO8601DateFormat();
+             df.reset( new ISO8601DateFormat() );
              LogLog::warn(((LogString)
                 LOG4CXX_STR("Could not instantiate SimpleDateFormat with pattern "))
                    + dateFormatStr, e);
           }
        } else {
-          df = new StrftimeDateFormat(dateFormatStr);
+          df.reset( new StrftimeDateFormat(dateFormatStr) );
        }
      }
      if (options.size() >= 2) {
@@ -87,14 +87,14 @@ DateFormatPtr DatePatternConverter::getDateFormat(const OptionsList& options) {
      }
   }
   if (maximumCacheValidity > 0) {
-      df = new CachedDateFormat(df, maximumCacheValidity);
+      df.reset( new CachedDateFormat(df, maximumCacheValidity) );
   }
   return df;
 }
 
 PatternConverterPtr DatePatternConverter::newInstance(
    const std::vector<LogString>& options) {
-   return new DatePatternConverter(options);
+   return PatternConverterPtr( new DatePatternConverter(options) );
 }
 
 void DatePatternConverter::format(
@@ -111,11 +111,13 @@ void DatePatternConverter::format(
     const ObjectPtr& obj,
     LogString& toAppendTo,
     Pool& p) const {
-    DatePtr date(obj);
-    if (date != NULL) {
+    Date* dt = dynamic_cast<Date*>(obj.get());
+    if (dt != NULL) {
+      DatePtr date(dt);
       format(date, toAppendTo, p);
     } else {
-      LoggingEventPtr event(obj);
+      LoggingEvent* log = dynamic_cast<LoggingEvent*>(obj.get());
+      LoggingEventPtr event(log);
       if (event != NULL) {
           format(event, toAppendTo, p);
       }

@@ -25,7 +25,7 @@
 namespace log4cxx
 {
    class Appender;
-   typedef helpers::ObjectPtrT<Appender> AppenderPtr;
+   typedef log4cxx::ptr::shared_ptr<Appender> AppenderPtr;
 
    /**
    Use this class to quickly configure the package.

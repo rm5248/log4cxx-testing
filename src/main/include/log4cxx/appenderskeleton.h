@@ -43,7 +43,7 @@ namespace log4cxx
         * */
         class LOG4CXX_EXPORT AppenderSkeleton :
                 public virtual Appender,
-                public virtual helpers::ObjectImpl
+                public virtual helpers::Object
         {
         protected:
                 /** The layout variable does not need to be set if the appender

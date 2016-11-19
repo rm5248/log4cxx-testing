@@ -33,7 +33,7 @@ namespace log4cxx
         */
         class LOG4CXX_EXPORT Layout :
                 public virtual spi::OptionHandler,
-                public virtual helpers::ObjectImpl
+                public virtual helpers::Object
         {
         public:
                 DECLARE_ABSTRACT_LOG4CXX_OBJECT(Layout)
