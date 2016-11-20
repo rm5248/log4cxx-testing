@@ -31,11 +31,11 @@ using namespace log4cxx::helpers;
 using namespace log4cxx::spi;
 using namespace log4cxx::config;
 
-PropertySetter::PropertySetter(const helpers::ObjectPtr& obj1) : obj(obj1)
+PropertySetter::PropertySetter(const spi::OptionHandler* obj1) : obj(obj1)
 {
 }
 
-void PropertySetter::setProperties(const helpers::ObjectPtr& obj,
+void PropertySetter::setProperties(const spi::OptionHandler* obj,
      helpers::Properties& properties,
      const LogString& prefix,
      Pool& p)
@@ -87,18 +87,18 @@ void PropertySetter::setProperty(const LogString& option,
         if (value.empty())
                 return;
 
-        if (obj != 0 && obj->instanceof(OptionHandler::getStaticClass()))
+        if (obj != 0 )
         {
                 LogLog::debug(LOG4CXX_STR("Setting option name=[") +
                         option + LOG4CXX_STR("], value=[") + value + LOG4CXX_STR("]"));
-                OptionHandlerPtr(obj)->setOption(option, value);
+                obj->setOption(option, value);
         }
 }
 
 void PropertySetter::activate(Pool& p)
 {
-        if (obj != 0 && obj->instanceof(OptionHandler::getStaticClass()))
+        if (obj != 0 )
         {
-                OptionHandlerPtr(obj)->activateOptions(p);
+                obj->activateOptions(p);
         }
 }

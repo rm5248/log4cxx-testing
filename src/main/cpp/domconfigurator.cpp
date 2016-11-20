@@ -186,7 +186,11 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
         {
                 Object* instance = Loader::loadClass(className).newInstance();
                 AppenderPtr appender( dynamic_cast<Appender*>(instance) );
-                PropertySetter propSetter(appender);
+                if( appender == 0 ){
+                    delete instance;
+                    return NULL;
+                }
+                PropertySetter propSetter( dynamic_cast<spi::OptionHandler*>( instance ) );
 
                 appender->setName(subst(getAttribute(utf8Decoder, appenderElement, NAME_ATTR)));
 
@@ -231,13 +235,13 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                 }
                                 else if (tagName == TRIGGERING_POLICY_TAG)
                                 {
-                                        ObjectPtr policy(parseTriggeringPolicy(p, utf8Decoder, currentElement));
+                                        TriggeringPolicy* policy = parseTriggeringPolicy(p, utf8Decoder, currentElement);
+					log4cxx::ptr::shared_ptr<TriggeringPolicy> sharedTrigger( policy );
                                         RollingFileAppender* rfa = dynamic_cast<RollingFileAppender*>(appender.get());
                                         if (rfa != NULL) {
-						TriggeringPolicy* trigPolicy = dynamic_cast<TriggeringPolicy*>(policy.get());
-                                           rfa->setTriggeringPolicy(trigPolicy);
+                                           rfa->setTriggeringPolicy( sharedTrigger );
                                         } else {
-                                            log4cxx::net::SMTPAppenderPtr smtpa(appender);
+                                            log4cxx::net::SMTPAppenderPtr smtpa(appender.get());
                                             if (smtpa != NULL) {
                                                 log4cxx::spi::TriggeringEventEvaluatorPtr evaluator(policy);
                                                 smtpa->setEvaluator(evaluator);
@@ -287,6 +291,8 @@ void DOMConfigurator::parseErrorHandler(Pool& p,
                                         AppenderMap& appenders)
 {
 
+//ROBERT here.  change this to be like the other parse methods.
+//why does this one use instantiateByClassName?? No idea
     ErrorHandlerPtr eh = OptionConverter::instantiateByClassName(
                 subst(getAttribute(utf8Decoder, element, CLASS_ATTR)),
                 ErrorHandler::getStaticClass(),
@@ -539,7 +545,7 @@ LayoutPtr DOMConfigurator::parseLayout (
 /**
  Used internally to parse a triggering policy
 */
-ObjectPtr DOMConfigurator::parseTriggeringPolicy (
+TriggeringPolicy* DOMConfigurator::parseTriggeringPolicy (
                                   log4cxx::helpers::Pool& p,
                                   log4cxx::helpers::CharsetDecoderPtr& utf8Decoder,                                  
                                   apr_xml_elem* layout_element)
@@ -548,8 +554,13 @@ ObjectPtr DOMConfigurator::parseTriggeringPolicy (
         LogLog::debug(LOG4CXX_STR("Parsing triggering policy of class: \"")+className+LOG4CXX_STR("\""));
         try
         {
-                ObjectPtr instance = Loader::loadClass(className).newInstance();
-                PropertySetter propSetter(instance);
+                Object* instance = Loader::loadClass(className).newInstance();
+                TriggeringPolicy* toret = dynamic_cast<TriggeringPolicy*>(instance);
+                if( toret == NULL ){
+                    delete instance;
+                    return NULL;
+                }
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>instance);
 
                 for (apr_xml_elem* currentElement = layout_element->first_child;
                      currentElement;
@@ -574,7 +585,7 @@ ObjectPtr DOMConfigurator::parseTriggeringPolicy (
                 }
 
                 propSetter.activate(p);
-                return instance;
+                return toret;
         }
         catch (Exception& oops)
         {
