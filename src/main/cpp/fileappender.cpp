@@ -266,14 +266,14 @@ void FileAppender::setFile(
 
   OutputStreamPtr outStream;
   try {
-      outStream = new FileOutputStream(filename, append1);
+      outStream.reset( new FileOutputStream(filename, append1) );
   } catch(IOException& ex) {
       LogString parentName = File().setPath(filename).getParent(p);
       if (!parentName.empty()) {
           File parentDir;
           parentDir.setPath(parentName);
           if(!parentDir.exists(p) && parentDir.mkdirs(p)) {
-             outStream = new FileOutputStream(filename, append1);
+             outStream.reset( new FileOutputStream(filename, append1) );
           } else {
              throw;
           }
@@ -292,10 +292,12 @@ void FileAppender::setFile(
       outStream->write(buf, p);
   }
 
-  WriterPtr newWriter(createWriter(outStream));
+  WriterPtr newWriter;
 
   if (bufferedIO1) {
-    newWriter = new BufferedWriter(newWriter, bufferSize1);
+    newWriter.reset( new BufferedWriter(newWriter, bufferSize1) );
+  }else{
+    newWriter.reset( createWriter(outStream).get() );
   }
   setWriter(newWriter);
 

@@ -36,9 +36,10 @@ namespace log4cxx
                           LOG4CXX_CAST_ENTRY(Writer)
                   END_LOG4CXX_CAST_MAP()
 
+                  virtual ~Writer();
+
           protected:
                   Writer();
-                  virtual ~Writer();
 
           public:
                   virtual void close(Pool& p) = 0;

@@ -118,7 +118,7 @@ RolloverDescriptionPtr FixedWindowRollingPolicy::initialize(
 
   ActionPtr noAction;
 
-  return new RolloverDescription(newActiveFile, append, noAction, noAction);
+  return RolloverDescriptionPtr( new RolloverDescription(newActiveFile, append, noAction, noAction) );
 }
 
 /**
@@ -159,31 +159,31 @@ RolloverDescriptionPtr FixedWindowRollingPolicy::rollover(
 	if (StringHelper::endsWith(renameTo, LOG4CXX_STR(".gz")))
 	{
 		renameTo.resize(renameTo.size() - 3);
-		compressAction =
+		compressAction.reset( 
 			new GZCompressAction(
 				File().setPath(renameTo),
 				File().setPath(compressedName),
-				true);
+				true) );
 	}
 	else if (StringHelper::endsWith(renameTo, LOG4CXX_STR(".zip")))
 	{
 		renameTo.resize(renameTo.size() - 4);
-		compressAction =
+		compressAction.reset( 
 			new ZipCompressAction(
 				File().setPath(renameTo),
 				File().setPath(compressedName),
-				true);
+				true) );
 	}
 
-	FileRenameActionPtr renameAction =
+	FileRenameActionPtr renameAction(
 		new FileRenameAction(
 			File().setPath(currentActiveFile),
 			File().setPath(renameTo),
-			false);
+			false) );
 
-	desc = new RolloverDescription(
+	desc.reset( new RolloverDescription(
 		currentActiveFile,	append,
-		renameAction,		compressAction);
+		renameAction,		compressAction) );
 
 	return desc;
 }

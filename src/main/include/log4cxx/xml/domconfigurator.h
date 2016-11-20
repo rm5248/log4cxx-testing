@@ -152,7 +152,7 @@ namespace log4cxx
                         /**
                          Used internally to parse the logger factory element.
                         */
-                        log4cxx::rolling::RollingPolicyPtr parseRollingPolicy(
+                        log4cxx::rolling::RollingPolicy* parseRollingPolicy(
                             log4cxx::helpers::Pool& p,
                             log4cxx::helpers::CharsetDecoderPtr& utf8Decoder,
                             apr_xml_elem* factoryElement);

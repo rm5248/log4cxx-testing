@@ -38,7 +38,7 @@ namespace log4cxx
                 */
                 class LOG4CXX_EXPORT FallbackErrorHandler :
                         public virtual spi::ErrorHandler,
-                        public virtual helpers::ObjectImpl
+                        public virtual helpers::Object
                 {
                 private:
                         AppenderPtr backup;

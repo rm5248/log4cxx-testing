@@ -180,7 +180,7 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                            AppenderMap& appenders)
 {
 
-    LogString className(subst(getAttribute(utf8Decoder, appenderElement, CLASS_ATTR)));
+	    LogString className(subst(getAttribute(utf8Decoder, appenderElement, CLASS_ATTR)));
     LogLog::debug(LOG4CXX_STR("Class name: [") + className+LOG4CXX_STR("]"));
     try
         {
@@ -227,10 +227,11 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                 }
                                 else if (tagName == ROLLING_POLICY_TAG)
                                 {
-                                        RollingPolicyPtr rollPolicy(parseRollingPolicy(p, utf8Decoder, currentElement));
+                                        RollingPolicy* rollPolicy(parseRollingPolicy(p, utf8Decoder, currentElement));
+                                        RollingPolicyPtr rollPtr(rollPolicy);
                                         RollingFileAppender* rfa = dynamic_cast<RollingFileAppender*>(appender.get());
                                         if (rfa != NULL) {
-                                           rfa->setRollingPolicy(rollPolicy);
+                                           rfa->setRollingPolicy(rollPtr);
                                         }
                                 }
                                 else if (tagName == TRIGGERING_POLICY_TAG)
@@ -241,11 +242,13 @@ AppenderPtr DOMConfigurator::parseAppender(Pool& p,
                                         if (rfa != NULL) {
                                            rfa->setTriggeringPolicy( sharedTrigger );
                                         } else {
+                                            /* ROBERT TODO what constructor was this attempting to call originally??
                                             log4cxx::net::SMTPAppenderPtr smtpa(appender.get());
                                             if (smtpa != NULL) {
                                                 log4cxx::spi::TriggeringEventEvaluatorPtr evaluator(policy);
                                                 smtpa->setEvaluator(evaluator);
                                             }
+                                            */
                                         }
                                 }
                                 else if (tagName == APPENDER_REF_TAG)
@@ -291,18 +294,22 @@ void DOMConfigurator::parseErrorHandler(Pool& p,
                                         AppenderMap& appenders)
 {
 
-//ROBERT here.  change this to be like the other parse methods.
-//why does this one use instantiateByClassName?? No idea
-    ErrorHandlerPtr eh = OptionConverter::instantiateByClassName(
-                subst(getAttribute(utf8Decoder, element, CLASS_ATTR)),
-                ErrorHandler::getStaticClass(),
-                0);
+    LogString className = subst(getAttribute(utf8Decoder, element, CLASS_ATTR));
+    const Class& classObj = Loader::loadClass(className);
+    Object* newObject =  classObj.newInstance();
+    ErrorHandler* errHandle = dynamic_cast<ErrorHandler*>(newObject);
+   
+    if( errHandle == 0 ){
+        delete newObject;
+        return;
+    }
+    ErrorHandlerPtr eh( errHandle );
                 
     if(eh != 0)
         {
                 eh->setAppender(appender);
 
-                PropertySetter propSetter(eh);
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(errHandle));
 
                 for (apr_xml_elem* currentElement = element->first_child;
                      currentElement;
@@ -329,7 +336,7 @@ void DOMConfigurator::parseErrorHandler(Pool& p,
                                 }
                 }
                 propSetter.activate(p);
-                ObjectPtrT<AppenderSkeleton> appSkeleton(appender);
+                AppenderSkeleton* appSkeleton = dynamic_cast<AppenderSkeleton*>(appender.get());
                 if (appSkeleton != 0) {
                     appSkeleton->setErrorHandler(eh);
                 }
@@ -344,13 +351,21 @@ void DOMConfigurator::parseFilters(Pool& p,
                                    apr_xml_elem* element, 
                                    std::vector<log4cxx::spi::FilterPtr>& filters)
 {
-        LogString clazz = subst(getAttribute(utf8Decoder, element, CLASS_ATTR));
-        FilterPtr filter = OptionConverter::instantiateByClassName(clazz,
-                Filter::getStaticClass(), 0);
+    LogString className = subst(getAttribute(utf8Decoder, element, CLASS_ATTR));
+    const Class& classObj = Loader::loadClass(className);
+    Object* newObject =  classObj.newInstance();
+    Filter* rawFilter = dynamic_cast<Filter*>(newObject);
+
+    if( rawFilter == 0 ){
+        delete newObject;
+        return;
+    }
+
+        FilterPtr filter( rawFilter );
 
         if(filter != 0)
         {
-                PropertySetter propSetter(filter);
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(rawFilter));
 
                 for (apr_xml_elem* currentElement = element->first_child;
                      currentElement;
@@ -415,11 +430,16 @@ void DOMConfigurator::parseLoggerFactory(
         else
         {
                 LogLog::debug(LOG4CXX_STR("Desired logger factory: [")+className+LOG4CXX_STR("]"));
-                loggerFactory = OptionConverter::instantiateByClassName(
-                        className,
-                        LoggerFactory::getStaticClass(),
-                        0);
-                PropertySetter propSetter(loggerFactory);
+                const Class& classObj = Loader::loadClass(className);
+                Object* newObject = classObj.newInstance();
+                LoggerFactory* fact = dynamic_cast<LoggerFactory*>(newObject);
+                if( fact == 0 ){
+                     delete newObject;
+                     return;
+                }
+
+                loggerFactory.reset( fact );
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(loggerFactory.get()));
 
                 for (apr_xml_elem* currentElement = factoryElement->first_child;
                      currentElement;
@@ -459,7 +479,7 @@ void DOMConfigurator::parseChildrenOfLoggerElement(
                                   AppenderMap& appenders)
 {
 
-    PropertySetter propSetter(logger);
+    PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(logger.get()));
 
     // Remove all existing appenders from logger. They will be
     // reconstructed if need be.
@@ -517,9 +537,13 @@ LayoutPtr DOMConfigurator::parseLayout (
         LogLog::debug(LOG4CXX_STR("Parsing layout of class: \"")+className+LOG4CXX_STR("\""));
         try
         {
-                ObjectPtr instance = Loader::loadClass(className).newInstance();
-                LayoutPtr layout = instance;
-                PropertySetter propSetter(layout);
+                Object* instance = Loader::loadClass(className).newInstance();
+                Layout* layout = dynamic_cast<Layout*>(instance);
+                if( layout == 0 ){
+                    delete instance;
+                    return 0;
+                }
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(layout));
 
                 for(apr_xml_elem* currentElement = layout_element->first_child;
                     currentElement;
@@ -532,7 +556,7 @@ LayoutPtr DOMConfigurator::parseLayout (
                 }
 
                 propSetter.activate(p);
-                return layout;
+                return LayoutPtr(layout);
         }
         catch (Exception& oops)
         {
@@ -560,7 +584,7 @@ TriggeringPolicy* DOMConfigurator::parseTriggeringPolicy (
                     delete instance;
                     return NULL;
                 }
-                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>instance);
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(instance));
 
                 for (apr_xml_elem* currentElement = layout_element->first_child;
                      currentElement;
@@ -573,7 +597,7 @@ TriggeringPolicy* DOMConfigurator::parseTriggeringPolicy (
                                 else if (tagName == FILTER_TAG) {
                                   std::vector<log4cxx::spi::FilterPtr> filters;
                                   parseFilters(p, utf8Decoder, currentElement, filters);
-                                  FilterBasedTriggeringPolicyPtr fbtp(instance);
+                                  FilterBasedTriggeringPolicy* fbtp = dynamic_cast<FilterBasedTriggeringPolicy*>(instance);
                                   if (fbtp != NULL) {
                                     for(std::vector<log4cxx::spi::FilterPtr>::iterator iter = filters.begin();
                                         iter != filters.end();
@@ -598,7 +622,7 @@ TriggeringPolicy* DOMConfigurator::parseTriggeringPolicy (
 /**
  Used internally to parse a triggering policy
 */
-RollingPolicyPtr DOMConfigurator::parseRollingPolicy (
+RollingPolicy* DOMConfigurator::parseRollingPolicy (
                                   log4cxx::helpers::Pool& p,
                                   log4cxx::helpers::CharsetDecoderPtr& utf8Decoder,                                  
                                   apr_xml_elem* layout_element)
@@ -607,9 +631,13 @@ RollingPolicyPtr DOMConfigurator::parseRollingPolicy (
         LogLog::debug(LOG4CXX_STR("Parsing rolling policy of class: \"")+className+LOG4CXX_STR("\""));
         try
         {
-                ObjectPtr instance = Loader::loadClass(className).newInstance();
-                RollingPolicyPtr layout = instance;
-                PropertySetter propSetter(layout);
+                Object* instance = Loader::loadClass(className).newInstance();
+                RollingPolicy* layout = dynamic_cast<RollingPolicy*>(instance);
+                if( layout == 0 ){
+                    delete instance;
+                    return 0;
+                }
+                PropertySetter propSetter(dynamic_cast<spi::OptionHandler*>(layout));
 
                 for(apr_xml_elem* currentElement = layout_element->first_child;
                     currentElement;
@@ -725,7 +753,7 @@ void DOMConfigurator::doConfigure(const File& filename, spi::LoggerRepositoryPtr
         msg.append(LOG4CXX_STR("..."));
         LogLog::debug(msg);
 
-        loggerFactory = new DefaultLoggerFactory();
+        loggerFactory.reset( new DefaultLoggerFactory() );
 
         Pool p;
         apr_file_t *fd;

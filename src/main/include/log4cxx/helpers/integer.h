@@ -20,7 +20,7 @@
 
 namespace log4cxx {
    namespace helpers {
-      class LOG4CXX_EXPORT Integer : public ObjectImpl {
+      class LOG4CXX_EXPORT Integer : public Object {
           const int val;
       public:
       DECLARE_LOG4CXX_OBJECT(Integer)
