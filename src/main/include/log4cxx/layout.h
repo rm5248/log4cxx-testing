@@ -48,7 +48,7 @@ namespace log4cxx
                 Implement this method to create your own layout format.
                 */
                 virtual void format(LogString& output,
-                    const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& pool) const = 0;
+                    const spi::LoggingEvent* event, log4cxx::helpers::Pool& pool) const = 0;
 
                 /**
                 Returns the content type output by this layout. The base class

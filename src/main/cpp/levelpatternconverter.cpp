@@ -44,7 +44,7 @@ PatternConverterPtr LevelPatternConverter::newInstance(
 }
 
 void LevelPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   log4cxx::helpers::Pool& /* p */) const {
    toAppendTo.append(event->getLevel()->toString());
@@ -55,6 +55,9 @@ void LevelPatternConverter::format(
    * {@inheritDoc}
    */
 LogString LevelPatternConverter::getStyleClass(const ObjectPtr& obj) const {
+
+/* this does not appear to actually be used */
+/*
     LoggingEventPtr e(obj);
     if (e != NULL) {
       int lint = e->getLevel()->toInt();
@@ -83,5 +86,6 @@ LogString LevelPatternConverter::getStyleClass(const ObjectPtr& obj) const {
       }
     }
 
+*/
     return LOG4CXX_STR("level");
   }

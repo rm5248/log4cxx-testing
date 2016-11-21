@@ -98,7 +98,7 @@ PatternConverterPtr DatePatternConverter::newInstance(
 }
 
 void DatePatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& p) const {
    df->format(toAppendTo, event->getTimeStamp(), p);
@@ -108,16 +108,14 @@ void DatePatternConverter::format(
    * {@inheritDoc}
    */
 void DatePatternConverter::format(
-    const ObjectPtr& obj,
+    const Object* obj,
     LogString& toAppendTo,
     Pool& p) const {
-    Date* dt = dynamic_cast<Date*>(obj.get());
-    if (dt != NULL) {
-      DatePtr date(dt);
+    const Date* date = dynamic_cast<const Date*>(obj);
+    if (date != NULL) {
       format(date, toAppendTo, p);
     } else {
-      LoggingEvent* log = dynamic_cast<LoggingEvent*>(obj.get());
-      LoggingEventPtr event(log);
+      const LoggingEvent* event = dynamic_cast<const LoggingEvent*>(obj);
       if (event != NULL) {
           format(event, toAppendTo, p);
       }
@@ -130,7 +128,7 @@ void DatePatternConverter::format(
    * @param toAppendTo buffer to which formatted date is appended.
    */
 void DatePatternConverter::format(
-    const DatePtr& date,
+    const Date* date,
     LogString& toAppendTo,
     Pool& p) const {
     df->format(toAppendTo, date->getTime(), p);

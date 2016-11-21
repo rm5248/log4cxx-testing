@@ -35,10 +35,10 @@ LoggingEventPatternConverter::LoggingEventPatternConverter(
     const LogString& name1, const LogString& style1) : PatternConverter(name1, style1) {
   }
 
-void LoggingEventPatternConverter::format(const ObjectPtr& obj,
+void LoggingEventPatternConverter::format(const Object* obj,
     LogString& output,
     log4cxx::helpers::Pool& p) const {
-    LoggingEventPtr le(obj);
+    const LoggingEvent* le = dynamic_cast<const LoggingEvent*>(obj);
     if (le != NULL) {
        format(le, output, p);
     }

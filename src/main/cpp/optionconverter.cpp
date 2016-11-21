@@ -241,7 +241,7 @@ LogString OptionConverter::getSystemProperty(const LogString& key, const LogStri
 }
 
 LevelPtr OptionConverter::toLevel(const LogString& value,
-        const LevelPtr& defaultValue)
+        const LevelPtr defaultValue)
 {
     size_t hashIndex = value.find(LOG4CXX_STR("#"));
 
@@ -314,10 +314,12 @@ ObjectPtr OptionConverter::instantiateByKey(Properties& props, const LogString& 
         }
 
         // Trim className to avoid trailing spaces that cause problems.
-        return OptionConverter::instantiateByClassName(
-                StringHelper::trim(className), superClass, defaultValue);
+//ROBERT TODO
+        //return OptionConverter::instantiateByClassName(
+         //       StringHelper::trim(className), superClass, defaultValue);
 }
 
+/*
 ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
         const Class& superClass, const ObjectPtr& defaultValue)
 {
@@ -326,7 +328,7 @@ ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
                 try
                 {
                         const Class& classObj = Loader::loadClass(className);
-                        ObjectPtr newObject =  classObj.newInstance();
+                        Object* newObject =  classObj.newInstance();
                         if (!newObject->instanceof(superClass))
                         {
                                 return defaultValue;
@@ -342,6 +344,7 @@ ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
         }
         return defaultValue;
 }
+*/
 
 void OptionConverter::selectAndConfigure(const File& configFileName,
          const LogString& _clazz, spi::LoggerRepositoryPtr& hierarchy)
@@ -362,11 +365,12 @@ void OptionConverter::selectAndConfigure(const File& configFileName,
         if(!clazz.empty())
         {
                 LogLog::debug(LOG4CXX_STR("Preferred configurator class: ") + clazz);
-                configurator = instantiateByClassName(clazz,
-                        Configurator::getStaticClass(),
-                        0);
+                const Class& classObj = Loader::loadClass(clazz);
+                Object* newObject =  classObj.newInstance();
+                configurator.reset( dynamic_cast<Configurator*>( newObject ) );
                 if(configurator == 0)
                 {
+                        delete newObject;
                         LogLog::error(LOG4CXX_STR("Could not instantiate configurator [")
                                  + clazz + LOG4CXX_STR("]."));
                         return;
@@ -374,7 +378,7 @@ void OptionConverter::selectAndConfigure(const File& configFileName,
         }
         else
         {
-                configurator = new PropertyConfigurator();
+                configurator.reset( new PropertyConfigurator() );
         }
 
         configurator->doConfigure(configFileName, hierarchy);

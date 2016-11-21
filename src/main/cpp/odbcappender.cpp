@@ -143,7 +143,7 @@ void ODBCAppender::append(const spi::LoggingEventPtr& event, log4cxx::helpers::P
 #endif
 }
 
-LogString ODBCAppender::getLogStatement(const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& p) const
+LogString ODBCAppender::getLogStatement(const spi::LoggingEvent* event, log4cxx::helpers::Pool& p) const
 {
    LogString sbuf;
    getLayout()->format(sbuf, event, p);
@@ -301,7 +301,7 @@ void ODBCAppender::flushBuffer(Pool& p)
    {
       try
       {
-         const LoggingEventPtr& logEvent = *i;
+         const LoggingEvent* logEvent = (*i).get();
          LogString sql = getLogStatement(logEvent, p);
          execute(sql, p);
       }
@@ -321,11 +321,12 @@ void ODBCAppender::setSql(const LogString& s)
    sqlStatement = s;
    if (getLayout() == 0)
    {
-      this->setLayout(new PatternLayout(s));
+      this->setLayout(LayoutPtr(new PatternLayout(s)));
    }
    else
    {
-      PatternLayoutPtr patternLayout = this->getLayout();
+      LayoutPtr layout = this->getLayout();
+      PatternLayout* patternLayout = dynamic_cast<PatternLayout*>(layout.get());
       if (patternLayout != 0)
       {
          patternLayout->setConversionPattern(s);

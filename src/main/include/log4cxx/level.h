@@ -18,7 +18,7 @@
 #ifndef _LOG4CXX_LEVEL_H
 #define _LOG4CXX_LEVEL_H
 
-
+#include <log4cxx/helpers/object.h>
 #include <log4cxx/logstring.h>
 #include <limits.h>
 

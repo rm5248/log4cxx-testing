@@ -37,7 +37,7 @@ namespace log4cxx {
         virtual LogString getName() const {
             return LOG4CXX_STR("org.apache.log4j.RollingFileAppender");
         }
-        virtual ObjectPtr newInstance() const {
+        virtual RollingFileAppender* newInstance() const {
             return new RollingFileAppender();
         }
     };

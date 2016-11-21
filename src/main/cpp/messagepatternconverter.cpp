@@ -44,7 +44,7 @@ PatternConverterPtr MessagePatternConverter::newInstance(
 }
 
 void MessagePatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& /* p */) const {
    toAppendTo.append(event->getRenderedMessage());

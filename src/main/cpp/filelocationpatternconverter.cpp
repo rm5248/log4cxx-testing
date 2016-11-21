@@ -43,7 +43,7 @@ PatternConverterPtr FileLocationPatternConverter::newInstance(
 }
 
 void FileLocationPatternConverter::format(
-   const LoggingEventPtr& event,
+   const LoggingEvent* event,
    LogString& toAppendTo,
    Pool& /* p */ ) const {
     append(toAppendTo, event->getLocationInformation().getFileName());

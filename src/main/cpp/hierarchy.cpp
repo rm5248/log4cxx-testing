@@ -55,9 +55,9 @@ loggers(new LoggerMap()),
 provisionNodes(new ProvisionNodeMap())
 {
         synchronized sync(mutex);
-        root = new RootLogger(pool, Level::getDebug());
+        root.reset( new RootLogger(pool, Level::getDebug()) );
         root->setHierarchy(this);
-        defaultFactory = new DefaultLoggerFactory();
+        defaultFactory.reset( new DefaultLoggerFactory() );
         emittedNoAppenderWarning = false;
         configured = false;
         thresholdInt = Level::ALL_INT;
@@ -94,7 +94,7 @@ void Hierarchy::clear()
         loggers->clear();
 }
 
-void Hierarchy::emitNoAppenderWarning(const LoggerPtr& logger)
+void Hierarchy::emitNoAppenderWarning(const Logger* logger)
 {
        bool emitWarning = false;
        {
@@ -155,7 +155,7 @@ void Hierarchy::setThreshold(const LogString& levelStr) {
         }
 }
 
-void Hierarchy::fireAddAppenderEvent(const LoggerPtr& logger, const AppenderPtr& appender)
+void Hierarchy::fireAddAppenderEvent(const Logger* logger, const Appender* appender)
 {
     setConfigured(true);
     HierarchyEventListenerList clonedList;
@@ -174,7 +174,7 @@ void Hierarchy::fireAddAppenderEvent(const LoggerPtr& logger, const AppenderPtr&
         }
 }
 
-void Hierarchy::fireRemoveAppenderEvent(const LoggerPtr& logger, const AppenderPtr& appender)
+void Hierarchy::fireRemoveAppenderEvent(const Logger* logger, const Appender* appender) const
 
 {
     HierarchyEventListenerList clonedList;

@@ -33,8 +33,13 @@ namespace log4cxx
         namespace helpers
         {
                 class XMLDOMNode;
+                typedef log4cxx::ptr::shared_ptr<XMLDOMNode> XMLDOMNodePtr;
                 class XMLDOMDocument;
+                typedef log4cxx::ptr::shared_ptr<XMLDOMDocument> XMLDOMDocumentPtr;
                 class XMLDOMNodeList;
+                typedef log4cxx::ptr::shared_ptr<XMLDOMNodeList> XMLDOMNodeListPtr;
+		class XMLDOMElement;
+                typedef log4cxx::ptr::shared_ptr<XMLDOMElement> XMLDOMElementPtr;
 
                 class LOG4CXX_EXPORT DOMException : public RuntimeException
                 {

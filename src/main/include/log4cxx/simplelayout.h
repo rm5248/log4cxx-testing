@@ -58,7 +58,7 @@ namespace log4cxx
                 @return A byte array in SimpleLayout format.
                 */
                 virtual void format(LogString& output,
-                    const spi::LoggingEventPtr& event,
+                    const spi::LoggingEvent* event,
                     log4cxx::helpers::Pool& pool) const;
 
                 /**

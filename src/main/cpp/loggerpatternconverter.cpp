@@ -42,11 +42,11 @@ PatternConverterPtr LoggerPatternConverter::newInstance(
      static PatternConverterPtr def(new LoggerPatternConverter(options));
      return def;
    }
-   return new LoggerPatternConverter(options);
+   return PatternConverterPtr( new LoggerPatternConverter(options) );
 }
 
 void LoggerPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& /* p */ ) const {
    int initialLength = toAppendTo.length();

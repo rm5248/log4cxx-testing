@@ -56,11 +56,11 @@ END_LOG4CXX_CAST_MAP()
    * @param p pool for memory allocations needing during format.
    */
   virtual void format(
-    const log4cxx::spi::LoggingEventPtr& event,
+    const log4cxx::spi::LoggingEvent* event,
     LogString& toAppendTo,
     log4cxx::helpers::Pool& p) const = 0;
 
-  void format(const log4cxx::helpers::ObjectPtr& obj,
+  void format(const log4cxx::helpers::Object* obj,
      LogString& toAppendTo,
      log4cxx::helpers::Pool& p) const;
 

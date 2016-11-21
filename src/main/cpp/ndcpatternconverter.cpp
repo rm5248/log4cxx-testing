@@ -45,7 +45,7 @@ PatternConverterPtr NDCPatternConverter::newInstance(
 }
 
 void NDCPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& /* p */) const {
    if(!event->getNDC(toAppendTo)) {

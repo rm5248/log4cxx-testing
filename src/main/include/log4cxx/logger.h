@@ -619,7 +619,7 @@ namespace log4cxx
         Return the the LoggerRepository where this
         <code>Logger</code> is attached.
         */
-        log4cxx::spi::LoggerRepositoryPtr getLoggerRepository() const;
+        log4cxx::spi::LoggerRepository* getLoggerRepository() const;
 
 
         /**

@@ -43,7 +43,7 @@ PatternConverterPtr LineLocationPatternConverter::newInstance(
 }
 
 void LineLocationPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& p) const {
    StringHelper::toString(

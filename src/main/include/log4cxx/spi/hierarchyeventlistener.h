@@ -43,12 +43,12 @@ namespace log4cxx
                         virtual ~HierarchyEventListener() {}
 
                         virtual void addAppenderEvent(
-                     const log4cxx::ptr::shared_ptr<Logger>& logger, 
-                     const log4cxx::ptr::shared_ptr<Appender>& appender) = 0;
+                     const Logger* logger, 
+                     const Appender* appender) = 0;
 
                         virtual void removeAppenderEvent(
-                     const log4cxx::ptr::shared_ptr<Logger>& logger, 
-                     const log4cxx::ptr::shared_ptr<Appender>& appender) = 0;
+                     const Logger* logger, 
+                     const Appender* appender) = 0;
                 };
                 LOG4CXX_PTR_DEF(HierarchyEventListener);
                 LOG4CXX_LIST_DEF(HierarchyEventListenerList, HierarchyEventListenerPtr);

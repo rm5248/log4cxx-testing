@@ -74,7 +74,7 @@ namespace log4cxx
                 parameter instead of a <code>Level</code>. */
                 virtual void setThreshold(const LogString& val) = 0;
 
-                virtual void emitNoAppenderWarning(const LoggerPtr& logger) = 0;
+                virtual void emitNoAppenderWarning(const Logger* logger) = 0;
 
                 /**
                 Get the repository-wide threshold. See {@link
@@ -95,8 +95,8 @@ namespace log4cxx
 
                 virtual LoggerList getCurrentLoggers() const = 0;
 
-                virtual void fireAddAppenderEvent(const LoggerPtr& logger,
-                                    const AppenderPtr& appender) = 0;
+                virtual void fireAddAppenderEvent(const Logger* logger,
+                                    const Appender* appender) = 0;
 
                 virtual void resetConfiguration() = 0;
 

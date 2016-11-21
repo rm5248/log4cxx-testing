@@ -50,7 +50,7 @@ PatternConverterPtr ThrowableInformationPatternConverter::newInstance(
 }
 
 void ThrowableInformationPatternConverter::format(
-  const LoggingEventPtr& /* event */,
+  const LoggingEvent* /* event */,
   LogString& /* toAppendTo */,
   Pool& /* p */) const {
 }

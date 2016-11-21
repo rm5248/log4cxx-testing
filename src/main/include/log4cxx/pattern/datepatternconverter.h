@@ -67,14 +67,14 @@ class LOG4CXX_EXPORT DatePatternConverter : public LoggingEventPatternConverter 
   using LoggingEventPatternConverter::format;
 
 
-  void format(const log4cxx::spi::LoggingEventPtr& event,
+  void format(const log4cxx::spi::LoggingEvent* event,
      LogString& output,
      log4cxx::helpers::Pool& p) const;
-  void format(const log4cxx::helpers::ObjectPtr& obj,
+  void format(const log4cxx::helpers::Object* obj,
      LogString& output,
      log4cxx::helpers::Pool& p) const;
 
-  void format(const log4cxx::helpers::DatePtr& date,
+  void format(const log4cxx::helpers::Date* date,
      LogString& toAppendTo,
      log4cxx::helpers::Pool& p) const;
 };

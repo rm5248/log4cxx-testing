@@ -43,14 +43,14 @@ PatternConverterPtr LineSeparatorPatternConverter::newInstance(
 }
 
 void LineSeparatorPatternConverter::format(
-  const LoggingEventPtr& /* event */,
+  const LoggingEvent* /* event */,
   LogString& toAppendTo,
   Pool& /* p */) const {
   toAppendTo.append(LOG4CXX_EOL);
  }
 
 void LineSeparatorPatternConverter::format(
-  const ObjectPtr& /* event */,
+  const Object* /* event */,
   LogString& toAppendTo,
   Pool& /* p */) const {
   toAppendTo.append(LOG4CXX_EOL);

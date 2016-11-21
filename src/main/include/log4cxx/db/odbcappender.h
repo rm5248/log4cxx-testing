@@ -183,7 +183,7 @@ namespace log4cxx
                         *
                         */
                 protected:
-                        LogString getLogStatement(const spi::LoggingEventPtr& event,
+                        LogString getLogStatement(const spi::LoggingEvent* event,
                      helpers::Pool& p) const;
 
                         /**

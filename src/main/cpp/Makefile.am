@@ -103,8 +103,6 @@ liblog4cxx_la_SOURCES = \
         ndcpatternconverter.cpp \
         ndc.cpp \
         nteventlogappender.cpp \
-        objectimpl.cpp \
-        objectptr.cpp \
         objectoutputstream.cpp \
         obsoleterollingfileappender.cpp \
         odbcappender.cpp \

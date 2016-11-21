@@ -44,7 +44,7 @@ PatternConverterPtr MethodLocationPatternConverter::newInstance(
 }
 
 void MethodLocationPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& /* p */ ) const {
    append(toAppendTo, event->getLocationInformation().getMethodName());

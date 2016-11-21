@@ -53,7 +53,7 @@ namespace log4cxx
         */
         class LOG4CXX_EXPORT Hierarchy :
                 public virtual spi::LoggerRepository,
-                public virtual helpers::ObjectImpl
+                public virtual helpers::Object
         {
         private:
             log4cxx::helpers::Pool pool;
@@ -102,7 +102,7 @@ namespace log4cxx
             */
             void clear();
 
-            void emitNoAppenderWarning(const LoggerPtr& logger);
+            void emitNoAppenderWarning(const Logger* logger);
 
             /**
             Check if the named logger exists in the hierarchy. If so return
@@ -126,10 +126,10 @@ namespace log4cxx
             their appenders.  */
             void setThreshold(const LevelPtr& l);
 
-            void fireAddAppenderEvent(const LoggerPtr& logger, const AppenderPtr& appender);
+            void fireAddAppenderEvent(const Logger* logger, const Appender* appender);
 
-            void fireRemoveAppenderEvent(const LoggerPtr& logger,
-                    const AppenderPtr& appender);
+            void fireRemoveAppenderEvent(const Logger* logger,
+                    const Appender* appender) const;
 
             /**
             Returns a Level representation of the <code>enable</code>

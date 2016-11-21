@@ -80,7 +80,7 @@ public:
    * @param toAppendTo string buffer to which the formatted event will be appended.  May not be null.
    * @param p pool for any allocations necessary during formatting.
    */
-  virtual void format(const log4cxx::helpers::ObjectPtr& obj,
+  virtual void format(const log4cxx::helpers::Object* obj,
       LogString& toAppendTo,
       log4cxx::helpers::Pool& p) const = 0;
 

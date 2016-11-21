@@ -57,7 +57,7 @@ public:
 
   using NamePatternConverter::format;
 
-  void format(const log4cxx::spi::LoggingEventPtr& event,
+  void format(const log4cxx::spi::LoggingEvent* event,
       LogString& toAppendTo,
       log4cxx::helpers::Pool& p) const;
 };

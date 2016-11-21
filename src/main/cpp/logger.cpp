@@ -61,13 +61,13 @@ void Logger::addAppender(const AppenderPtr& newAppender)
 
         if (aai == 0)
         {
-                  aai = new AppenderAttachableImpl(*pool);
+                  aai.reset( new AppenderAttachableImpl(*pool) );
         }
         aai->addAppender(newAppender);
         rep = repository;
    }
    if (rep != 0) {
-           rep->fireAddAppenderEvent(this, newAppender);
+           rep->fireAddAppenderEvent(this, newAppender.get());
    }
 }
 
@@ -171,7 +171,7 @@ AppenderPtr Logger::getAppender(const LogString& name1) const
 
 const LevelPtr& Logger::getEffectiveLevel() const
 {
-        for(const Logger * l = this; l != 0; l=l->parent)
+        for(const Logger * l = this; l != 0; l=l->parent.get())
         {
                 if(l->level != 0)
                 {
@@ -185,7 +185,7 @@ const LevelPtr& Logger::getEffectiveLevel() const
 #endif
 }
 
-LoggerRepositoryPtr Logger::getLoggerRepository() const
+LoggerRepository* Logger::getLoggerRepository() const
 {
         return repository;
 }

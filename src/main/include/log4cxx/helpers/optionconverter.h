@@ -124,8 +124,10 @@ balanced by a stop delimeter "}". </p>
                         @param superClass The class to which the new object should belong.
                         @param defaultValue The object to return in case of non-fulfillment
                         */
+/*
                         static ObjectPtr instantiateByClassName(const LogString& className,
                                 const Class& superClass, const ObjectPtr& defaultValue);
+*/
 
                         static ObjectPtr instantiateByKey(Properties& props,
                                 const LogString& key, const Class& superClass,

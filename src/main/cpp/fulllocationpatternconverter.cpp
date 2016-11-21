@@ -44,7 +44,7 @@ PatternConverterPtr FullLocationPatternConverter::newInstance(
 }
 
 void FullLocationPatternConverter::format(
-  const LoggingEventPtr& event,
+  const LoggingEvent* event,
   LogString& toAppendTo,
   Pool& p) const {
    append(toAppendTo, event->getLocationInformation().getFileName());

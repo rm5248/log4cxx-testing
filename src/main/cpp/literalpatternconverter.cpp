@@ -47,14 +47,14 @@ PatternConverterPtr LiteralPatternConverter::newInstance(
 }
 
 void LiteralPatternConverter::format(
-  const LoggingEventPtr& /* event */,
+  const LoggingEvent* /* event */,
   LogString& toAppendTo,
   Pool& /* p */) const {
   toAppendTo.append(literal);
  }
 
 void LiteralPatternConverter::format(
-  const ObjectPtr& /* event */,
+  const Object* /* event */,
   LogString& toAppendTo,
   Pool& /* p */)  const {
   toAppendTo.append(literal);
