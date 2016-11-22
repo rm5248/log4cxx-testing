@@ -107,32 +107,30 @@ void RollingPolicyBase::formatFileName(
 }
 
 
-PatternConverterPtr RollingPolicyBase::getIntegerPatternConverter() const {
+PatternConverter* RollingPolicyBase::getIntegerPatternConverter() const {
   for(std::vector<PatternConverterPtr>::const_iterator
            converterIter = patternConverters.begin();
       converterIter != patternConverters.end();
       converterIter++) {
-      IntegerPatternConverterPtr intPattern(*converterIter);
+      IntegerPatternConverter* intPattern = dynamic_cast<IntegerPatternConverter*>((*converterIter).get());
       if (intPattern != NULL) {
-        return *converterIter;
+        return intPattern;
       }
   }
-  PatternConverterPtr noMatch;
-  return noMatch;
+  return NULL;
 }
 
-PatternConverterPtr RollingPolicyBase::getDatePatternConverter() const {
+PatternConverter* RollingPolicyBase::getDatePatternConverter() const {
   for(std::vector<PatternConverterPtr>::const_iterator
            converterIter = patternConverters.begin();
       converterIter != patternConverters.end();
       converterIter++) {
-      DatePatternConverterPtr datePattern(*converterIter);
+      DatePatternConverter* datePattern = dynamic_cast<DatePatternConverter*>((*converterIter).get());
       if (datePattern != NULL) {
-        return *converterIter;
+        return datePattern;
       }
   }
-  PatternConverterPtr noMatch;
-  return noMatch;
+  return NULL;
 }
 
 

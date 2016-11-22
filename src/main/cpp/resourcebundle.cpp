@@ -69,8 +69,13 @@ ResourceBundlePtr ResourceBundle::getBundle(const LogString& baseName,
       // Try loading a class which implements ResourceBundle
       try
       {
-         const Class& classObj = Loader::loadClass(bundleName);
-         current = classObj.newInstance();
+         Object* instance = Loader::loadClass(bundleName).newInstance();
+         PropertyResourceBundle* rawptr_propertyResource = dynamic_cast<PropertyResourceBundle*>( instance );
+         if( rawptr_propertyResource == NULL ){
+             delete instance;
+         }else{
+             current.reset( rawptr_propertyResource );
+         }
       }
       catch(ClassNotFoundException&)
       {
@@ -89,7 +94,7 @@ ResourceBundlePtr ResourceBundle::getBundle(const LogString& baseName,
 
         try
         {
-          current = new PropertyResourceBundle(bundleStream);
+          current.reset( new PropertyResourceBundle(bundleStream) );
         }
         catch(Exception&)
         {

@@ -82,7 +82,7 @@ void PatternLayout::format(LogString& output,
 {
   std::vector<FormattingInfoPtr>::const_iterator formatterIter =
      patternFields.begin();
-  for(std::vector<LoggingEventPatternConverterPtr>::const_iterator
+  for(std::vector<PatternConverterPtr>::const_iterator
            converterIter = patternConverters.begin();
       converterIter != patternConverters.end();
       converterIter++, formatterIter++) {
@@ -117,18 +117,7 @@ void PatternLayout::activateOptions(Pool&)
                 patternFields,
                 getFormatSpecifiers());
 
-       //
-       //   strip out any pattern converters that don't handle LoggingEvents
-       //
-       //
-       for(std::vector<PatternConverterPtr>::const_iterator converterIter = converters.begin();
-           converterIter != converters.end();
-           converterIter++) {
-           LoggingEventPatternConverterPtr eventConverter(*converterIter);
-           if (eventConverter != NULL) {
-             patternConverters.push_back(eventConverter);
-           }
-       }
+       patternConverters = converters;
 }
 
 #define RULES_PUT(spec, cls) \

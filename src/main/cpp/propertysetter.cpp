@@ -31,11 +31,11 @@ using namespace log4cxx::helpers;
 using namespace log4cxx::spi;
 using namespace log4cxx::config;
 
-PropertySetter::PropertySetter(const spi::OptionHandler* obj1) : obj(obj1)
+PropertySetter::PropertySetter(spi::OptionHandler* obj1) : obj(obj1)
 {
 }
 
-void PropertySetter::setProperties(const spi::OptionHandler* obj,
+void PropertySetter::setProperties(spi::OptionHandler* obj,
      helpers::Properties& properties,
      const LogString& prefix,
      Pool& p)

@@ -67,21 +67,24 @@ void RollingFileAppenderSkeleton::activateOptions(Pool &p) {
   if (rollingPolicy == NULL) {
    FixedWindowRollingPolicy* fwrp = new FixedWindowRollingPolicy();
     fwrp->setFileNamePattern(getFile() + LOG4CXX_STR(".%i"));
-    rollingPolicy = fwrp;
+    rollingPolicy.reset( fwrp );
   }
 
   //
   //  if no explicit triggering policy and rolling policy is both.
   //
   if (triggeringPolicy == NULL) {
+/* ROBERT TODO need weak_ptr here? */
+/*
      TriggeringPolicyPtr trig(rollingPolicy);
      if (trig != NULL) {
          triggeringPolicy = trig;
      }
+*/
   }
 
   if (triggeringPolicy == NULL) {
-    triggeringPolicy = new ManualTriggeringPolicy();
+    triggeringPolicy.reset( new ManualTriggeringPolicy() );
   }
 
   {

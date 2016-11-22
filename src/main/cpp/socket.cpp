@@ -72,7 +72,7 @@ Socket::Socket(apr_socket_t* s, apr_pool_t* p) :
         if (status == APR_SUCCESS) {
             Transcoder::decode(buf, remoteip);
         }
-        address = new InetAddress(remotename, remoteip);
+        address.reset( new InetAddress(remotename, remoteip) );
     }
 }
 

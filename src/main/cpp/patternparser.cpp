@@ -157,10 +157,10 @@ void PatternParser::parse(
 
       switch (c) {
       case 0x2D: // '-'
-        formattingInfo =
+        formattingInfo.reset(
           new FormattingInfo(
             true, formattingInfo->getMinLength(),
-            formattingInfo->getMaxLength());
+            formattingInfo->getMaxLength()) );
 
         break;
 
@@ -172,10 +172,10 @@ void PatternParser::parse(
       default:
 
         if ((c >= 0x30 /* '0' */) && (c <= 0x39 /* '9' */)) {
-          formattingInfo =
+          formattingInfo.reset(
             new FormattingInfo(
               formattingInfo->isLeftAligned(), c - 0x30 /* '0' */,
-              formattingInfo->getMaxLength());
+              formattingInfo->getMaxLength()) );
           state = MIN_STATE;
         } else {
           i = finalizeConverter(
@@ -197,11 +197,11 @@ void PatternParser::parse(
       currentLiteral.append(1, c);
 
       if ((c >= 0x30 /* '0' */) && (c <= 0x39 /* '9' */)) {
-        formattingInfo =
+        formattingInfo.reset(
           new FormattingInfo(
             formattingInfo->isLeftAligned(),
             (formattingInfo->getMinLength() * 10) + (c - 0x30 /* '0' */),
-            formattingInfo->getMaxLength());
+            formattingInfo->getMaxLength()) );
       } else if (c == 0x2E /* '.' */) {
         state = DOT_STATE;
       } else {
@@ -221,10 +221,10 @@ void PatternParser::parse(
       currentLiteral.append(1, c);
 
       if ((c >= 0x30 /* '0' */) && (c <= 0x39 /* '9' */)) {
-        formattingInfo =
+        formattingInfo.reset(
           new FormattingInfo(
             formattingInfo->isLeftAligned(), formattingInfo->getMinLength(),
-            c - 0x30 /* '0' */);
+            c - 0x30 /* '0' */) );
         state = MAX_STATE;
       } else {
           LogLog::error(LOG4CXX_STR("Error in pattern, was expecting digit."));
@@ -238,10 +238,10 @@ void PatternParser::parse(
       currentLiteral.append(1, c);
 
       if ((c >= 0x30 /* '0' */) && (c <= 0x39 /* '9' */)) {
-        formattingInfo =
+        formattingInfo.reset(
           new FormattingInfo(
             formattingInfo->isLeftAligned(), formattingInfo->getMinLength(),
-            (formattingInfo->getMaxLength() * 10) + (c - 0x30 /* '0' */));
+            (formattingInfo->getMaxLength() * 10) + (c - 0x30 /* '0' */)) );
       } else {
         i = finalizeConverter(
             c, pattern, i, currentLiteral, formattingInfo,
@@ -285,9 +285,8 @@ PatternConverterPtr PatternParser::createConverter(
   }
 
   LogLog::error(LogString(LOG4CXX_STR("Unrecognized format specifier ")) + converterId);
-  ObjectPtr converterObj;
 
-  return converterObj;
+  return PatternConverterPtr();
 }
 
 int PatternParser::finalizeConverter(

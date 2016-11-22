@@ -86,7 +86,7 @@ void FixedWindowRollingPolicy::activateOptions(Pool& p) {
     maxIndex = minIndex + MAX_WINDOW_SIZE;
   }
 
-  PatternConverterPtr itc = getIntegerPatternConverter();
+  PatternConverter* itc = getIntegerPatternConverter();
 
   if (itc == NULL) {
     throw IllegalStateException();

@@ -156,7 +156,7 @@ void* LOG4CXX_THREAD_FUNC SocketAppenderSkeleton::monitor(apr_thread_t* /* threa
                         if(!socketAppender->closed) {
                             LogLog::debug(LogString(LOG4CXX_STR("Attempting connection to "))
                                 + socketAppender->address->getHostName());
-                            socket = new Socket(socketAppender->address, socketAppender->port);
+                            socket.reset( new Socket(socketAppender->address, socketAppender->port) );
                             Pool p;
                             socketAppender->setSocket(socket, p);
                             LogLog::debug(LOG4CXX_STR("Connection established. Exiting connector thread."));

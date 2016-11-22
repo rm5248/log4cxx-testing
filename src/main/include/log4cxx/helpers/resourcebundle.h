@@ -18,6 +18,8 @@
 #ifndef _LOG4CXX_HELPERS_RESOURCE_BUNDLE_H
 #define _LOG4CXX_HELPERS_RESOURCE_BUNDLE_H
 
+#include <log4cxx/helpers/object.h>
+
 namespace log4cxx
 {
         namespace helpers

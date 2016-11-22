@@ -81,7 +81,8 @@ void SocketAppender::setSocket(log4cxx::helpers::SocketPtr& socket, Pool& p)
 {
 	synchronized sync(mutex);
 
-	oos = new ObjectOutputStream(new SocketOutputStream(socket), p);
+        log4cxx::ptr::shared_ptr<OutputStream> tmp( new SocketOutputStream( socket ) );
+	oos.reset( new ObjectOutputStream( tmp, p) );
 }
 
 void SocketAppender::cleanUp(Pool& p)

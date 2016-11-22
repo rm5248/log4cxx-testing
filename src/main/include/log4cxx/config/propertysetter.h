@@ -19,6 +19,7 @@
 #define _LOG4CXX_CONFIG_PROPERTYSETTER_H
 
 #include <log4cxx/logstring.h>
+#include <log4cxx/spi/optionhandler.h>
 
 namespace log4cxx
 {
@@ -61,7 +62,7 @@ namespace log4cxx
 
                         @param obj  the object for which to set properties
                         */
-                        PropertySetter(const spi::OptionHandler* obj);
+                        PropertySetter(spi::OptionHandler* obj);
 
                         /**
                         Set the properties of an object passed as a parameter in one
@@ -73,7 +74,7 @@ namespace log4cxx
                         @param prefix Only keys having the specified prefix will be set.
                         @param p pool to use for any allocations required during call.
                         */
-                        static void setProperties(const spi::OptionHandler* obj,
+                        static void setProperties(spi::OptionHandler* obj,
                                 helpers::Properties& properties,
                                 const LogString& prefix,
                                 log4cxx::helpers::Pool& p);

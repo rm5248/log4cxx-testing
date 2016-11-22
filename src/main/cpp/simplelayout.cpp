@@ -27,7 +27,7 @@ IMPLEMENT_LOG4CXX_OBJECT(SimpleLayout)
 
 
 void SimpleLayout::format(LogString& output,
-   const spi::LoggingEventPtr& event,
+   const spi::LoggingEvent* event,
    log4cxx::helpers::Pool&) const
 {
         output.append(event->getLevel()->toString());

@@ -18,16 +18,19 @@
 #ifndef _LOG4CXX_HELPER_OPTION_CONVERTER_H
 #define _LOG4CXX_HELPER_OPTION_CONVERTER_H
 
+#include <log4cxx/log4cxx.h>
 #include <log4cxx/logstring.h>
 
 namespace log4cxx
 {
         class Level;
         class File;
+        typedef log4cxx::ptr::shared_ptr<Level> LevelPtr;
 
         namespace spi
         {
                 class LoggerRepository;
+                typedef log4cxx::ptr::shared_ptr<LoggerRepository> LoggerRepositoryPtr;
         }
 
         namespace helpers
@@ -35,6 +38,7 @@ namespace log4cxx
                 class Properties;
 
                 class Object;
+                typedef log4cxx::ptr::shared_ptr<Object> ObjectPtr;
 
                 class Class;
 

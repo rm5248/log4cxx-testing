@@ -38,6 +38,7 @@
 #include <apr_pools.h>
 #include <log4cxx/helpers/transcoder.h>
 #include <log4cxx/helpers/fileinputstream.h>
+#include <log4cxx/helpers/loader.h>
 
 #define LOG4CXX 1
 #include <log4cxx/helpers/aprinitializer.h>
@@ -95,7 +96,7 @@ void PropertyConfigurator::doConfigure(const File& configFileName,
 
        Properties props;
        try {
-          InputStreamPtr inputStream = new FileInputStream(configFileName);
+          InputStreamPtr inputStream( new FileInputStream(configFileName) );
           props.load(inputStream);
        } catch(const IOException& ie) {
           LogLog::error(((LogString) LOG4CXX_STR("Could not read configuration file ["))
@@ -193,12 +194,15 @@ void PropertyConfigurator::configureLoggerFactory(helpers::Properties& props)
                 msg += factoryClassName;
                 msg += LOG4CXX_STR("].");
                 LogLog::debug(msg);
-                loggerFactory =
-                        OptionConverter::instantiateByClassName(
-                        factoryClassName, LoggerFactory::getStaticClass(), loggerFactory);
+                Object* instance = Loader::loadClass(factoryClassName).newInstance();
+                LoggerFactory* fact = dynamic_cast<LoggerFactory*>( instance );
+                if( fact == NULL ){
+                    delete instance;
+                }
+                loggerFactory.reset( fact );
                 static const LogString FACTORY_PREFIX(LOG4CXX_STR("log4j.factory."));
         Pool p;
-                PropertySetter::setProperties(loggerFactory, props, FACTORY_PREFIX, p);
+                PropertySetter::setProperties(dynamic_cast<spi::OptionHandler*>(instance), props, FACTORY_PREFIX, p);
         }
 }
 
@@ -398,9 +402,14 @@ AppenderPtr PropertyConfigurator::parseAppender(
         LogString prefix = APPENDER_PREFIX + appenderName;
         LogString layoutPrefix = prefix + LOG4CXX_STR(".layout");
 
-        appender =
-                OptionConverter::instantiateByKey(
-                props, prefix, Appender::getStaticClass(), 0);
+        {
+        Object* instance = Loader::loadClass(appenderName).newInstance();
+        Appender* rawptr_Appender = dynamic_cast<Appender*>( instance );
+        if( rawptr_Appender == NULL ){
+            delete instance;
+        }
+        appender.reset( rawptr_Appender );
+        }
 
         if (appender == 0)
         {
@@ -416,9 +425,12 @@ AppenderPtr PropertyConfigurator::parseAppender(
         Pool p;
                 if (appender->requiresLayout())
                 {
-                        LayoutPtr layout =
-                                OptionConverter::instantiateByKey(
-                                props, layoutPrefix, Layout::getStaticClass(), 0);
+                       Object* instance = Loader::loadClass(layoutPrefix).newInstance();
+                       Layout* rawptr_Layout = dynamic_cast<Layout*>( instance );
+                       if( rawptr_Layout == NULL ){
+                           delete instance;
+                       }
+                       LayoutPtr layout( rawptr_Layout );
 
                         if (layout != 0)
                         {
@@ -427,14 +439,14 @@ AppenderPtr PropertyConfigurator::parseAppender(
                                     + appenderName + LOG4CXX_STR("\"."));
 
                                 //configureOptionHandler(layout, layoutPrefix + ".", props);
-                                PropertySetter::setProperties(layout, props, layoutPrefix + LOG4CXX_STR("."), p);
+                                PropertySetter::setProperties(dynamic_cast<spi::OptionHandler*>(instance), props, layoutPrefix + LOG4CXX_STR("."), p);
                 LogLog::debug((LogString) LOG4CXX_STR("End of parsing for \"")
                     + appenderName +  LOG4CXX_STR("\"."));
                         }
                 }
 
                 //configureOptionHandler((OptionHandler) appender, prefix + _T("."), props);
-                PropertySetter::setProperties(appender, props, prefix + LOG4CXX_STR("."), p);
+                PropertySetter::setProperties(dynamic_cast<spi::OptionHandler*>(appender.get()), props, prefix + LOG4CXX_STR("."), p);
         LogLog::debug((LogString) LOG4CXX_STR("Parsed \"")
              + appenderName + LOG4CXX_STR("\" options."));
         }

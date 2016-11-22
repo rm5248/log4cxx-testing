@@ -113,8 +113,8 @@ namespace log4cxx {
           void formatFileName(const log4cxx::helpers::Object* obj,
              LogString& buf, log4cxx::helpers::Pool& p) const;
 
-           log4cxx::pattern::PatternConverterPtr getIntegerPatternConverter() const;
-           log4cxx::pattern::PatternConverterPtr getDatePatternConverter() const;
+           log4cxx::pattern::PatternConverter* getIntegerPatternConverter() const;
+           log4cxx::pattern::PatternConverter* getDatePatternConverter() const;
 
 
        };
