@@ -143,7 +143,7 @@ void ODBCAppender::append(const spi::LoggingEventPtr& event, log4cxx::helpers::P
 #endif
 }
 
-LogString ODBCAppender::getLogStatement(const spi::LoggingEvent* event, log4cxx::helpers::Pool& p) const
+LogString ODBCAppender::getLogStatement(const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& p) const
 {
    LogString sbuf;
    getLayout()->format(sbuf, event, p);
@@ -301,8 +301,7 @@ void ODBCAppender::flushBuffer(Pool& p)
    {
       try
       {
-         const LoggingEvent* logEvent = (*i).get();
-         LogString sql = getLogStatement(logEvent, p);
+         LogString sql = getLogStatement(*i, p);
          execute(sql, p);
       }
       catch (SQLException& e)

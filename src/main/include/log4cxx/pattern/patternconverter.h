@@ -66,13 +66,13 @@ protected:
   PatternConverter(const LogString& name,
          const LogString& style);
 
-  virtual ~PatternConverter();
-
 public:
   DECLARE_LOG4CXX_PATTERN(PatternConverter);
   BEGIN_LOG4CXX_CAST_MAP();
           LOG4CXX_CAST_ENTRY(PatternConverter);
   END_LOG4CXX_CAST_MAP();
+
+  virtual ~PatternConverter();
 
   /**
    * Formats an object into a string buffer.

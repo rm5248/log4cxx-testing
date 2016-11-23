@@ -396,7 +396,7 @@ namespace log4cxx
 		 * Produces a formatted string as specified by the conversion pattern.
 		 */
 		virtual void format(	LogString& output,
-								const spi::LoggingEvent* event,
+								const spi::LoggingEventPtr& event,
 								log4cxx::helpers::Pool& pool) const;
 
 	protected:

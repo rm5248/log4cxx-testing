@@ -61,7 +61,7 @@ void HTMLLayout::setOption(const LogString& option,
 }
 
 void HTMLLayout::format(LogString& output,
-     const spi::LoggingEvent* event,
+     const spi::LoggingEventPtr& event,
      Pool& p) const
 {
         output.append(LOG4CXX_EOL);

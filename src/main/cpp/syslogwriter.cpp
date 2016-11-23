@@ -44,7 +44,7 @@ SyslogWriter::SyslogWriter(const LogString& syslogHost1, int syslogHostPort1)
 
    try
    {
-      this->ds = new DatagramSocket();
+      this->ds.reset( new DatagramSocket() );
    }
    catch (SocketException& e)
    {

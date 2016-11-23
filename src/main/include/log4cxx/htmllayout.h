@@ -103,7 +103,7 @@ namespace log4cxx
                 virtual void setOption(const LogString& option, const LogString& value);
 
                 virtual void format(LogString& output,
-                     const spi::LoggingEvent* event, log4cxx::helpers::Pool& pool) const;
+                     const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& pool) const;
 
                 /**
                 Append appropriate HTML headers.

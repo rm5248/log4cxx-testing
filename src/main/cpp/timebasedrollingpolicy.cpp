@@ -171,7 +171,7 @@ void TimeBasedRollingPolicy::activateOptions(log4cxx::helpers::Pool& pool) {
     apr_time_t n = apr_time_now();
     LogString buf;
     ObjectPtr obj(new Date(n));
-    formatFileName(obj, buf, pool);
+    formatFileName(obj.get(), buf, pool);
     lastFileName = buf;
 
 #ifdef LOG4CXX_MULTI_PROCESS
@@ -229,19 +229,19 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::initialize(
 
   LogString buf;
   ObjectPtr obj(new Date(currentFile.exists(pool) ? currentFile.lastModified(pool) : n));
-  formatFileName(obj, buf, pool);
+  formatFileName(obj.get(), buf, pool);
   lastFileName = buf;
 
   ActionPtr noAction;
 
   if (currentActiveFile.length() > 0) {
-    return new RolloverDescription(
-      currentActiveFile, append, noAction, noAction);
+    return RolloverDescriptionPtr( new RolloverDescription(
+      currentActiveFile, append, noAction, noAction) );
   } else {
       bRefreshCurFile = true;
-    return new RolloverDescription(
+    return RolloverDescriptionPtr( new RolloverDescription(
       lastFileName.substr(0, lastFileName.length() - suffixLength), append,
-      noAction, noAction);
+      noAction, noAction) );
   }
 }
 
@@ -255,7 +255,7 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::rollover(
 
   LogString buf;
   ObjectPtr obj(new Date(n));
-  formatFileName(obj, buf, pool);
+  formatFileName(obj.get(), buf, pool);
 
   LogString newFileName(buf);
 
@@ -292,22 +292,22 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::rollover(
   //        active file name is not following file pattern
   //        and requires a rename plus maintaining the same name
   if (currentActiveFile != lastBaseName) {
-    renameAction =
+    renameAction.reset(
       new FileRenameAction(
-        File().setPath(currentActiveFile), File().setPath(lastBaseName), true);
+        File().setPath(currentActiveFile), File().setPath(lastBaseName), true) );
     nextActiveFile = currentActiveFile;
   }
 
   if (suffixLength == 3) {
-    compressAction =
+    compressAction.reset( 
       new GZCompressAction(
-        File().setPath(lastBaseName), File().setPath(lastFileName), true);
+        File().setPath(lastBaseName), File().setPath(lastFileName), true) );
   }
 
   if (suffixLength == 4) {
-    compressAction =
+    compressAction.reset(
       new ZipCompressAction(
-        File().setPath(lastBaseName), File().setPath(lastFileName), true);
+        File().setPath(lastBaseName), File().setPath(lastFileName), true) );
   }
 
 #ifdef LOG4CXX_MULTI_PROCESS
@@ -324,7 +324,7 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::rollover(
   lastFileName = newFileName;
 #endif
 
-  return new RolloverDescription(nextActiveFile, append, renameAction, compressAction);
+  return RolloverDescriptionPtr( new RolloverDescription(nextActiveFile, append, renameAction, compressAction) );
 }
 
 bool TimeBasedRollingPolicy::isTriggeringEvent(

@@ -77,7 +77,7 @@ void PatternLayout::setConversionPattern(const LogString& pattern)
 }
 
 void PatternLayout::format(LogString& output,
-      const spi::LoggingEvent* event,
+      const spi::LoggingEventPtr& event,
       Pool& pool) const
 {
   std::vector<FormattingInfoPtr>::const_iterator formatterIter =
@@ -87,7 +87,7 @@ void PatternLayout::format(LogString& output,
       converterIter != patternConverters.end();
       converterIter++, formatterIter++) {
       int startField = output.length();
-      (*converterIter)->format(event, output, pool);
+      (*converterIter)->format(event.get(), output, pool);
       (*formatterIter)->format(startField, output);
   }
 

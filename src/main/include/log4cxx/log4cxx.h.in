@@ -64,6 +64,7 @@ namespace log4cxx{
 
 #define LOG4CXX_EXPORT
 #define LOG4CXX_PTR_DEF(T) typedef log4cxx::ptr::shared_ptr<T> T##Ptr
+#define LOG4CXX_WEAKPTR_DEF(T) typedef log4cxx::ptr::weak_ptr<T> T##WeakPtr
 #define LOG4CXX_LIST_DEF(N, T) typedef std::vector<T> N
 
 #endif

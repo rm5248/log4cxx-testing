@@ -120,7 +120,7 @@ namespace log4cxx
                         * in conformance with the log4cxx.dtd.
                         **/
                         virtual void format(LogString& output,
-                           const spi::LoggingEvent* event,
+                           const spi::LoggingEventPtr& event,
                            log4cxx::helpers::Pool& p) const;
 
                         /**

@@ -44,6 +44,8 @@ namespace log4cxx
         LOG4CXX_PTR_DEF(LoggerRepository);
         class LoggerFactory;
         LOG4CXX_PTR_DEF(LoggerFactory);
+        class LoggingEvent;
+        LOG4CXX_PTR_DEF(LoggingEvent);
     }
 
     class Logger;

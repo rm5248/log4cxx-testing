@@ -167,7 +167,7 @@ namespace log4cxx
         @param pool pool used to allocate memory needed during formatting.
         */
         virtual void format(LogString& output,
-            const spi::LoggingEvent* event, log4cxx::helpers::Pool& pool) const;
+            const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& pool) const;
 
         /**
         The TTCCLayout does not handle the throwable contained within

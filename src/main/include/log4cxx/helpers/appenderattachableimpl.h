@@ -33,7 +33,7 @@ namespace log4cxx
     namespace spi
     {
         class LoggingEvent;
-        typedef log4cxx::ptr::shared_ptr<LoggingEvent> LoggingEventPtr;
+        LOG4CXX_PTR_DEF(LoggingEvent);
     }
 
     namespace helpers
