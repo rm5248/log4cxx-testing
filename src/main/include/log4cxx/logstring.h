@@ -33,7 +33,7 @@
 
 #if LOG4CXX_CFSTRING_API
 extern "C" {
-typedef const struct __CFString* CFStringRef;
+    typedef const struct __CFString* CFStringRef;
 }
 #endif
 
@@ -42,29 +42,29 @@ typedef const struct __CFString* CFStringRef;
 namespace log4cxx {
 
 #if LOG4CXX_LOGCHAR_IS_UNICHAR || LOG4CXX_UNICHAR_API || LOG4CXX_CFSTRING_API
-typedef unsigned short UniChar;
+    typedef unsigned short UniChar;
 #endif
 
 #if LOG4CXX_LOGCHAR_IS_WCHAR
-   typedef wchar_t logchar;
+    typedef wchar_t logchar;
 #define LOG4CXX_STR(str) L ## str
 #endif
 
 #if LOG4CXX_LOGCHAR_IS_UTF8
-   typedef char logchar;
+    typedef char logchar;
 #if LOG4CXX_CHARSET_EBCDIC
 #define LOG4CXX_STR(str) log4cxx::helpers::Transcoder::decode(str)
-#else   
+#else
 #define LOG4CXX_STR(str) str
 #endif
 #endif
 
 #if LOG4CXX_LOGCHAR_IS_UNICHAR
-   typedef UniChar logchar;
-#define LOG4CXX_STR(str) log4cxx::helpers::Transcoder::decode(str)   
+    typedef UniChar logchar;
+#define LOG4CXX_STR(str) log4cxx::helpers::Transcoder::decode(str)
 #endif
 
-   typedef std::basic_string<logchar> LogString;
+    typedef std::basic_string<logchar> LogString;
 
 
 }

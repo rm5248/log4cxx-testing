@@ -31,11 +31,11 @@ OutputStream::~OutputStream() {
 }
 
 #ifdef LOG4CXX_MULTI_PROCESS
-apr_file_t* OutputStream::getFilePtr(){
+apr_file_t* OutputStream::getFilePtr() {
     throw std::logic_error("getFilePtr must be implemented in the derived class that you are using");
 }
 
-OutputStream& OutputStream::getFileOutPutStreamPtr(){
+OutputStream& OutputStream::getFileOutPutStreamPtr() {
     throw std::logic_error("getFileOutPutStreamPtr must be implemented in the derived class that you are using");
 }
 #endif

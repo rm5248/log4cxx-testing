@@ -60,3 +60,7 @@ Makefile.in
 
 src/main/include/log4cxx/log4cxx.h
 src/main/include/log4cxx/private/log4cxx_private.h
+
+src/main/cpp/.libs
+src/main/cpp/*.a
+src/main/cpp/*.la

@@ -26,34 +26,31 @@
 #include <log4cxx/helpers/object.h>
 #include <vector>
 
-namespace log4cxx
-{
-       class Logger;
-      class Appender;
+namespace log4cxx {
+    class Logger;
+    class Appender;
 
 
-        namespace spi
-        {
+    namespace spi {
 
-                /** Listen to events occuring within a Hierarchy.*/
-                class LOG4CXX_EXPORT HierarchyEventListener :
-                        public virtual log4cxx::helpers::Object
-                {
-                public:
-                        virtual ~HierarchyEventListener() {}
+        /** Listen to events occuring within a Hierarchy.*/
+        class LOG4CXX_EXPORT HierarchyEventListener :
+            public virtual log4cxx::helpers::Object {
+            public:
+                virtual ~HierarchyEventListener() {}
 
-                        virtual void addAppenderEvent(
-                     const Logger* logger, 
-                     const Appender* appender) = 0;
+                virtual void addAppenderEvent(
+                    const Logger* logger,
+                    const Appender* appender) = 0;
 
-                        virtual void removeAppenderEvent(
-                     const Logger* logger, 
-                     const Appender* appender) = 0;
-                };
-                LOG4CXX_PTR_DEF(HierarchyEventListener);
-                LOG4CXX_LIST_DEF(HierarchyEventListenerList, HierarchyEventListenerPtr);
+                virtual void removeAppenderEvent(
+                    const Logger* logger,
+                    const Appender* appender) = 0;
+        };
+        LOG4CXX_PTR_DEF(HierarchyEventListener);
+        LOG4CXX_LIST_DEF(HierarchyEventListenerList, HierarchyEventListenerPtr);
 
-        }  // namespace spi
+    }  // namespace spi
 } // namespace log4cxx
 
 #if defined(_MSC_VER)

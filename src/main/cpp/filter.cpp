@@ -26,7 +26,7 @@ Filter::Filter() : next() {
 }
 
 FilterPtr Filter::getNext() const {
-   return next;
+    return next;
 }
 
 void Filter::setNext(const FilterPtr& newNext) {

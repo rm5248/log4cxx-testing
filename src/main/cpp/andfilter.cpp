@@ -29,16 +29,15 @@ IMPLEMENT_LOG4CXX_OBJECT(AndFilter)
 
 
 AndFilter::AndFilter()
-: headFilter(), tailFilter(), acceptOnMatch(true)
-{
+    : headFilter(), tailFilter(), acceptOnMatch(true) {
 }
 
 void AndFilter::addFilter(const FilterPtr& filter) {
     if (headFilter == NULL) {
-      headFilter = filter;
-      tailFilter = filter;
+        headFilter = filter;
+        tailFilter = filter;
     } else {
-      tailFilter->setNext(filter);
+        tailFilter->setNext(filter);
     }
 }
 
@@ -48,20 +47,23 @@ void AndFilter::setAcceptOnMatch(bool newValue) {
 }
 
 Filter::FilterDecision AndFilter::decide(
-   const spi::LoggingEventPtr& event) const
-{
+    const spi::LoggingEventPtr& event) const {
     bool accepted = true;
     FilterPtr f(headFilter);
+
     while (f != NULL) {
-      accepted = accepted && (Filter::ACCEPT == f->decide(event));
-      f = f->getNext();
+        accepted = accepted && (Filter::ACCEPT == f->decide(event));
+        f = f->getNext();
     }
+
     if (accepted) {
-      if(acceptOnMatch) {
-        return Filter::ACCEPT;
-      }
-       return Filter::DENY;
+        if(acceptOnMatch) {
+            return Filter::ACCEPT;
+        }
+
+        return Filter::DENY;
     }
+
     return Filter::NEUTRAL;
 }
 

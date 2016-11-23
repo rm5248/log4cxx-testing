@@ -31,30 +31,28 @@
 #include <log4cxx/spi/hierarchyeventlistener.h>
 #include <log4cxx/helpers/pool.h>
 
-namespace log4cxx
-{
-        /**
-        This class is specialized in retrieving loggers by name and also
-        maintaining the logger hierarchy.
+namespace log4cxx {
+    /**
+    This class is specialized in retrieving loggers by name and also
+    maintaining the logger hierarchy.
 
-        <p><em>The casual user does not have to deal with this class
-        directly.</em>
+    <p><em>The casual user does not have to deal with this class
+    directly.</em>
 
-        <p>The structure of the logger hierarchy is maintained by the
-        #getLogger method. The hierarchy is such that children link
-        to their parent but parents do not have any pointers to their
-        children. Moreover, loggers can be instantiated in any order, in
-        particular descendant before ancestor.
+    <p>The structure of the logger hierarchy is maintained by the
+    #getLogger method. The hierarchy is such that children link
+    to their parent but parents do not have any pointers to their
+    children. Moreover, loggers can be instantiated in any order, in
+    particular descendant before ancestor.
 
-        <p>In case a descendant is created before a particular ancestor,
-        then it creates a provision node for the ancestor and adds itself
-        to the provision node. Other descendants of the same ancestor add
-        themselves to the previously created provision node.
-        */
-        class LOG4CXX_EXPORT Hierarchy :
-                public virtual spi::LoggerRepository,
-                public virtual helpers::Object
-        {
+    <p>In case a descendant is created before a particular ancestor,
+    then it creates a provision node for the ancestor and adds itself
+    to the provision node. Other descendants of the same ancestor add
+    themselves to the previously created provision node.
+    */
+    class LOG4CXX_EXPORT Hierarchy :
+        public virtual spi::LoggerRepository,
+        public virtual helpers::Object {
         private:
             log4cxx::helpers::Pool pool;
             log4cxx::helpers::Mutex mutex;
@@ -80,7 +78,7 @@ namespace log4cxx
         public:
             DECLARE_ABSTRACT_LOG4CXX_OBJECT(Hierarchy)
             BEGIN_LOG4CXX_CAST_MAP()
-                LOG4CXX_CAST_ENTRY(spi::LoggerRepository)
+            LOG4CXX_CAST_ENTRY(spi::LoggerRepository)
             END_LOG4CXX_CAST_MAP()
 
             /**
@@ -129,7 +127,7 @@ namespace log4cxx
             void fireAddAppenderEvent(const Logger* logger, const Appender* appender);
 
             void fireRemoveAppenderEvent(const Logger* logger,
-                    const Appender* appender) const;
+                                         const Appender* appender) const;
 
             /**
             Returns a Level representation of the <code>enable</code>
@@ -164,7 +162,7 @@ namespace log4cxx
 
             */
             LoggerPtr getLogger(const LogString& name,
-                   const spi::LoggerFactoryPtr& factory);
+                                const spi::LoggerFactoryPtr& factory);
 
             /**
             Returns all the currently defined loggers in this hierarchy as
@@ -267,7 +265,7 @@ namespace log4cxx
             Hierarchy& operator=(const Hierarchy&);
 
             void updateChildren(ProvisionNode& pn, LoggerPtr logger);
-        };
+    };
 
 }  //namespace log4cxx
 

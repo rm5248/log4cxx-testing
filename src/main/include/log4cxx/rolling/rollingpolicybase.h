@@ -41,83 +41,85 @@ namespace log4cxx {
          * Implements methods common to most, it not all, rolling
          * policies.
          *
-         * 
-         * 
+         *
+         *
          */
         class LOG4CXX_EXPORT RollingPolicyBase :
-           public virtual RollingPolicy,
-           public virtual helpers::Object {
-        protected:
-          DECLARE_ABSTRACT_LOG4CXX_OBJECT(RollingPolicyBase)
-          BEGIN_LOG4CXX_CAST_MAP()
-                  LOG4CXX_CAST_ENTRY(RollingPolicy)
-                  LOG4CXX_CAST_ENTRY(spi::OptionHandler)
-          END_LOG4CXX_CAST_MAP()
+            public virtual RollingPolicy,
+            public virtual helpers::Object {
+            protected:
+                DECLARE_ABSTRACT_LOG4CXX_OBJECT(RollingPolicyBase)
+                BEGIN_LOG4CXX_CAST_MAP()
+                LOG4CXX_CAST_ENTRY(RollingPolicy)
+                LOG4CXX_CAST_ENTRY(spi::OptionHandler)
+                END_LOG4CXX_CAST_MAP()
 
 
-          private:
-          /**
-           * File name pattern converters.
-           */
-          PatternConverterList patternConverters;
+            private:
+                /**
+                 * File name pattern converters.
+                 */
+                PatternConverterList patternConverters;
 
-          /**
-           * File name field specifiers.
-           */
-          FormattingInfoList patternFields;
+                /**
+                 * File name field specifiers.
+                 */
+                FormattingInfoList patternFields;
 
-          /**
-           * File name pattern.
-           */
-          LogString fileNamePatternStr;
-
-
-          public:
-          RollingPolicyBase();
-          virtual ~RollingPolicyBase();
-          virtual void activateOptions(log4cxx::helpers::Pool& p) = 0;
-          virtual log4cxx::pattern::PatternMap getFormatSpecifiers() const = 0;
-
-          virtual void setOption(const LogString& option,
-               const LogString& value);
-
-          /**
-           * Set file name pattern.
-           * @param fnp file name pattern.
-           */
-           void setFileNamePattern(const LogString& fnp);
-
-           /**
-            * Get file name pattern.
-            * @return file name pattern.
-            */
-           LogString getFileNamePattern() const;
+                /**
+                 * File name pattern.
+                 */
+                LogString fileNamePatternStr;
 
 
-#ifdef LOG4CXX_MULTI_PROCESS                
-           PatternConverterList getPatternConverterList() { return patternConverters; }
+            public:
+                RollingPolicyBase();
+                virtual ~RollingPolicyBase();
+                virtual void activateOptions(log4cxx::helpers::Pool& p) = 0;
+                virtual log4cxx::pattern::PatternMap getFormatSpecifiers() const = 0;
+
+                virtual void setOption(const LogString& option,
+                                       const LogString& value);
+
+                /**
+                 * Set file name pattern.
+                 * @param fnp file name pattern.
+                 */
+                void setFileNamePattern(const LogString& fnp);
+
+                /**
+                 * Get file name pattern.
+                 * @return file name pattern.
+                 */
+                LogString getFileNamePattern() const;
+
+
+#ifdef LOG4CXX_MULTI_PROCESS
+                PatternConverterList getPatternConverterList() {
+                    return patternConverters;
+                }
 #endif
-           protected:
-           /**
-            *   Parse file name pattern.
-            */
-           void parseFileNamePattern();
+            protected:
+                /**
+                 *   Parse file name pattern.
+                 */
+                void parseFileNamePattern();
 
-          /**
-           * Format file name.
-           *
-           * @param obj object to be evaluted in formatting, may not be null.
-           * @param buf string buffer to which formatted file name is appended, may not be null.
-           * @param p memory pool.
-           */
-          void formatFileName(const log4cxx::helpers::Object* obj,
-             LogString& buf, log4cxx::helpers::Pool& p) const;
+                /**
+                 * Format file name.
+                 *
+                 * @param obj object to be evaluted in formatting, may not be null.
+                 * @param buf string buffer to which formatted file name is appended, may not be null.
+                 * @param p memory pool.
+                 */
+                void formatFileName(const log4cxx::helpers::Object* obj,
+                                    LogString& buf, log4cxx::helpers::Pool& p) const;
 
-           log4cxx::pattern::PatternConverter* getIntegerPatternConverter() const;
-           log4cxx::pattern::PatternConverter* getDatePatternConverter() const;
+                log4cxx::pattern::PatternConverter* getIntegerPatternConverter() const;
+                log4cxx::pattern::PatternConverter* getDatePatternConverter() const;
 
 
-       };
+        };
     }
 }
 

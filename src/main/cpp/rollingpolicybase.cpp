@@ -43,45 +43,45 @@ RollingPolicyBase::~RollingPolicyBase() {
 }
 
 void RollingPolicyBase::activateOptions(log4cxx::helpers::Pool& /* pool */) {
-  if (fileNamePatternStr.length() > 0) {
-    parseFileNamePattern();
-  } else {
-    LogString msg(LOG4CXX_STR("The FileNamePattern option must be set before using FixedWindowRollingPolicy."));
-    LogString ref1(LOG4CXX_STR("See also http://logging.apache.org/log4j/codes.html#tbr_fnp_not_set"));
-    LogLog::warn(msg);
-    LogLog::warn(ref1);
-    throw IllegalStateException();
-  }
+    if (fileNamePatternStr.length() > 0) {
+        parseFileNamePattern();
+    } else {
+        LogString msg(LOG4CXX_STR("The FileNamePattern option must be set before using FixedWindowRollingPolicy."));
+        LogString ref1(LOG4CXX_STR("See also http://logging.apache.org/log4j/codes.html#tbr_fnp_not_set"));
+        LogLog::warn(msg);
+        LogLog::warn(ref1);
+        throw IllegalStateException();
+    }
 }
 
 
 void RollingPolicyBase::setOption(const LogString& option, const LogString& value) {
-  if (StringHelper::equalsIgnoreCase(option,
-       LOG4CXX_STR("FILENAMEPATTERN"),
-       LOG4CXX_STR("filenamepattern"))) {
-       fileNamePatternStr = value;
-  }
+    if (StringHelper::equalsIgnoreCase(option,
+                                       LOG4CXX_STR("FILENAMEPATTERN"),
+                                       LOG4CXX_STR("filenamepattern"))) {
+        fileNamePatternStr = value;
+    }
 }
 
 void RollingPolicyBase::setFileNamePattern(const LogString& fnp) {
-  fileNamePatternStr = fnp;
+    fileNamePatternStr = fnp;
 }
 
 
 LogString RollingPolicyBase::getFileNamePattern() const {
-  return fileNamePatternStr;
+    return fileNamePatternStr;
 }
 
 /**
  *   Parse file name pattern.
  */
 void RollingPolicyBase::parseFileNamePattern() {
-  patternConverters.erase(patternConverters.begin(), patternConverters.end());
-  patternFields.erase(patternFields.begin(), patternFields.end());
-  PatternParser::parse(fileNamePatternStr,
-          patternConverters,
-          patternFields,
-          getFormatSpecifiers());
+    patternConverters.erase(patternConverters.begin(), patternConverters.end());
+    patternFields.erase(patternFields.begin(), patternFields.end());
+    PatternParser::parse(fileNamePatternStr,
+                         patternConverters,
+                         patternFields,
+                         getFormatSpecifiers());
 }
 
 /**
@@ -91,15 +91,16 @@ void RollingPolicyBase::parseFileNamePattern() {
  * @param buf string buffer to which formatted file name is appended, may not be null.
  */
 void RollingPolicyBase::formatFileName(
-  const Object* obj,
-  LogString& toAppendTo,
-  Pool& pool) const {
+    const Object* obj,
+    LogString& toAppendTo,
+    Pool& pool) const {
     std::vector<FormattingInfoPtr>::const_iterator formatterIter =
-       patternFields.begin();
+        patternFields.begin();
+
     for(std::vector<PatternConverterPtr>::const_iterator
-             converterIter = patternConverters.begin();
-        converterIter != patternConverters.end();
-        converterIter++, formatterIter++) {
+            converterIter = patternConverters.begin();
+            converterIter != patternConverters.end();
+            converterIter++, formatterIter++) {
         int startField = toAppendTo.length();
         (*converterIter)->format(obj, toAppendTo, pool);
         (*formatterIter)->format(startField, toAppendTo);
@@ -108,29 +109,33 @@ void RollingPolicyBase::formatFileName(
 
 
 PatternConverter* RollingPolicyBase::getIntegerPatternConverter() const {
-  for(std::vector<PatternConverterPtr>::const_iterator
-           converterIter = patternConverters.begin();
-      converterIter != patternConverters.end();
-      converterIter++) {
-      IntegerPatternConverter* intPattern = dynamic_cast<IntegerPatternConverter*>((*converterIter).get());
-      if (intPattern != NULL) {
-        return intPattern;
-      }
-  }
-  return NULL;
+    for(std::vector<PatternConverterPtr>::const_iterator
+            converterIter = patternConverters.begin();
+            converterIter != patternConverters.end();
+            converterIter++) {
+        IntegerPatternConverter* intPattern = dynamic_cast<IntegerPatternConverter*>((*converterIter).get());
+
+        if (intPattern != NULL) {
+            return intPattern;
+        }
+    }
+
+    return NULL;
 }
 
 PatternConverter* RollingPolicyBase::getDatePatternConverter() const {
-  for(std::vector<PatternConverterPtr>::const_iterator
-           converterIter = patternConverters.begin();
-      converterIter != patternConverters.end();
-      converterIter++) {
-      DatePatternConverter* datePattern = dynamic_cast<DatePatternConverter*>((*converterIter).get());
-      if (datePattern != NULL) {
-        return datePattern;
-      }
-  }
-  return NULL;
+    for(std::vector<PatternConverterPtr>::const_iterator
+            converterIter = patternConverters.begin();
+            converterIter != patternConverters.end();
+            converterIter++) {
+        DatePatternConverter* datePattern = dynamic_cast<DatePatternConverter*>((*converterIter).get());
+
+        if (datePattern != NULL) {
+            return datePattern;
+        }
+    }
+
+    return NULL;
 }
 
 

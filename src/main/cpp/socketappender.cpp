@@ -44,88 +44,71 @@ int SocketAppender::DEFAULT_PORT				= 4560;
 int SocketAppender::DEFAULT_RECONNECTION_DELAY	= 30000;
 
 SocketAppender::SocketAppender()
-: SocketAppenderSkeleton(DEFAULT_PORT, DEFAULT_RECONNECTION_DELAY)
-{
+    : SocketAppenderSkeleton(DEFAULT_PORT, DEFAULT_RECONNECTION_DELAY) {
 }
 
 SocketAppender::SocketAppender(InetAddressPtr& address1, int port1)
-: SocketAppenderSkeleton(address1, port1, DEFAULT_RECONNECTION_DELAY)
-{
-	Pool p;
-	activateOptions(p);
+    : SocketAppenderSkeleton(address1, port1, DEFAULT_RECONNECTION_DELAY) {
+    Pool p;
+    activateOptions(p);
 }
 
 SocketAppender::SocketAppender(const LogString& host, int port1)
-: SocketAppenderSkeleton(host, port1, DEFAULT_RECONNECTION_DELAY)
-{
-	Pool p;
-	activateOptions(p);
+    : SocketAppenderSkeleton(host, port1, DEFAULT_RECONNECTION_DELAY) {
+    Pool p;
+    activateOptions(p);
 }
 
-SocketAppender::~SocketAppender()
-{
-	finalize();
+SocketAppender::~SocketAppender() {
+    finalize();
 }
 
-int SocketAppender::getDefaultDelay() const
-{
-	return DEFAULT_RECONNECTION_DELAY;
+int SocketAppender::getDefaultDelay() const {
+    return DEFAULT_RECONNECTION_DELAY;
 }
 
-int SocketAppender::getDefaultPort() const
-{
-	return DEFAULT_PORT;
+int SocketAppender::getDefaultPort() const {
+    return DEFAULT_PORT;
 }
 
-void SocketAppender::setSocket(log4cxx::helpers::SocketPtr& socket, Pool& p)
-{
-	synchronized sync(mutex);
+void SocketAppender::setSocket(log4cxx::helpers::SocketPtr& socket, Pool& p) {
+    synchronized sync(mutex);
 
-        log4cxx::ptr::shared_ptr<OutputStream> tmp( new SocketOutputStream( socket ) );
-	oos.reset( new ObjectOutputStream( tmp, p) );
+    log4cxx::ptr::shared_ptr<OutputStream> tmp( new SocketOutputStream( socket ) );
+    oos.reset( new ObjectOutputStream( tmp, p) );
 }
 
-void SocketAppender::cleanUp(Pool& p)
-{
-	if (oos == 0)
-	{
-		return;
-	}
+void SocketAppender::cleanUp(Pool& p) {
+    if (oos == 0) {
+        return;
+    }
 
-	try
-	{
-		oos->close(p);
-		oos = 0;
-	}
-	catch(std::exception& e)
-	{}
+    try {
+        oos->close(p);
+        oos = 0;
+    } catch(std::exception& e) {
+    }
 }
 
-void SocketAppender::append(const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& p)
-{
-	if (oos == 0)
-	{
-		return;
-	}
+void SocketAppender::append(const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& p) {
+    if (oos == 0) {
+        return;
+    }
 
-	LogString ndcVal;
-	event->getNDC(ndcVal);
-	event->getThreadName();
-	event->getMDCCopy();
+    LogString ndcVal;
+    event->getNDC(ndcVal);
+    event->getThreadName();
+    event->getMDCCopy();
 
-	try
-	{
-		event->write(*oos, p);
-		oos->reset(p);
-	}
-	catch(std::exception& e)
-	{
-		oos = 0;
-		LogLog::warn(LOG4CXX_STR("Detected problem with connection: "), e);
+    try {
+        event->write(*oos, p);
+        oos->reset(p);
+    } catch(std::exception& e) {
+        oos = 0;
+        LogLog::warn(LOG4CXX_STR("Detected problem with connection: "), e);
 
-		if (getReconnectionDelay() > 0)
-		{
-			fireConnector();
-		}
-	}
+        if (getReconnectionDelay() > 0) {
+            fireConnector();
+        }
+    }
 }

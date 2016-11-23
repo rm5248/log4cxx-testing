@@ -54,7 +54,7 @@ IMPLEMENT_LOG4CXX_OBJECT(RollingFileAppender)
 /**
  * Construct a new instance.
  */
-RollingFileAppenderSkeleton::RollingFileAppenderSkeleton() : _event(NULL){
+RollingFileAppenderSkeleton::RollingFileAppenderSkeleton() : _event(NULL) {
 }
 
 RollingFileAppender::RollingFileAppender() {
@@ -64,82 +64,85 @@ RollingFileAppender::RollingFileAppender() {
  * Prepare instance of use.
  */
 void RollingFileAppenderSkeleton::activateOptions(Pool &p) {
-  if (rollingPolicy == NULL) {
-   FixedWindowRollingPolicy* fwrp = new FixedWindowRollingPolicy();
-    fwrp->setFileNamePattern(getFile() + LOG4CXX_STR(".%i"));
-    rollingPolicy.reset( fwrp );
-  }
-
-  //
-  //  if no explicit triggering policy and rolling policy is both.
-  //
-  if (triggeringPolicy == NULL) {
-/* ROBERT TODO need weak_ptr here? */
-/*
-     TriggeringPolicyPtr trig(rollingPolicy);
-     if (trig != NULL) {
-         triggeringPolicy = trig;
-     }
-*/
-  }
-
-  if (triggeringPolicy == NULL) {
-    triggeringPolicy.reset( new ManualTriggeringPolicy() );
-  }
-
-  {
-     synchronized sync(mutex);
-     triggeringPolicy->activateOptions(p);
-     rollingPolicy->activateOptions(p);
-
-     try {
-      RolloverDescriptionPtr rollover1 =
-        rollingPolicy->initialize(getFile(), getAppend(), p);
-
-      if (rollover1 != NULL) {
-        ActionPtr syncAction(rollover1->getSynchronous());
-
-        if (syncAction != NULL) {
-          syncAction->execute(p);
-        }
-
-        setFile(rollover1->getActiveFileName());
-        setAppend(rollover1->getAppend());
-
-        //
-        //  async action not yet implemented
-        //
-        ActionPtr asyncAction(rollover1->getAsynchronous());
-        if (asyncAction != NULL) {
-            asyncAction->execute(p);
-        }
-      }
-
-      File activeFile;
-      activeFile.setPath(getFile());
-
-      if (getAppend()) {
-        fileLength = activeFile.length(p);
-      } else {
-        fileLength = 0;
-      }
-
-      FileAppender::activateOptions(p);
-    } catch (std::exception& ex) {
-      LogLog::warn(
-         LogString(LOG4CXX_STR("Exception will initializing RollingFileAppender named "))
-             + getName());
+    if (rollingPolicy == NULL) {
+        FixedWindowRollingPolicy* fwrp = new FixedWindowRollingPolicy();
+        fwrp->setFileNamePattern(getFile() + LOG4CXX_STR(".%i"));
+        rollingPolicy.reset( fwrp );
     }
-  }
+
+    //
+    //  if no explicit triggering policy and rolling policy is both.
+    //
+    if (triggeringPolicy == NULL) {
+        /* ROBERT TODO need weak_ptr here? */
+        /*
+             TriggeringPolicyPtr trig(rollingPolicy);
+             if (trig != NULL) {
+                 triggeringPolicy = trig;
+             }
+        */
+    }
+
+    if (triggeringPolicy == NULL) {
+        triggeringPolicy.reset( new ManualTriggeringPolicy() );
+    }
+
+    {
+        synchronized sync(mutex);
+        triggeringPolicy->activateOptions(p);
+        rollingPolicy->activateOptions(p);
+
+        try {
+            RolloverDescriptionPtr rollover1 =
+                rollingPolicy->initialize(getFile(), getAppend(), p);
+
+            if (rollover1 != NULL) {
+                ActionPtr syncAction(rollover1->getSynchronous());
+
+                if (syncAction != NULL) {
+                    syncAction->execute(p);
+                }
+
+                setFile(rollover1->getActiveFileName());
+                setAppend(rollover1->getAppend());
+
+                //
+                //  async action not yet implemented
+                //
+                ActionPtr asyncAction(rollover1->getAsynchronous());
+
+                if (asyncAction != NULL) {
+                    asyncAction->execute(p);
+                }
+            }
+
+            File activeFile;
+            activeFile.setPath(getFile());
+
+            if (getAppend()) {
+                fileLength = activeFile.length(p);
+            } else {
+                fileLength = 0;
+            }
+
+            FileAppender::activateOptions(p);
+        } catch (std::exception& ex) {
+            LogLog::warn(
+                LogString(LOG4CXX_STR("Exception will initializing RollingFileAppender named "))
+                + getName());
+        }
+    }
 }
 
 #ifdef LOG4CXX_MULTI_PROCESS
-void RollingFileAppenderSkeleton::releaseFileLock(apr_file_t* lock_file){
-    if (lock_file){
+void RollingFileAppenderSkeleton::releaseFileLock(apr_file_t* lock_file) {
+    if (lock_file) {
         apr_status_t stat = apr_file_unlock(lock_file);
-        if (stat != APR_SUCCESS){
+
+        if (stat != APR_SUCCESS) {
             LogLog::warn(LOG4CXX_STR("flock: unlock failed"));
         }
+
         apr_file_close(lock_file);
         lock_file = NULL;
     }
@@ -175,8 +178,9 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
             apr_time_t n = apr_time_now();
             ObjectPtr obj(new Date(n));
             LogString fileNamePattern;
-            if (basePolicy){
-                if (basePolicy->getPatternConverterList().size()){
+
+            if (basePolicy) {
+                if (basePolicy->getPatternConverterList().size()) {
                     (*(basePolicy->getPatternConverterList().begin()))->format(obj, fileNamePattern, p);
                     fileName = std::string(fileNamePattern);
                 }
@@ -191,60 +195,68 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
             apr_uid_t uid;
             apr_gid_t groupid;
             apr_status_t stat = apr_uid_current(&uid, &groupid, pool.getAPRPool());
-            if (stat == APR_SUCCESS){
+
+            if (stat == APR_SUCCESS) {
                 snprintf(szUid, MAX_FILE_LEN, "%u", uid);
             }
 
             const std::string lockname = std::string(::dirname(szDirName)) + "/." + ::basename(szBaseName) + szUid + ".lock";
             apr_file_t* lock_file;
             stat = apr_file_open(&lock_file, lockname.c_str(), APR_CREATE | APR_READ | APR_WRITE, APR_OS_DEFAULT, p.getAPRPool());
+
             if (stat != APR_SUCCESS) {
                 std::string err = "lockfile return error: open lockfile failed. ";
                 err += (strerror(errno));
                 LogLog::warn(LOG4CXX_STR(err.c_str()));
                 bAlreadyRolled = false;
                 lock_file = NULL;
-            }else{
+            } else {
                 stat = apr_file_lock(lock_file, APR_FLOCK_EXCLUSIVE);
-                if (stat != APR_SUCCESS){
+
+                if (stat != APR_SUCCESS) {
                     std::string err = "apr_file_lock: lock failed. ";
                     err += (strerror(errno));
                     LogLog::warn(LOG4CXX_STR(err.c_str()));
                     bAlreadyRolled = false;
-                }
-                else {
-                    if (_event)
+                } else {
+                    if (_event) {
                         triggeringPolicy->isTriggeringEvent(this, *_event, getFile(), getFileLength());
+                    }
                 }
             }
 
-            if (bAlreadyRolled){
+            if (bAlreadyRolled) {
                 apr_finfo_t finfo1, finfo2;
                 apr_status_t st1, st2;
                 apr_file_t* _fd = getWriter()->getOutPutStreamPtr()->getFileOutPutStreamPtr().getFilePtr();
                 st1 = apr_file_info_get(&finfo1, APR_FINFO_IDENT, _fd);
-                if (st1 != APR_SUCCESS){
+
+                if (st1 != APR_SUCCESS) {
                     LogLog::warn(LOG4CXX_STR("apr_file_info_get failed"));
                 }
 
                 st2 = apr_stat(&finfo2, std::string(getFile()).c_str(), APR_FINFO_IDENT, p.getAPRPool());
-                if (st2 != APR_SUCCESS){
+
+                if (st2 != APR_SUCCESS) {
                     LogLog::warn(LOG4CXX_STR("apr_stat failed."));
                 }
 
                 bAlreadyRolled = ((st1 == APR_SUCCESS) && (st2 == APR_SUCCESS)
-                    && ((finfo1.device != finfo2.device) || (finfo1.inode != finfo2.inode)));
+                                  && ((finfo1.device != finfo2.device) || (finfo1.inode != finfo2.inode)));
             }
 
-            if (!bAlreadyRolled){
+            if (!bAlreadyRolled) {
 #endif
+
                 try {
                     RolloverDescriptionPtr rollover1(rollingPolicy->rollover(this->getFile(), this->getAppend(), p));
+
                     if (rollover1 != NULL) {
                         if (rollover1->getActiveFileName() == getFile()) {
                             closeWriter();
 
                             bool success = true;
+
                             if (rollover1->getSynchronous() != NULL) {
                                 success = false;
 
@@ -266,6 +278,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
                                 //  async action not yet implemented
                                 //
                                 ActionPtr asyncAction(rollover1->getAsynchronous());
+
                                 if (asyncAction != NULL) {
                                     asyncAction->execute(p);
                                 }
@@ -279,7 +292,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
                             }
                         } else {
                             OutputStreamPtr os(new FileOutputStream(
-                                    rollover1->getActiveFileName(), rollover1->getAppend()));
+                                                   rollover1->getActiveFileName(), rollover1->getAppend()));
                             WriterPtr newWriter(createWriter(os));
                             closeWriter();
                             setFile(rollover1->getActiveFileName());
@@ -308,6 +321,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
                                 //   async action not yet implemented
                                 //
                                 ActionPtr asyncAction(rollover1->getAsynchronous());
+
                                 if (asyncAction != NULL) {
                                     asyncAction->execute(p);
                                 }
@@ -324,14 +338,17 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
                 } catch (std::exception& ex) {
                     LogLog::warn(LOG4CXX_STR("Exception during rollover"));
                 }
+
 #ifdef LOG4CXX_MULTI_PROCESS
-            }else{
+            } else {
                 reopenLatestFile(p);
             }
+
             releaseFileLock(lock_file);
 #endif
         }
     }
+
     return false;
 }
 
@@ -339,7 +356,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
 /**
  * re-open current file when its own handler has been renamed
  */
-void RollingFileAppenderSkeleton::reopenLatestFile(Pool& p){
+void RollingFileAppenderSkeleton::reopenLatestFile(Pool& p) {
     closeWriter();
     OutputStreamPtr os(new FileOutputStream(getFile(), true));
     WriterPtr newWriter(createWriter(os));
@@ -355,50 +372,53 @@ void RollingFileAppenderSkeleton::reopenLatestFile(Pool& p){
  * {@inheritDoc}
 */
 void RollingFileAppenderSkeleton::subAppend(const LoggingEventPtr& event, Pool& p) {
-  // The rollover check must precede actual writing. This is the
-  // only correct behavior for time driven triggers.
-  if (
-    triggeringPolicy->isTriggeringEvent(
-        this, event, getFile(), getFileLength())) {
-    //
-    //   wrap rollover request in try block since
-    //    rollover may fail in case read access to directory
-    //    is not provided.  However appender should still be in good
-    //     condition and the append should still happen.
-    try {
-        _event = &(const_cast<LoggingEventPtr &>(event));
-        rollover(p);
-    } catch (std::exception& ex) {
-        LogLog::warn(LOG4CXX_STR("Exception during rollover attempt."));
+    // The rollover check must precede actual writing. This is the
+    // only correct behavior for time driven triggers.
+    if (
+        triggeringPolicy->isTriggeringEvent(
+            this, event, getFile(), getFileLength())) {
+        //
+        //   wrap rollover request in try block since
+        //    rollover may fail in case read access to directory
+        //    is not provided.  However appender should still be in good
+        //     condition and the append should still happen.
+        try {
+            _event = &(const_cast<LoggingEventPtr &>(event));
+            rollover(p);
+        } catch (std::exception& ex) {
+            LogLog::warn(LOG4CXX_STR("Exception during rollover attempt."));
+        }
     }
-  }
 
 #ifdef LOG4CXX_MULTI_PROCESS
-  //do re-check before every write
-  //
-  apr_finfo_t finfo1, finfo2;
-  apr_status_t st1, st2;
-  apr_file_t* _fd = getWriter()->getOutPutStreamPtr()->getFileOutPutStreamPtr().getFilePtr();
-  st1 = apr_file_info_get(&finfo1, APR_FINFO_IDENT, _fd);
-  if (st1 != APR_SUCCESS){
-      LogLog::warn(LOG4CXX_STR("apr_file_info_get failed"));
-  }
+    //do re-check before every write
+    //
+    apr_finfo_t finfo1, finfo2;
+    apr_status_t st1, st2;
+    apr_file_t* _fd = getWriter()->getOutPutStreamPtr()->getFileOutPutStreamPtr().getFilePtr();
+    st1 = apr_file_info_get(&finfo1, APR_FINFO_IDENT, _fd);
 
-  st2 = apr_stat(&finfo2, std::string(getFile()).c_str(), APR_FINFO_IDENT, p.getAPRPool());
-  if (st2 != APR_SUCCESS){
-      std::string err = "apr_stat failed. file:" + std::string(getFile());
-      LogLog::warn(LOG4CXX_STR(err.c_str()));
-  }
+    if (st1 != APR_SUCCESS) {
+        LogLog::warn(LOG4CXX_STR("apr_file_info_get failed"));
+    }
 
-  bool bAlreadyRolled = ((st1 == APR_SUCCESS) && (st2 == APR_SUCCESS)
-      && ((finfo1.device != finfo2.device) || (finfo1.inode != finfo2.inode)));
+    st2 = apr_stat(&finfo2, std::string(getFile()).c_str(), APR_FINFO_IDENT, p.getAPRPool());
 
-  if (bAlreadyRolled){
-      reopenLatestFile(p);
-  }
+    if (st2 != APR_SUCCESS) {
+        std::string err = "apr_stat failed. file:" + std::string(getFile());
+        LogLog::warn(LOG4CXX_STR(err.c_str()));
+    }
+
+    bool bAlreadyRolled = ((st1 == APR_SUCCESS) && (st2 == APR_SUCCESS)
+                           && ((finfo1.device != finfo2.device) || (finfo1.inode != finfo2.inode)));
+
+    if (bAlreadyRolled) {
+        reopenLatestFile(p);
+    }
+
 #endif
 
-  FileAppender::subAppend(event, p);
+    FileAppender::subAppend(event, p);
 }
 
 /**
@@ -406,7 +426,7 @@ void RollingFileAppenderSkeleton::subAppend(const LoggingEventPtr& event, Pool& 
  * @return rolling policy.
  */
 RollingPolicyPtr RollingFileAppenderSkeleton::getRollingPolicy() const {
-  return rollingPolicy;
+    return rollingPolicy;
 }
 
 /**
@@ -414,7 +434,7 @@ RollingPolicyPtr RollingFileAppenderSkeleton::getRollingPolicy() const {
  * @return triggering policy.
  */
 TriggeringPolicyPtr RollingFileAppenderSkeleton::getTriggeringPolicy() const {
-  return triggeringPolicy;
+    return triggeringPolicy;
 }
 
 /**
@@ -422,7 +442,7 @@ TriggeringPolicyPtr RollingFileAppenderSkeleton::getTriggeringPolicy() const {
  * @param policy rolling policy.
  */
 void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr& policy) {
-  rollingPolicy = policy;
+    rollingPolicy = policy;
 }
 
 /**
@@ -430,79 +450,82 @@ void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr& polic
  * @param policy triggering policy.
  */
 void RollingFileAppenderSkeleton::setTriggeringPolicy(const TriggeringPolicyPtr& policy) {
-  triggeringPolicy = policy;
+    triggeringPolicy = policy;
 }
 
 /**
  * Close appender.  Waits for any asynchronous file compression actions to be completed.
  */
 void RollingFileAppenderSkeleton::close() {
-  FileAppender::close();
+    FileAppender::close();
 }
 
 namespace log4cxx {
-  namespace rolling {
-/**
- * Wrapper for OutputStream that will report all write
- * operations back to this class for file length calculations.
- */
-class CountingOutputStream : public OutputStream {
-  /**
-   * Wrapped output stream.
-   */
-  private:
-  OutputStreamPtr os;
+    namespace rolling {
+        /**
+         * Wrapper for OutputStream that will report all write
+         * operations back to this class for file length calculations.
+         */
+        class CountingOutputStream : public OutputStream {
+                /**
+                 * Wrapped output stream.
+                 */
+            private:
+                OutputStreamPtr os;
 
-  /**
-   * Rolling file appender to inform of stream writes.
-   */
-  RollingFileAppenderSkeleton* rfa;
+                /**
+                 * Rolling file appender to inform of stream writes.
+                 */
+                RollingFileAppenderSkeleton* rfa;
 
-  public:
-  /**
-   * Constructor.
-   * @param os output stream to wrap.
-   * @param rfa rolling file appender to inform.
-   */
-  CountingOutputStream(
-    OutputStreamPtr& os1, RollingFileAppenderSkeleton* rfa1) :
-      os(os1), rfa(rfa1) {
-  }
+            public:
+                /**
+                 * Constructor.
+                 * @param os output stream to wrap.
+                 * @param rfa rolling file appender to inform.
+                 */
+                CountingOutputStream(
+                    OutputStreamPtr& os1, RollingFileAppenderSkeleton* rfa1) :
+                    os(os1), rfa(rfa1) {
+                }
 
-  /**
-   * {@inheritDoc}
-   */
-  void close(Pool& p)  {
-    os->close(p);
-    rfa = 0;
-  }
+                /**
+                 * {@inheritDoc}
+                 */
+                void close(Pool& p)  {
+                    os->close(p);
+                    rfa = 0;
+                }
 
-  /**
-   * {@inheritDoc}
-   */
-  void flush(Pool& p)  {
-    os->flush(p);
-  }
+                /**
+                 * {@inheritDoc}
+                 */
+                void flush(Pool& p)  {
+                    os->flush(p);
+                }
 
-  /**
-   * {@inheritDoc}
-   */
-  void write(ByteBuffer& buf, Pool& p) {
-    os->write(buf, p);
-    if (rfa != 0) {
+                /**
+                 * {@inheritDoc}
+                 */
+                void write(ByteBuffer& buf, Pool& p) {
+                    os->write(buf, p);
+
+                    if (rfa != 0) {
 #ifndef LOG4CXX_MULTI_PROCESS
-        rfa->incrementFileLength(buf.limit());
+                        rfa->incrementFileLength(buf.limit());
 #else
-        rfa->setFileLength(File().setPath(rfa->getFile()).length(p));
+                        rfa->setFileLength(File().setPath(rfa->getFile()).length(p));
 #endif
-    }
-  }
+                    }
+                }
 
 #ifdef LOG4CXX_MULTI_PROCESS
-  OutputStream& getFileOutPutStreamPtr() { return *os;}
+                OutputStream& getFileOutPutStreamPtr() {
+                    return *os;
+                }
 #endif
-};
-  }
+        };
+    }
 }
 
 /**
@@ -515,8 +538,8 @@ class CountingOutputStream : public OutputStream {
  @return new writer.
  */
 WriterPtr RollingFileAppenderSkeleton::createWriter(OutputStreamPtr& os) {
-  OutputStreamPtr cos(new CountingOutputStream(os, this));
-  return FileAppender::createWriter(cos);
+    OutputStreamPtr cos(new CountingOutputStream(os, this));
+    return FileAppender::createWriter(cos);
 }
 
 /**
@@ -524,11 +547,11 @@ WriterPtr RollingFileAppenderSkeleton::createWriter(OutputStreamPtr& os) {
  * @return byte length of current active log file.
  */
 size_t RollingFileAppenderSkeleton::getFileLength() const {
-  return fileLength;
+    return fileLength;
 }
 
 #ifdef LOG4CXX_MULTI_PROCESS
-void RollingFileAppenderSkeleton::setFileLength(size_t length){
+void RollingFileAppenderSkeleton::setFileLength(size_t length) {
     fileLength = length;
 }
 #endif
@@ -538,5 +561,5 @@ void RollingFileAppenderSkeleton::setFileLength(size_t length){
  * @param increment additional bytes written to log file.
  */
 void RollingFileAppenderSkeleton::incrementFileLength(size_t increment) {
-  fileLength += increment;
+    fileLength += increment;
 }

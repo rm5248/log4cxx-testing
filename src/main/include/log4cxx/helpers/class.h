@@ -27,33 +27,30 @@
 #include <log4cxx/logstring.h>
 #include <map>
 
-namespace log4cxx
-{
-        namespace helpers
-        {
-                class Object;
+namespace log4cxx {
+    namespace helpers {
+        class Object;
 
-                class LOG4CXX_EXPORT Class
-                {
-                public:
-                        virtual ~Class();
-                        virtual Object* newInstance() const;
-                        LogString toString() const;
-                        virtual LogString getName() const = 0;
-                        static const Class& forName(const LogString& className);
-                        static bool registerClass(const Class& newClass);
+        class LOG4CXX_EXPORT Class {
+            public:
+                virtual ~Class();
+                virtual Object* newInstance() const;
+                LogString toString() const;
+                virtual LogString getName() const = 0;
+                static const Class& forName(const LogString& className);
+                static bool registerClass(const Class& newClass);
 
-                protected:
-                        Class();
+            protected:
+                Class();
 
-                private:
-                        Class(const Class&);
-                        Class& operator=(const Class&);
-                        typedef std::map<LogString, const Class *> ClassMap;
-                        static ClassMap& getRegistry();
-                        static void registerClasses();
-                };
-        }  // namespace log4cxx
+            private:
+                Class(const Class&);
+                Class& operator=(const Class&);
+                typedef std::map<LogString, const Class *> ClassMap;
+                static ClassMap& getRegistry();
+                static void registerClasses();
+        };
+    }  // namespace log4cxx
 } // namespace helper
 
 #if defined(_MSC_VER)

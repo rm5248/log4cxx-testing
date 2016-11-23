@@ -88,26 +88,23 @@ namespace log4cxx { namespace classes { \
 const log4cxx::helpers::ClassRegistration& object##Registration = object::registerClass(); \
 } }
 
-namespace log4cxx
-{
-        class AppenderSkeleton;
-        class Logger;
+namespace log4cxx {
+    class AppenderSkeleton;
+    class Logger;
 
-        namespace helpers
-        {
-            class Pool;
+    namespace helpers {
+        class Pool;
 
-                /** base class for java-like objects.*/
-                class LOG4CXX_EXPORT Object
-                {
-                public:
-                        DECLARE_ABSTRACT_LOG4CXX_OBJECT(Object)
-                        virtual ~Object() {}
-                        virtual bool instanceof(const Class& clazz) const = 0;
-                        virtual const void * cast(const Class& clazz) const = 0;
-                };
-             LOG4CXX_PTR_DEF(Object);
-        }
+        /** base class for java-like objects.*/
+        class LOG4CXX_EXPORT Object {
+            public:
+                DECLARE_ABSTRACT_LOG4CXX_OBJECT(Object)
+                virtual ~Object() {}
+                virtual bool instanceof(const Class& clazz) const = 0;
+                virtual const void * cast(const Class& clazz) const = 0;
+        };
+        LOG4CXX_PTR_DEF(Object);
+    }
 }
 
 #define BEGIN_LOG4CXX_CAST_MAP()\

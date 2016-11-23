@@ -35,9 +35,9 @@ bool APRInitializer::isDestructed = false;
 
 
 namespace {
- 	extern "C" void tlsDestruct(void* ptr) {
-  		delete ((ThreadSpecificData*) ptr);
-	}
+    extern "C" void tlsDestruct(void* ptr) {
+        delete ((ThreadSpecificData*) ptr);
+    }
 }
 
 APRInitializer::APRInitializer() : p(0), mutex(0), startTime(0), tlsKey(0) {
@@ -59,36 +59,37 @@ APRInitializer::~APRInitializer() {
         synchronized sync(mutex);
         apr_threadkey_private_delete(tlsKey);
 #endif
+
         for(std::list<FileWatchdog*>::iterator iter = watchdogs.begin();
-            iter != watchdogs.end();
-            iter++) {
+                iter != watchdogs.end();
+                iter++) {
             delete *iter;
         }
     }
 
 // TODO LOGCXX-322
 #ifndef APR_HAS_THREADS
-	apr_terminate();
+    apr_terminate();
 #endif
     isDestructed = true;
 }
 
 APRInitializer& APRInitializer::getInstance() {
-  static APRInitializer init;
-  return init;
+    static APRInitializer init;
+    return init;
 }
 
 
 log4cxx_time_t APRInitializer::initialize() {
-  return getInstance().startTime;
+    return getInstance().startTime;
 }
 
 apr_pool_t* APRInitializer::getRootPool() {
-  return getInstance().p;
+    return getInstance().p;
 }
 
 apr_threadkey_t* APRInitializer::getTlsKey() {
-   return getInstance().tlsKey;
+    return getInstance().tlsKey;
 }
 
 void APRInitializer::registerCleanup(FileWatchdog* watchdog) {
@@ -104,14 +105,14 @@ void APRInitializer::unregisterCleanup(FileWatchdog* watchdog) {
 #if APR_HAS_THREADS
     synchronized sync(instance.mutex);
 #endif
+
     for(std::list<FileWatchdog*>::iterator iter = instance.watchdogs.begin();
-        iter != instance.watchdogs.end();
-        iter++) {
-		if(*iter == watchdog)
-		{
-			instance.watchdogs.erase(iter);
-			return;
-		}
+            iter != instance.watchdogs.end();
+            iter++) {
+        if(*iter == watchdog) {
+            instance.watchdogs.erase(iter);
+            return;
+        }
     }
 }
 

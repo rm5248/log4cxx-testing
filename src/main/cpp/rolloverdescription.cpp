@@ -33,10 +33,10 @@ RolloverDescription::RolloverDescription(
     const bool append1,
     const ActionPtr& synchronous1,
     const ActionPtr& asynchronous1)
-       : activeFileName(activeFileName1),
-         append(append1),
-         synchronous(synchronous1),
-         asynchronous(asynchronous1) {
+    : activeFileName(activeFileName1),
+      append(append1),
+      synchronous(synchronous1),
+      asynchronous(asynchronous1) {
 }
 
 LogString RolloverDescription::getActiveFileName() const {
@@ -51,12 +51,12 @@ ActionPtr RolloverDescription::getSynchronous() const {
     return synchronous;
 }
 
-  /**
-   * Action to be completed after close of current active log file
-   * and before next rollover attempt, may be executed asynchronously.
-   *
-   * @return action, may be null.
-   */
+/**
+ * Action to be completed after close of current active log file
+ * and before next rollover attempt, may be executed asynchronously.
+ *
+ * @return action, may be null.
+ */
 ActionPtr RolloverDescription::getAsynchronous() const {
     return asynchronous;
 }

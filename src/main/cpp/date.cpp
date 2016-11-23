@@ -37,11 +37,11 @@ Date::~Date() {
 }
 
 log4cxx_time_t Date::getMicrosecondsPerDay() {
-   return APR_INT64_C(86400000000);
+    return APR_INT64_C(86400000000);
 }
 
 log4cxx_time_t Date::getMicrosecondsPerSecond() {
-   return APR_USEC_PER_SEC;
+    return APR_USEC_PER_SEC;
 }
 
 

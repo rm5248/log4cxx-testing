@@ -26,61 +26,59 @@
 #include <log4cxx/spi/optionhandler.h>
 #include <log4cxx/spi/loggingevent.h>
 
-namespace log4cxx
-{
-        /**
-        Extend this abstract class to create your own log layout format.
-        */
-        class LOG4CXX_EXPORT Layout :
-                public virtual spi::OptionHandler,
-                public virtual helpers::Object
-        {
+namespace log4cxx {
+    /**
+    Extend this abstract class to create your own log layout format.
+    */
+    class LOG4CXX_EXPORT Layout :
+        public virtual spi::OptionHandler,
+        public virtual helpers::Object {
         public:
-                DECLARE_ABSTRACT_LOG4CXX_OBJECT(Layout)
-                BEGIN_LOG4CXX_CAST_MAP()
-                        LOG4CXX_CAST_ENTRY(Layout)
-                        LOG4CXX_CAST_ENTRY(spi::OptionHandler)
-                END_LOG4CXX_CAST_MAP()
-    
-                virtual ~Layout();
+            DECLARE_ABSTRACT_LOG4CXX_OBJECT(Layout)
+            BEGIN_LOG4CXX_CAST_MAP()
+            LOG4CXX_CAST_ENTRY(Layout)
+            LOG4CXX_CAST_ENTRY(spi::OptionHandler)
+            END_LOG4CXX_CAST_MAP()
 
-                /**
-                Implement this method to create your own layout format.
-                */
-                virtual void format(LogString& output,
-                    const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& pool) const = 0;
+            virtual ~Layout();
 
-                /**
-                Returns the content type output by this layout. The base class
-                returns "text/plain".
-                */
-                virtual LogString getContentType() const;
+            /**
+            Implement this method to create your own layout format.
+            */
+            virtual void format(LogString& output,
+                                const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& pool) const = 0;
 
-                /**
-                Append the header for the layout format. The base class does
-                nothing.
-                */
-                virtual void appendHeader(LogString& output, log4cxx::helpers::Pool& p);
+            /**
+            Returns the content type output by this layout. The base class
+            returns "text/plain".
+            */
+            virtual LogString getContentType() const;
 
-                /**
-                Append the footer for the layout format. The base class does
-                nothing.
-                */
-                virtual void appendFooter(LogString& output, log4cxx::helpers::Pool& p);
+            /**
+            Append the header for the layout format. The base class does
+            nothing.
+            */
+            virtual void appendHeader(LogString& output, log4cxx::helpers::Pool& p);
 
-                /**
-                If the layout handles the throwable object contained within
-                {@link spi::LoggingEvent LoggingEvent}, then the layout should return
-                <code>false</code>. Otherwise, if the layout ignores throwable
-                object, then the layout should return <code>true</code>.
+            /**
+            Append the footer for the layout format. The base class does
+            nothing.
+            */
+            virtual void appendFooter(LogString& output, log4cxx::helpers::Pool& p);
 
-                <p>The SimpleLayout, TTCCLayout,
-                PatternLayout all return <code>true</code>. The {@link
-                xml::XMLLayout XMLLayout} returns <code>false</code>.
-                */
-                virtual bool ignoresThrowable() const = 0;
-        };
-        LOG4CXX_PTR_DEF(Layout);
+            /**
+            If the layout handles the throwable object contained within
+            {@link spi::LoggingEvent LoggingEvent}, then the layout should return
+            <code>false</code>. Otherwise, if the layout ignores throwable
+            object, then the layout should return <code>true</code>.
+
+            <p>The SimpleLayout, TTCCLayout,
+            PatternLayout all return <code>true</code>. The {@link
+            xml::XMLLayout XMLLayout} returns <code>false</code>.
+            */
+            virtual bool ignoresThrowable() const = 0;
+    };
+    LOG4CXX_PTR_DEF(Layout);
 }
 
 #if defined(_MSC_VER)

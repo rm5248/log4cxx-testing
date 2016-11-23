@@ -37,11 +37,11 @@ ThreadSpecificData::~ThreadSpecificData() {
 
 
 log4cxx::NDC::Stack& ThreadSpecificData::getStack() {
-  return ndcStack;
+    return ndcStack;
 }
 
 log4cxx::MDC::Map& ThreadSpecificData::getMap() {
-  return mdcMap;
+    return mdcMap;
 }
 
 ThreadSpecificData& ThreadSpecificData::getDataNoThreads() {
@@ -51,34 +51,40 @@ ThreadSpecificData& ThreadSpecificData::getDataNoThreads() {
 
 ThreadSpecificData* ThreadSpecificData::getCurrentData() {
 #if APR_HAS_THREADS
-  void* pData = NULL;
-  apr_threadkey_private_get(&pData, APRInitializer::getTlsKey());
-  return (ThreadSpecificData*) pData;
+    void* pData = NULL;
+    apr_threadkey_private_get(&pData, APRInitializer::getTlsKey());
+    return (ThreadSpecificData*) pData;
 #else
-  return &getDataNoThreads();  
+    return &getDataNoThreads();
 #endif
 }
 
 void ThreadSpecificData::recycle() {
 #if APR_HAS_THREADS
+
     if(ndcStack.empty() && mdcMap.empty()) {
         void* pData = NULL;
         apr_status_t stat = apr_threadkey_private_get(&pData, APRInitializer::getTlsKey());
+
         if (stat == APR_SUCCESS && pData == this) {
             stat = apr_threadkey_private_set(0, APRInitializer::getTlsKey());
+
             if (stat == APR_SUCCESS) {
                 delete this;
             }
         }
     }
-#endif    
+
+#endif
 }
 
 void ThreadSpecificData::put(const LogString& key, const LogString& val) {
     ThreadSpecificData* data = getCurrentData();
+
     if (data == 0) {
         data = createCurrentData();
     }
+
     if (data != 0) {
         data->getMap()[key] = val;
     }
@@ -89,11 +95,14 @@ void ThreadSpecificData::put(const LogString& key, const LogString& val) {
 
 void ThreadSpecificData::push(const LogString& val) {
     ThreadSpecificData* data = getCurrentData();
+
     if (data == 0) {
         data = createCurrentData();
     }
+
     if (data != 0) {
         NDC::Stack& stack = data->getStack();
+
         if(stack.empty()) {
             stack.push(NDC::DiagnosticContext(val, val));
         } else {
@@ -107,9 +116,11 @@ void ThreadSpecificData::push(const LogString& val) {
 
 void ThreadSpecificData::inherit(const NDC::Stack& src) {
     ThreadSpecificData* data = getCurrentData();
+
     if (data == 0) {
         data = createCurrentData();
     }
+
     if (data != 0) {
         data->getStack() = src;
     }
@@ -121,10 +132,12 @@ ThreadSpecificData* ThreadSpecificData::createCurrentData() {
 #if APR_HAS_THREADS
     ThreadSpecificData* newData = new ThreadSpecificData();
     apr_status_t stat = apr_threadkey_private_set(newData, APRInitializer::getTlsKey());
+
     if (stat != APR_SUCCESS) {
-      delete newData;
-      newData = NULL;
+        delete newData;
+        newData = NULL;
     }
+
     return newData;
 #else
     return 0;

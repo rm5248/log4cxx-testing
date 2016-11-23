@@ -23,7 +23,7 @@ using namespace log4cxx::helpers;
 
 
 DefaultRepositorySelector::DefaultRepositorySelector(const LoggerRepositoryPtr& repository1)
-     : repository(repository1) {
+    : repository(repository1) {
 }
 
 LoggerRepositoryPtr& DefaultRepositorySelector::getLoggerRepository() {
