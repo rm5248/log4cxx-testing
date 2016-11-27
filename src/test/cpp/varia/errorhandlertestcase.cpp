@@ -56,8 +56,10 @@ public:
         void test1()
         {
                 DOMConfigurator::configure("input/xml/fallback1.xml");
-                FileAppenderPtr primary(root->getAppender(LOG4CXX_STR("PRIMARY")));
-                log4cxx::varia::FallbackErrorHandlerPtr eh(primary->getErrorHandler());
+                AppenderPtr prim_logger = root->getAppender(LOG4CXX_STR("PRIMARY"));
+                FileAppender* primary = dynamic_cast<FileAppender*>(prim_logger.get());
+                LOGUNIT_ASSERT( primary != 0 );
+                log4cxx::varia::FallbackErrorHandler* eh = dynamic_cast<log4cxx::varia::FallbackErrorHandler*>(primary->getErrorHandler().get());
                 LOGUNIT_ASSERT(eh != 0);
                 
                 common();

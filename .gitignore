@@ -64,3 +64,6 @@ src/main/include/log4cxx/private/log4cxx_private.h
 src/main/cpp/.libs
 src/main/cpp/*.a
 src/main/cpp/*.la
+
+src/test/cpp/.libs/
+src/test/cpp/testsuite

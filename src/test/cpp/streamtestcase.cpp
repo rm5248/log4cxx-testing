@@ -123,7 +123,7 @@ public:
         void setUp() {
            LoggerPtr root(Logger::getRootLogger());
            LayoutPtr layout(new SimpleLayout());
-           vectorAppender = new VectorAppender();
+           vectorAppender.reset( new VectorAppender() );
            root->addAppender(vectorAppender);
         }
 
