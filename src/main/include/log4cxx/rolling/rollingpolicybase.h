@@ -112,7 +112,7 @@ namespace log4cxx {
                  * @param buf string buffer to which formatted file name is appended, may not be null.
                  * @param p memory pool.
                  */
-                void formatFileName(const log4cxx::helpers::Object* obj,
+                void formatFileName(const log4cxx::ptr::shared_ptr<Object>& obj,
                                     LogString& buf, log4cxx::helpers::Pool& p) const;
 
                 log4cxx::pattern::PatternConverter* getIntegerPatternConverter() const;

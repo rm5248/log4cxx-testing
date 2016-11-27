@@ -111,7 +111,7 @@ RolloverDescriptionPtr FixedWindowRollingPolicy::initialize(
     if (!explicitActiveFile) {
         LogString buf;
         ObjectPtr obj(new Integer(minIndex));
-        formatFileName(obj.get(), buf, pool);
+        formatFileName(obj, buf, pool);
         newActiveFile = buf;
     }
 
@@ -145,7 +145,7 @@ RolloverDescriptionPtr FixedWindowRollingPolicy::rollover(
 
     LogString buf;
     ObjectPtr obj(new Integer(purgeStart));
-    formatFileName(obj.get(), buf, pool);
+    formatFileName(obj, buf, pool);
 
     LogString renameTo(buf);
     LogString compressedName(renameTo);
@@ -210,7 +210,7 @@ bool FixedWindowRollingPolicy::purge(int lowIndex, int highIndex, Pool& p) const
     std::vector<FileRenameActionPtr> renames;
     LogString buf;
     ObjectPtr obj( new Integer(lowIndex) );
-    formatFileName(obj.get(), buf, p);
+    formatFileName(obj, buf, p);
 
     LogString lowFilename(buf);
 
@@ -259,7 +259,7 @@ bool FixedWindowRollingPolicy::purge(int lowIndex, int highIndex, Pool& p) const
             //     add a rename action to the list
             buf.erase(buf.begin(), buf.end());
             ObjectPtr obj2( new Integer(i + 1) );
-            formatFileName(obj2.get(), buf, p);
+            formatFileName(obj2, buf, p);
 
             LogString highFilename(buf);
             LogString renameTo(highFilename);

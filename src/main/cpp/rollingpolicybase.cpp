@@ -91,7 +91,7 @@ void RollingPolicyBase::parseFileNamePattern() {
  * @param buf string buffer to which formatted file name is appended, may not be null.
  */
 void RollingPolicyBase::formatFileName(
-    const Object* obj,
+    const log4cxx::ptr::shared_ptr<Object>& obj,
     LogString& toAppendTo,
     Pool& pool) const {
     std::vector<FormattingInfoPtr>::const_iterator formatterIter =

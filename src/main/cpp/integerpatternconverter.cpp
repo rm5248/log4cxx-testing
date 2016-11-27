@@ -42,10 +42,10 @@ PatternConverterPtr IntegerPatternConverter::newInstance(
 }
 
 void IntegerPatternConverter::format(
-    const Object* obj,
+    const log4cxx::ptr::shared_ptr<Object>& obj,
     LogString& toAppendTo,
     Pool& p) const {
-    const Integer* i = dynamic_cast<const Integer*>(obj);
+    const Integer* i = dynamic_cast<const Integer*>(obj.get());
 
     if (i != NULL) {
         StringHelper::toString(i->intValue(), p, toAppendTo);

@@ -182,7 +182,7 @@ void TimeBasedRollingPolicy::activateOptions(log4cxx::helpers::Pool& pool) {
     apr_time_t n = apr_time_now();
     LogString buf;
     ObjectPtr obj(new Date(n));
-    formatFileName(obj.get(), buf, pool);
+    formatFileName(obj, buf, pool);
     lastFileName = buf;
 
 #ifdef LOG4CXX_MULTI_PROCESS
@@ -241,7 +241,7 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::initialize(
 
     LogString buf;
     ObjectPtr obj(new Date(currentFile.exists(pool) ? currentFile.lastModified(pool) : n));
-    formatFileName(obj.get(), buf, pool);
+    formatFileName(obj, buf, pool);
     lastFileName = buf;
 
     ActionPtr noAction;
@@ -266,7 +266,7 @@ RolloverDescriptionPtr TimeBasedRollingPolicy::rollover(
 
     LogString buf;
     ObjectPtr obj(new Date(n));
-    formatFileName(obj.get(), buf, pool);
+    formatFileName(obj, buf, pool);
 
     LogString newFileName(buf);
 
