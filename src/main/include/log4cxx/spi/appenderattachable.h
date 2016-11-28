@@ -42,7 +42,7 @@ namespace log4cxx {
                 /**
                  * Add an appender.
                  */
-                virtual void addAppender(const AppenderPtr& newAppender) = 0;
+                virtual void addAppender(const AppenderPtr newAppender) = 0;
 
                 /**
                  * Get all previously added appenders as an AppenderList.

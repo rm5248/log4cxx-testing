@@ -56,14 +56,11 @@ namespace log4cxx {
                 LOG4CXX_CAST_ENTRY(spi::AppenderAttachable)
                 END_LOG4CXX_CAST_MAP()
 
-                void addRef() const;
-                void releaseRef() const;
-
                 // Methods
                 /**
                  * Add an appender.
                  */
-                virtual void addAppender(const AppenderPtr& newAppender);
+                virtual void addAppender(const AppenderPtr newAppender);
 
                 /**
                  Call the <code>doAppend</code> method on all attached appenders.

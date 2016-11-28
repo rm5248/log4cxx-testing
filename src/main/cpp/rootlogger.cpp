@@ -29,15 +29,14 @@ RootLogger::RootLogger(Pool& pool, const LevelPtr& level1) :
     setLevel(level1);
 }
 
-const LevelPtr& RootLogger::getEffectiveLevel() const {
+const LevelPtr RootLogger::getEffectiveLevel() const {
     return level;
 }
 
-void RootLogger::setLevel(const LevelPtr& level1) {
+void RootLogger::setLevel(const LevelPtr level1) {
     if(level1 == 0) {
         LogLog::error(LOG4CXX_STR("You have tried to set a null level to root."));
     } else {
-
         this->level = level1;
     }
 }

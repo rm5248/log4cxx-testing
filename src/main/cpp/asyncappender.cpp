@@ -64,7 +64,7 @@ AsyncAppender::~AsyncAppender() {
     delete discardMap;
 }
 
-void AsyncAppender::addAppender(const AppenderPtr& newAppender) {
+void AsyncAppender::addAppender(const AppenderPtr newAppender) {
     synchronized sync(appenders->getMutex());
     appenders->addAppender(newAppender);
 }

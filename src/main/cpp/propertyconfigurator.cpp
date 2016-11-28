@@ -85,7 +85,7 @@ PropertyConfigurator::~PropertyConfigurator() {
 }
 
 void PropertyConfigurator::doConfigure(const File& configFileName,
-                                       spi::LoggerRepositoryPtr& hierarchy) {
+                                       spi::LoggerRepositoryPtr hierarchy) {
     hierarchy->setConfigured(true);
 
     Properties props;
@@ -137,7 +137,7 @@ void PropertyConfigurator::configureAndWatch(
 #endif
 
 void PropertyConfigurator::doConfigure(helpers::Properties& properties,
-                                       spi::LoggerRepositoryPtr& hierarchy) {
+                                       spi::LoggerRepositoryPtr hierarchy) {
     hierarchy->setConfigured(true);
 
     static const LogString DEBUG_KEY(LOG4CXX_STR("log4j.debug"));

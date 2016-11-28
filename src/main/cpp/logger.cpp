@@ -51,7 +51,7 @@ Logger::Logger(Pool& p, const LogString& name1)
 Logger::~Logger() {
 }
 
-void Logger::addAppender(const AppenderPtr& newAppender) {
+void Logger::addAppender(const AppenderPtr newAppender) {
     log4cxx::spi::LoggerRepository* rep = 0;
     {
         synchronized sync(mutex);
@@ -73,9 +73,9 @@ void Logger::addAppender(const AppenderPtr& newAppender) {
 void Logger::callAppenders(const spi::LoggingEventPtr& event, Pool& p) const {
     int writes = 0;
 
-    for(LoggerPtr logger(const_cast<Logger*>(this));
+    for(const Logger* logger = this;
             logger != 0;
-            logger = logger->parent) {
+            logger = logger->parent.get() ) {
         // Protected against simultaneous call to addAppender, removeAppender,...
         synchronized sync(logger->mutex);
 
@@ -151,7 +151,7 @@ AppenderPtr Logger::getAppender(const LogString& name1) const {
     return aai->getAppender(name1);
 }
 
-const LevelPtr& Logger::getEffectiveLevel() const {
+const LevelPtr Logger::getEffectiveLevel() const {
     for(const Logger * l = this; l != 0; l=l->parent.get()) {
         if(l->level != 0) {
             return l->level;
@@ -232,6 +232,7 @@ bool Logger::isDebugEnabled() const {
         return false;
     }
 
+LevelPtr rmptr = getEffectiveLevel();
     return getEffectiveLevel()->toInt() <= Level::DEBUG_INT;
 }
 
@@ -407,7 +408,7 @@ void Logger::setHierarchy(spi::LoggerRepository * repository1) {
     this->repository = repository1;
 }
 
-void Logger::setLevel(const LevelPtr& level1) {
+void Logger::setLevel(const LevelPtr level1) {
     this->level = level1;
 }
 

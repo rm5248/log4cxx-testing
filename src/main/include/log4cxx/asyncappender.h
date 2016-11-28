@@ -76,7 +76,7 @@ namespace log4cxx {
              *
              * @param newAppender appender to add, may not be null.
             */
-            void addAppender(const AppenderPtr& newAppender);
+            void addAppender(const AppenderPtr newAppender);
 
             void append(const spi::LoggingEventPtr& event, log4cxx::helpers::Pool& p);
 

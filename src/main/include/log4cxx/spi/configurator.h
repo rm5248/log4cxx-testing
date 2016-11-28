@@ -25,7 +25,7 @@ namespace log4cxx {
 
     namespace spi {
         /**
-        Implemented by classes capable of configuring log4j using a URL.
+        Implemented by classes capable of configuring log4cxx using a URL.
         */
         class LOG4CXX_EXPORT Configurator : virtual public helpers::Object {
             public:
@@ -33,7 +33,7 @@ namespace log4cxx {
                 Configurator();
 
                 /**
-                Interpret a resource pointed by a URL and set up log4j accordingly.
+                Interpret a resource pointed by a URL and set up log4cxx accordingly.
 
                 The configuration is done relative to the <code>hierarchy</code>
                 parameter.
@@ -42,7 +42,7 @@ namespace log4cxx {
                 @param repository The hierarchy to operation upon.
                 */
                 virtual void doConfigure(const File& configFileName,
-                                         spi::LoggerRepositoryPtr& repository) = 0;
+                                         spi::LoggerRepositoryPtr repository) = 0;
 
 
             private:

@@ -137,7 +137,7 @@ namespace log4cxx {
             <p>If <code>newAppender</code> is already in the list of
             appenders, then it won't be added again.
             */
-            virtual void addAppender(const AppenderPtr& newAppender);
+            virtual void addAppender(const AppenderPtr newAppender);
 
 
             /**
@@ -613,7 +613,7 @@ namespace log4cxx {
 
             @throws RuntimeException if all levels are null in the hierarchy
             */
-            virtual const LevelPtr& getEffectiveLevel() const;
+            virtual const LevelPtr getEffectiveLevel() const;
 
             /**
             Return the the LoggerRepository where this
@@ -1468,7 +1468,7 @@ namespace log4cxx {
             <p>As in <pre> &nbsp;&nbsp;&nbsp;logger->setLevel(Level::getDebug()); </pre>
 
             <p>Null values are admitted.  */
-            virtual void setLevel(const LevelPtr& level);
+            virtual void setLevel(const LevelPtr level);
 
             /**
             Set the resource bundle to be used with localized logging methods.

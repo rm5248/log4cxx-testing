@@ -285,7 +285,7 @@ namespace log4cxx {
             @param hierarchy The hierarchy to operation upon.
             */
             void doConfigure(const File& configFileName,
-                             spi::LoggerRepositoryPtr& hierarchy);
+                             spi::LoggerRepositoryPtr hierarchy);
 
             /**
             Read configuration options from file <code>configFilename</code>.
@@ -328,7 +328,7 @@ namespace log4cxx {
             for the expected format.
             */
             void doConfigure(helpers::Properties& properties,
-                             spi::LoggerRepositoryPtr& hierarchy);
+                             spi::LoggerRepositoryPtr hierarchy);
 
 // --------------------------------------------------------------------------
 // Internal stuff
