@@ -76,9 +76,9 @@ namespace log4cxx {
             This default constructor does nothing.*/
             WriterAppender();
         protected:
-            WriterAppender(const LayoutPtr& layout,
-                           log4cxx::helpers::WriterPtr& writer);
-            WriterAppender(const LayoutPtr& layout);
+            WriterAppender(const LayoutPtr layout,
+                           log4cxx::helpers::WriterPtr writer);
+            WriterAppender(const LayoutPtr layout);
 
         public:
             ~WriterAppender();
@@ -158,7 +158,7 @@ namespace log4cxx {
                 specified incorrectly the writer will be opened using the default
                 system encoding (an error message will be printed to the loglog.  */
             virtual log4cxx::helpers::WriterPtr createWriter(
-                log4cxx::helpers::OutputStreamPtr& os);
+                log4cxx::helpers::OutputStreamPtr os);
 
         public:
             LogString getEncoding() const;
@@ -178,7 +178,7 @@ namespace log4cxx {
               <p><b>WARNING:</b> Logging to an unopened Writer will fail.
               <p>
               @param writer An already opened Writer.  */
-            void setWriter(const log4cxx::helpers::WriterPtr& writer);
+            void setWriter(const log4cxx::helpers::WriterPtr writer);
 #ifdef LOG4CXX_MULTI_PROCESS
             const log4cxx::helpers::WriterPtr getWriter() {
                 return writer;

@@ -294,7 +294,7 @@ void FileAppender::setFile(
     if (bufferedIO1) {
         newWriter.reset( new BufferedWriter(newWriter, bufferSize1) );
     } else {
-        newWriter.reset( createWriter(outStream).get() );
+        newWriter = createWriter(outStream);
     }
 
     setWriter(newWriter);

@@ -32,8 +32,8 @@ WriterAppender::WriterAppender() {
     immediateFlush = true;
 }
 
-WriterAppender::WriterAppender(const LayoutPtr& layout1,
-                               log4cxx::helpers::WriterPtr& writer1)
+WriterAppender::WriterAppender(const LayoutPtr layout1,
+                               log4cxx::helpers::WriterPtr writer1)
     : AppenderSkeleton(layout1), writer(writer1) {
     Pool p;
     synchronized sync(mutex);
@@ -41,7 +41,7 @@ WriterAppender::WriterAppender(const LayoutPtr& layout1,
     activateOptions(p);
 }
 
-WriterAppender::WriterAppender(const LayoutPtr& layout1)
+WriterAppender::WriterAppender(const LayoutPtr layout1)
     : AppenderSkeleton(layout1) {
     synchronized sync(mutex);
     immediateFlush = true;
@@ -174,8 +174,9 @@ void WriterAppender::closeWriter() {
    <code>encoding</code> property.  If the encoding value is
    specified incorrectly the writer will be opened using the default
    system encoding (an error message will be printed to the loglog.  */
-WriterPtr WriterAppender::createWriter(OutputStreamPtr& os) {
+WriterPtr WriterAppender::createWriter(OutputStreamPtr os) {
 
+printf( "creating a writer\n" );
     LogString enc(getEncoding());
 
     CharsetEncoderPtr encoder;
@@ -239,12 +240,15 @@ void WriterAppender::writeHeader(Pool& p) {
         LogString header;
         layout->appendHeader(header, p);
         synchronized sync(mutex);
+printf( "writer use count %d\n", writer.use_count() );
+printf( "is writer valid? %d\n", writer.get() != NULL );
+printf( "writer is %p\n", writer.get() );
         writer->write(header, p);
     }
 }
 
 
-void WriterAppender::setWriter(const WriterPtr& newWriter) {
+void WriterAppender::setWriter(const WriterPtr newWriter) {
     synchronized sync(mutex);
     writer = newWriter;
 }

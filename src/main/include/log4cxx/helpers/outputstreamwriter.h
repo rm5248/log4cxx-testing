@@ -41,8 +41,8 @@ namespace log4cxx {
                 LOG4CXX_CAST_ENTRY_CHAIN(Writer)
                 END_LOG4CXX_CAST_MAP()
 
-                OutputStreamWriter(OutputStreamPtr& out);
-                OutputStreamWriter(OutputStreamPtr& out, CharsetEncoderPtr &enc);
+                OutputStreamWriter(OutputStreamPtr out);
+                OutputStreamWriter(OutputStreamPtr out, CharsetEncoderPtr enc);
                 ~OutputStreamWriter();
 
                 virtual void close(Pool& p);
