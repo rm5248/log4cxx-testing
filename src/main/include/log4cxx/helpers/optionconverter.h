@@ -20,6 +20,9 @@
 
 #include <log4cxx/log4cxx.h>
 #include <log4cxx/logstring.h>
+#include <log4cxx/helpers/loader.h>
+#include <log4cxx/helpers/loglog.h>
+#include <log4cxx/helpers/stringhelper.h>
 
 namespace log4cxx {
     class Level;
@@ -124,14 +127,11 @@ namespace log4cxx {
                 @param superClass The class to which the new object should belong.
                 @param defaultValue The object to return in case of non-fulfillment
                 */
-                /*
-                                        static ObjectPtr instantiateByClassName(const LogString& className,
-                                                const Class& superClass, const ObjectPtr& defaultValue);
-                */
+                static Object* instantiateByClassName(const LogString& className,
+                                                        const Class& superClass );
 
-                static ObjectPtr instantiateByKey(Properties& props,
-                                                  const LogString& key, const Class& superClass,
-                                                  const ObjectPtr& defaultValue);
+                static Object* instantiateByKey(Properties& props,
+                                                  const LogString& key, const Class& superClass );
 
                 /**
                 Configure log4cxx given a configFileName.

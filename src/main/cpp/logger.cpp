@@ -169,7 +169,7 @@ LoggerRepository* Logger::getLoggerRepository() const {
 }
 
 ResourceBundlePtr Logger::getResourceBundle() const {
-    for (LoggerPtr l(const_cast<Logger*>(this)); l != 0; l = l->parent) {
+    for (const Logger* l = this; l != 0; l = l->parent.get()) {
         if (l->resourceBundle != 0) {
             return l->resourceBundle;
         }

@@ -1473,7 +1473,7 @@ namespace log4cxx {
             /**
             Set the resource bundle to be used with localized logging methods.
             */
-            inline void setResourceBundle(const helpers::ResourceBundlePtr& bundle) {
+            inline void setResourceBundle(helpers::ResourceBundlePtr bundle) {
                 resourceBundle = bundle;
             }
 

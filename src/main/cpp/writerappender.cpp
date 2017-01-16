@@ -176,7 +176,6 @@ void WriterAppender::closeWriter() {
    system encoding (an error message will be printed to the loglog.  */
 WriterPtr WriterAppender::createWriter(OutputStreamPtr os) {
 
-printf( "creating a writer\n" );
     LogString enc(getEncoding());
 
     CharsetEncoderPtr encoder;
@@ -240,9 +239,6 @@ void WriterAppender::writeHeader(Pool& p) {
         LogString header;
         layout->appendHeader(header, p);
         synchronized sync(mutex);
-printf( "writer use count %d\n", writer.use_count() );
-printf( "is writer valid? %d\n", writer.get() != NULL );
-printf( "writer is %p\n", writer.get() );
         writer->write(header, p);
     }
 }

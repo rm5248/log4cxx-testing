@@ -18,6 +18,8 @@
 #include <log4cxx/logstring.h>
 #include <log4cxx/helpers/loglog.h>
 #include <log4cxx/helpers/transcoder.h>
+#include <log4cxx/helpers/system.h>
+#include <log4cxx/helpers/stringhelper.h>
 #include <iostream>
 #if !defined(LOG4CXX)
 #define LOG4CXX 1
@@ -35,6 +37,16 @@ LogLog::LogLog() : mutex(APRInitializer::getRootPool()) {
 
     debugEnabled    = false;
     quietMode       = false;
+    
+    LogString quietString = System::getProperty( LOG4CXX_STR( "LOG4CXX_QUIET" ) );
+    if( StringHelper::equalsIgnoreCase( quietString, LOG4CXX_STR( "TRUE" ), LOG4CXX_STR( "true" ) ) ){
+        quietMode = true;
+    }
+
+    LogString debugString = System::getProperty( LOG4CXX_STR( "LOG4CXX_DEBUG" ) );
+    if( StringHelper::equalsIgnoreCase( debugString, LOG4CXX_STR( "TRUE" ), LOG4CXX_STR( "true" ) ) ){
+        debugEnabled = true;
+    }
 }
 
 LogLog& LogLog::getInstance() {

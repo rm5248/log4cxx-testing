@@ -173,7 +173,7 @@ void TimeBasedRollingPolicy::activateOptions(log4cxx::helpers::Pool& pool) {
         throw IllegalStateException();
     }
 
-    PatternConverterPtr dtc(getDatePatternConverter());
+    PatternConverter* dtc = getDatePatternConverter();
 
     if (dtc == NULL) {
         throw IllegalStateException();

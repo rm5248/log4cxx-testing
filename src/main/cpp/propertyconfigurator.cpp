@@ -366,14 +366,12 @@ AppenderPtr PropertyConfigurator::parseAppender(
     LogString layoutPrefix = prefix + LOG4CXX_STR(".layout");
 
     {
-        Object* instance = Loader::loadClass(appenderName).newInstance();
-        Appender* rawptr_Appender = dynamic_cast<Appender*>( instance );
-
-        if( rawptr_Appender == NULL ) {
-            delete instance;
+        Object* ptr = OptionConverter::instantiateByKey(
+            props, prefix, Appender::getStaticClass() );
+        if( ptr != NULL ){
+            Appender* rawptr_Appender = reinterpret_cast<Appender*>( ptr );
+            appender.reset( rawptr_Appender );
         }
-
-        appender.reset( rawptr_Appender );
     }
 
     if (appender == 0) {
@@ -388,11 +386,10 @@ AppenderPtr PropertyConfigurator::parseAppender(
         Pool p;
 
         if (appender->requiresLayout()) {
-            Object* instance = Loader::loadClass(layoutPrefix).newInstance();
-            Layout* rawptr_Layout = dynamic_cast<Layout*>( instance );
-
-            if( rawptr_Layout == NULL ) {
-                delete instance;
+            Layout* rawptr_Layout = NULL;
+            Object* instance = OptionConverter::instantiateByKey( props, layoutPrefix, Layout::getStaticClass() );
+            if( instance != NULL ){
+                rawptr_Layout = reinterpret_cast<Layout*>( instance );
             }
 
             LayoutPtr layout( rawptr_Layout );

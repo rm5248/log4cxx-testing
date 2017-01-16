@@ -277,26 +277,24 @@ LevelPtr OptionConverter::toLevel(const LogString& value,
 }
 
 
-ObjectPtr OptionConverter::instantiateByKey(Properties& props, const LogString& key,
-        const Class& superClass, const ObjectPtr& defaultValue) {
+Object* OptionConverter::instantiateByKey(Properties& props, const LogString& key,
+        const Class& superClass) {
     // Get the value of the property in string form
     LogString className(findAndSubst(key, props));
 
     if(className.empty()) {
         LogLog::error(
             ((LogString) LOG4CXX_STR("Could not find value for key ")) + key);
-        return defaultValue;
+        return NULL;
     }
 
     // Trim className to avoid trailing spaces that cause problems.
-//ROBERT TODO
-    //return OptionConverter::instantiateByClassName(
-    //       StringHelper::trim(className), superClass, defaultValue);
+    return OptionConverter::instantiateByClassName(
+           StringHelper::trim(className), superClass);
 }
 
-/*
-ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
-        const Class& superClass, const ObjectPtr& defaultValue)
+Object* OptionConverter::instantiateByClassName(const LogString& className,
+        const Class& superClass)
 {
         if(!className.empty())
         {
@@ -306,7 +304,8 @@ ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
                         Object* newObject =  classObj.newInstance();
                         if (!newObject->instanceof(superClass))
                         {
-                                return defaultValue;
+                                delete newObject;
+                                return NULL;
                         }
 
                         return newObject;
@@ -317,9 +316,8 @@ ObjectPtr OptionConverter::instantiateByClassName(const LogString& className,
                                 className + LOG4CXX_STR("]."), e);
                 }
         }
-        return defaultValue;
+        return NULL;
 }
-*/
 
 void OptionConverter::selectAndConfigure(const File& configFileName,
         const LogString& _clazz, spi::LoggerRepositoryPtr& hierarchy) {

@@ -17,6 +17,7 @@
 #include <log4cxx/logstring.h>
 #include <log4cxx/helpers/resourcebundle.h>
 #include <log4cxx/helpers/propertyresourcebundle.h>
+#include <log4cxx/helpers/optionconverter.h>
 #include <log4cxx/helpers/loader.h>
 #include <log4cxx/helpers/pool.h>
 #include <log4cxx/helpers/transcoder.h>
@@ -63,13 +64,11 @@ ResourceBundlePtr ResourceBundle::getBundle(const LogString& baseName,
 
         // Try loading a class which implements ResourceBundle
         try {
-            Object* instance = Loader::loadClass(bundleName).newInstance();
-            PropertyResourceBundle* rawptr_propertyResource = dynamic_cast<PropertyResourceBundle*>( instance );
-
-            if( rawptr_propertyResource == NULL ) {
-                delete instance;
-            } else {
-                current.reset( rawptr_propertyResource );
+            PropertyResourceBundle* rawptr_PropertyResource;
+            Object* instance = OptionConverter::instantiateByClassName(bundleName, PropertyResourceBundle::getStaticClass() );
+            if( instance != NULL ){
+                rawptr_PropertyResource = reinterpret_cast<PropertyResourceBundle*>( instance );
+                current.reset( rawptr_PropertyResource );
             }
         } catch(ClassNotFoundException&) {
             current = 0;
