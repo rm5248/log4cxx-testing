@@ -54,7 +54,7 @@ IMPLEMENT_LOG4CXX_OBJECT(RollingFileAppender)
 /**
  * Construct a new instance.
  */
-RollingFileAppenderSkeleton::RollingFileAppenderSkeleton() : _event(NULL) {
+RollingFileAppenderSkeleton::RollingFileAppenderSkeleton() : _event(NULL), rawTriggeringPolicy( NULL ) {
 }
 
 RollingFileAppender::RollingFileAppender() {
@@ -74,22 +74,19 @@ void RollingFileAppenderSkeleton::activateOptions(Pool &p) {
     //  if no explicit triggering policy and rolling policy is both.
     //
     if (triggeringPolicy == NULL) {
-        /* ROBERT TODO need weak_ptr here? */
-        /*
-             TriggeringPolicyPtr trig(rollingPolicy);
-             if (trig != NULL) {
-                 triggeringPolicy = trig;
-             }
-        */
+        TriggeringPolicy* trig = dynamic_cast<TriggeringPolicy*>(rollingPolicy.get());
+        if (trig != NULL) {
+            rawTriggeringPolicy = trig;
+        }
     }
 
-    if (triggeringPolicy == NULL) {
+    if (getTriggeringPolicyToUse() == NULL) {
         triggeringPolicy.reset( new ManualTriggeringPolicy() );
     }
 
     {
         synchronized sync(mutex);
-        triggeringPolicy->activateOptions(p);
+        getTriggeringPolicyToUse()->activateOptions(p);
         rollingPolicy->activateOptions(p);
 
         try {
@@ -174,7 +171,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
 
 #ifdef LOG4CXX_MULTI_PROCESS
             std::string fileName(getFile());
-            RollingPolicyBase *basePolicy = dynamic_cast<RollingPolicyBase* >(&(*rollingPolicy));
+            RollingPolicyBase *basePolicy = dynamic_cast<RollingPolicyBase* >(rollingPolicy.get());
             apr_time_t n = apr_time_now();
             ObjectPtr obj(new Date(n));
             LogString fileNamePattern;
@@ -220,7 +217,7 @@ bool RollingFileAppenderSkeleton::rollover(Pool& p) {
                     bAlreadyRolled = false;
                 } else {
                     if (_event) {
-                        triggeringPolicy->isTriggeringEvent(this, *_event, getFile(), getFileLength());
+                        getTriggeringPolicyToUse()->isTriggeringEvent(this, *_event, getFile(), getFileLength());
                     }
                 }
             }
@@ -375,7 +372,7 @@ void RollingFileAppenderSkeleton::subAppend(const LoggingEventPtr& event, Pool& 
     // The rollover check must precede actual writing. This is the
     // only correct behavior for time driven triggers.
     if (
-        triggeringPolicy->isTriggeringEvent(
+        getTriggeringPolicyToUse()->isTriggeringEvent(
             this, event, getFile(), getFileLength())) {
         //
         //   wrap rollover request in try block since
@@ -451,6 +448,7 @@ void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr& polic
  */
 void RollingFileAppenderSkeleton::setTriggeringPolicy(const TriggeringPolicyPtr& policy) {
     triggeringPolicy = policy;
+    rawTriggeringPolicy = NULL;
 }
 
 /**
@@ -562,4 +560,16 @@ void RollingFileAppenderSkeleton::setFileLength(size_t length) {
  */
 void RollingFileAppenderSkeleton::incrementFileLength(size_t increment) {
     fileLength += increment;
+}
+
+TriggeringPolicy* RollingFileAppenderSkeleton::getRawTriggeringPolicy() const{
+    return rawTriggeringPolicy;
+}
+
+TriggeringPolicy* RollingFileAppenderSkeleton::getTriggeringPolicyToUse() const{
+    if( rawTriggeringPolicy != NULL ){
+        return rawTriggeringPolicy;
+    }
+
+    return triggeringPolicy.get();
 }

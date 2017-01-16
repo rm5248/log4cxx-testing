@@ -46,6 +46,7 @@ namespace log4cxx {
                  * Triggering policy.
                  */
                 TriggeringPolicyPtr triggeringPolicy;
+                TriggeringPolicy* rawTriggeringPolicy;
 
                 /**
                  * Rolling policy.
@@ -100,6 +101,10 @@ namespace log4cxx {
 
                 TriggeringPolicyPtr getTriggeringPolicy() const;
 
+                TriggeringPolicy* getRawTriggeringPolicy() const;
+
+                TriggeringPolicy* getTriggeringPolicyToUse() const;
+
                 /**
                  * Sets the rolling policy. In case the 'policy' argument also implements
                  * {@link TriggeringPolicy}, then the triggering policy for this appender
@@ -109,6 +114,8 @@ namespace log4cxx {
                 void setRollingPolicy(const RollingPolicyPtr& policy);
 
                 void setTriggeringPolicy(const TriggeringPolicyPtr& policy);
+
+                void setTriggeringPolicy( TriggeringPolicy* );
 
             public:
                 /**
