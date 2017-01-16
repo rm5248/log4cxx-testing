@@ -58,7 +58,7 @@ namespace log4cxx {
                             LogString& toAppendTo,
                             log4cxx::helpers::Pool& p) const;
 
-                void format(const log4cxx::helpers::Object* obj,
+                void format(const log4cxx::ptr::shared_ptr<Object>& obj,
                             LogString& toAppendTo,
                             log4cxx::helpers::Pool& p) const;
         };

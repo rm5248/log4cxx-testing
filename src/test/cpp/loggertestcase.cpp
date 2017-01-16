@@ -393,7 +393,7 @@ public:
                 LoggerPtr a0 = h->getLogger(LOG4CXX_STR("a"));
                 LOGUNIT_ASSERT_EQUAL((LogString) LOG4CXX_STR("a"), a0->getName());
                 LOGUNIT_ASSERT(a0->getLevel() == 0);
-                LOGUNIT_ASSERT(Level::getError() == a0->getEffectiveLevel());
+                LOGUNIT_ASSERT((*Level::getError().get()) == (*a0->getEffectiveLevel().get()));
 
                 LoggerPtr a11 = h->getLogger(LOG4CXX_STR("a"));
                 LOGUNIT_ASSERT_EQUAL(a0, a11);

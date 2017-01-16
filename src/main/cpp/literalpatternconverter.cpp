@@ -55,7 +55,7 @@ void LiteralPatternConverter::format(
 }
 
 void LiteralPatternConverter::format(
-    const Object* /* event */,
+    const log4cxx::ptr::shared_ptr<Object>& /* event */,
     LogString& toAppendTo,
     Pool& /* p */)  const {
     toAppendTo.append(literal);

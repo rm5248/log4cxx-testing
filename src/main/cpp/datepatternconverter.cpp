@@ -113,15 +113,15 @@ void DatePatternConverter::format(
  * {@inheritDoc}
  */
 void DatePatternConverter::format(
-    const Object* obj,
+    const log4cxx::ptr::shared_ptr<Object>& obj,
     LogString& toAppendTo,
     Pool& p) const {
-    const Date* date = dynamic_cast<const Date*>(obj);
+    const Date* date = dynamic_cast<const Date*>(obj.get());
 
     if (date != NULL) {
         format(date, toAppendTo, p);
     } else {
-        const LoggingEvent* event = dynamic_cast<const LoggingEvent*>(obj);
+        const LoggingEvent* event = dynamic_cast<const LoggingEvent*>(obj.get());
 
         if (event != NULL) {
             format(event, toAppendTo, p);

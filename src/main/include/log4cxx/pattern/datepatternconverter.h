@@ -70,7 +70,7 @@ namespace log4cxx {
                 void format(const log4cxx::spi::LoggingEvent* event,
                             LogString& output,
                             log4cxx::helpers::Pool& p) const;
-                void format(const log4cxx::helpers::Object* obj,
+                void format(const log4cxx::ptr::shared_ptr<Object>& obj,
                             LogString& output,
                             log4cxx::helpers::Pool& p) const;
 
