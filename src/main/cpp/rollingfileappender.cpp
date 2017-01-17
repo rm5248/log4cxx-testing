@@ -438,7 +438,7 @@ TriggeringPolicyPtr RollingFileAppenderSkeleton::getTriggeringPolicy() const {
  * Sets the rolling policy.
  * @param policy rolling policy.
  */
-void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr& policy) {
+void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr policy) {
     rollingPolicy = policy;
 }
 
@@ -446,7 +446,7 @@ void RollingFileAppenderSkeleton::setRollingPolicy(const RollingPolicyPtr& polic
  * Set triggering policy.
  * @param policy triggering policy.
  */
-void RollingFileAppenderSkeleton::setTriggeringPolicy(const TriggeringPolicyPtr& policy) {
+void RollingFileAppenderSkeleton::setTriggeringPolicy(const TriggeringPolicyPtr policy) {
     triggeringPolicy = policy;
     rawTriggeringPolicy = NULL;
 }
@@ -483,7 +483,7 @@ namespace log4cxx {
                  * @param rfa rolling file appender to inform.
                  */
                 CountingOutputStream(
-                    OutputStreamPtr& os1, RollingFileAppenderSkeleton* rfa1) :
+                    OutputStreamPtr os1, RollingFileAppenderSkeleton* rfa1) :
                     os(os1), rfa(rfa1) {
                 }
 
@@ -535,7 +535,7 @@ namespace log4cxx {
  @param os output stream, may not be null.
  @return new writer.
  */
-WriterPtr RollingFileAppenderSkeleton::createWriter(OutputStreamPtr& os) {
+WriterPtr RollingFileAppenderSkeleton::createWriter(OutputStreamPtr os) {
     OutputStreamPtr cos(new CountingOutputStream(os, this));
     return FileAppender::createWriter(cos);
 }

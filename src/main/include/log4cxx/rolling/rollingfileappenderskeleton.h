@@ -111,9 +111,9 @@ namespace log4cxx {
                  * is automatically set to be the policy argument.
                  * @param policy
                  */
-                void setRollingPolicy(const RollingPolicyPtr& policy);
+                void setRollingPolicy(const RollingPolicyPtr policy);
 
-                void setTriggeringPolicy(const TriggeringPolicyPtr& policy);
+                void setTriggeringPolicy(const TriggeringPolicyPtr policy);
 
                 void setTriggeringPolicy( TriggeringPolicy* );
 
@@ -133,7 +133,7 @@ namespace log4cxx {
                  @param os output stream, may not be null.
                  @return new writer.
                  */
-                log4cxx::helpers::WriterPtr createWriter(log4cxx::helpers::OutputStreamPtr& os);
+                log4cxx::helpers::WriterPtr createWriter(log4cxx::helpers::OutputStreamPtr os);
 
             public:
 

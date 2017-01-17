@@ -65,8 +65,8 @@ namespace log4cxx {
                 RolloverDescription(
                     const LogString& activeFileName,
                     const bool append,
-                    const ActionPtr& synchronous,
-                    const ActionPtr& asynchronous);
+                    const ActionPtr synchronous,
+                    const ActionPtr asynchronous);
 
                 /**
                  * Active log file name after rollover.

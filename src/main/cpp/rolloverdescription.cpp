@@ -31,8 +31,8 @@ RolloverDescription::RolloverDescription() {
 RolloverDescription::RolloverDescription(
     const LogString& activeFileName1,
     const bool append1,
-    const ActionPtr& synchronous1,
-    const ActionPtr& asynchronous1)
+    const ActionPtr synchronous1,
+    const ActionPtr asynchronous1)
     : activeFileName(activeFileName1),
       append(append1),
       synchronous(synchronous1),
