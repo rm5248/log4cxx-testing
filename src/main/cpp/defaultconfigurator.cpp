@@ -27,6 +27,8 @@ using namespace log4cxx;
 using namespace log4cxx::spi;
 using namespace log4cxx::helpers;
 
+static void LoggerRepository_null_deleter(LoggerRepository*){}
+
 void DefaultConfigurator::configure(LoggerRepository* repository) {
     repository->setConfigured(true);
     const LogString configuratorClassName(getConfiguratorClass());
@@ -56,11 +58,12 @@ void DefaultConfigurator::configure(LoggerRepository* repository) {
         msg += LOG4CXX_STR("] for automatic log4cxx configuration");
         LogLog::debug(msg);
 
-        LoggerRepositoryPtr repo(repository);
+        //note: because we get passed in a raw pointer, we can't create a new shared_ptr, as that would
+        //delete the object at the end of this function.  So, we create a shared_ptr with a null deleter
         OptionConverter::selectAndConfigure(
             configuration,
             configuratorClassName,
-            repo);
+            log4cxx::ptr::shared_ptr<LoggerRepository>(repository,&LoggerRepository_null_deleter) );
     } else {
         if (configurationOptionStr.empty()) {
             LogLog::debug(LOG4CXX_STR("Could not find default configuration file."));

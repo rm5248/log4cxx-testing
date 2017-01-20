@@ -320,7 +320,7 @@ Object* OptionConverter::instantiateByClassName(const LogString& className,
 }
 
 void OptionConverter::selectAndConfigure(const File& configFileName,
-        const LogString& _clazz, spi::LoggerRepositoryPtr& hierarchy) {
+        const LogString& _clazz, spi::LoggerRepositoryPtr hierarchy) {
     ConfiguratorPtr configurator;
     LogString clazz = _clazz;
 
